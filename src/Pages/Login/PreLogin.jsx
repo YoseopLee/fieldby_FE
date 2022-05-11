@@ -33,7 +33,6 @@ const PreLoginCSS = styled.div`
         position : absolute;
         min-height : 523px;
         min-width : 672px;
-        padding : 70px;
     }
     .prelogin-square-hc{
         width : 25%;
@@ -98,7 +97,7 @@ const PreLoginCSS = styled.div`
     .prelogin-ask-wrapper {
         display : flex;
         justify-content : center;
-        margin-top : 100px;
+        margin-top : 60px;
 
         .prelogin-ask {
             font-style: normal;
