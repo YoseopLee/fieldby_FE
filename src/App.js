@@ -1,7 +1,8 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
-import Login from './Login/Login';
-import PreLogin from './Login/PreLogin';
+import Login from './Pages/Login/Login';
+import PreLogin from './Pages/Login/PreLogin';
+
 
 function App() {
   return (

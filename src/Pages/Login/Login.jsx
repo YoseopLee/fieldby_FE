@@ -46,8 +46,7 @@ const Login = () => {
 const LoginContainerCSS = styled.div`
     #login-cm {
         position : absolute;
-        min-width : 300px;
-        max-width : 672px;
+        min-width : 672px;
         min-height : 703px;
     }
     .login-square-hc {
