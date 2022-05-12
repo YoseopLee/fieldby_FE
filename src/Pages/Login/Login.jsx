@@ -1,7 +1,36 @@
-import React from "react"
+import { signInWithEmailAndPassword } from "firebase/auth";
+import React, { useState } from "react"
 import styled from "styled-components"
+import { authService } from "../../fBase";
+
 
 const Login = () => {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    const onChange = (event) => {
+        const {target : {name, value}} = event;
+        if (name === "email") {
+            setEmail(value);
+        } else if (name === "password") {
+            setPassword(value);
+        }
+    }
+
+    const signIn = async () => {
+        try {
+            const user = await signInWithEmailAndPassword(
+                authService,
+                email,
+                password
+            );
+            console.log(user);
+
+        } catch (error) {
+            console.log(error.message);
+        }
+    };
+
     return( 
         <LoginContainerCSS>
             <div className="login-square-hc login-square-vc" id="login-cm">
@@ -11,17 +40,19 @@ const Login = () => {
                 </div>
                 <div className="login-box-container">
                     <div className="login-box">
-                        <input type="email" placeholder="이메일" className="login-email"/>
-                        <input type="password" placeholder="비밀번호" className="login-pw" />
+                        <input name="email" type="email" placeholder="이메일" className="login-email" value={email} onChange={onChange}/>
+                        <input name="password" type="password" placeholder="비밀번호" className="login-pw" value={password} onChange={onChange}/>
+                    </div>
+                    <div className="login-maintain">
+                        <img src="images/login-maintain.png" alt=""/>
+                        <span className="login-maintain-check">로그인 유지</span>
+                    </div>
+                    <div className="login-btn-wrapper">
+                        <button onClick={signIn} id="login-btn">로그인</button>
+                        
                     </div>
                 </div>
-                <div className="login-maintain">
-                    <img src="images/login-maintain.png" alt=""/>
-                    <span className="login-maintain-check">로그인 유지</span>
-                </div>
-                <div className="login-btn-wrapper">
-                    <button id="login-btn">로그인</button>
-                </div>
+                
                 <div className="login-find-container">
                     <div className="login-find-wrapper">
                         <a href="/sign-up" className="login-signup">회원가입</a>
@@ -84,8 +115,7 @@ const LoginContainerCSS = styled.div`
 
     .login-box-container {
         margin-top : 120px;
-        display : flex;
-        justify-content : center;
+        display : grid;
 
         .login-box {
             display : grid;
