@@ -13,16 +13,20 @@ const SignUp = () => {
     const [name, setName] = useState('');
     const [companyName, setCompanyName] = useState('');
 
-   function writeUserData () {
-       const uid = authService.currentUser.uid;
-       set(ref(realtimeDbService, `brands/${uid}`), {
-            phoneNum : phoneNumber,
-            email : registerEmail,
-            companyKind : companyKind,
-            name : name,
-            companyName : companyName,
-            
-       })
+   const writeUserData = () => {
+       try {
+            const userId = authService.currentUser.uid;
+            set(ref(realtimeDbService, `brands/${userId}`), {
+                phoneNum : phoneNumber,
+                email : registerEmail,
+                companyKind : companyKind,
+                name : name,
+                companyName : companyName,
+            });
+       } catch (error) {
+            console.log(error.message);
+       }
+       
    }
     
     const register = async() => {
@@ -34,8 +38,7 @@ const SignUp = () => {
             );
             console.log(user);
             writeUserData();
-            window.alert('가입완료');
-            window.location.href = "/login";
+            
         } catch (error) {
             console.log(error.message);
         }
