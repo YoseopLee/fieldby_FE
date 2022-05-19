@@ -25,7 +25,8 @@ const Login = () => {
                 password
             );
             console.log(user);
-
+            sessionStorage.setItem('uid', authService.currentUser.uid);
+            window.location.href = `/campaign`;
         } catch (error) {
             console.log(error.message);
         }
