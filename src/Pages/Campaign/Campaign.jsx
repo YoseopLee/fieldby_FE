@@ -38,16 +38,20 @@ const Campaign = () => {
                         <span className="campaign-sidemenu-company-name">{userData.companyName}</span>
                     </div>
                     <div className="campaign-sidemenu-progress-box">
+                        <img src="images/image 108.png" alt="progress"/>
                         <span className="campaign-sidemenu-progress">진행현황</span>
                     </div>
                     <div className="campaign-sidemenu-report-box">
+                        <img src="images/report.png" alt="report" />
                         <span className="campaign-sidemenu-report">캠페인 보고서</span>
                     </div>
                 </div>
                 
                 <div className="campaign-customer-center">
                     <div className="campaign-customer-ask">
+                        <img src="images/customer.png" alt="customer-center" className="customer-img"/>
                         <span className="customer-ask">고객센터</span>
+                        <img src="images/up-arrow.png" alt="up" className="up-arrow" />
                     </div>
                 </div>
 
@@ -55,7 +59,12 @@ const Campaign = () => {
 
             <div id="campaign-cm" className="campaign-square-hc campaign-square-vc">
                 <div className="campaign-main">
-                    <span>캠페인 내역이 없습니다.</span>
+                    
+                    <div className="campaign-empty">
+                        <img src="images/campaign-empty.png" alt="no-campaign"/> 
+                        <span>캠페인 내역이 없습니다.</span>
+                    </div>
+                    
                 </div>
             </div>
         </CampaignContainerCSS>
@@ -119,7 +128,11 @@ const CampaignContainerCSS = styled.div`
                 .campaign-sidemenu-progress {
                     font-weight : 700;
                     color : #ffffff;
-                    
+                }
+                img {
+                    width : 19px;
+                    height : 20px;
+                    margin-right : 8px;
                 }
             }
 
@@ -133,12 +146,41 @@ const CampaignContainerCSS = styled.div`
                     font-weight : 700;
                     color : #303030;
                 }
+                img {
+                    width : 19px;
+                    height : 20px;
+                    margin-right : 8px;
+                }
             }
         }
 
         .campaign-customer-center {
             margin-top : auto;
             margin-bottom : 40px;
+            
+            .campaign-customer-ask {
+                display : flex;
+                align-items : center;
+                font-style: normal;
+                font-weight: 700;
+                font-size: 16px;
+                line-height: 19px;
+                .customer-img {
+                    width : 19px;
+                    height : 20px;
+                    margin-right : 12px;
+                }
+
+                .up-arrow {
+                    width : 12px;
+                    height : 12px;
+                    margin-left : 12px;
+                }
+            }
+
+            
+
+            
         }
     }
 
@@ -170,7 +212,25 @@ const CampaignContainerCSS = styled.div`
     .campaign-main {
         display : flex;
         justify-content : center;
-        
+        .campaign-empty {
+            display : flex;
+            flex-direction : column;
+            align-items : center;
+            padding-top : 300px;
+            img {
+                width : 47px;
+                height : 47px;
+            }
+
+            span {
+                margin-top : 8px;
+                font-style: normal;
+                font-weight: 700;
+                font-size: 16px;
+                line-height: 19px;
+                
+            }
+        }
     }
 `
 
