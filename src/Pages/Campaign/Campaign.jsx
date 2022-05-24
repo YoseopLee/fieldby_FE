@@ -26,7 +26,6 @@ const Campaign = () => {
 
     return (
         <CampaignContainerCSS>
-
             <div className="campaign-sidebar">
                 <div className="campaign-logo">
                     <img src="images/필드바이 로고-47 1.png" alt=""/>
@@ -56,7 +55,7 @@ const Campaign = () => {
                 </div>
 
             </div>
-
+            
             <div id="campaign-cm" className="campaign-square-hc campaign-square-vc">
                 <div className="campaign-main">
                     
@@ -165,6 +164,7 @@ const CampaignContainerCSS = styled.div`
                 font-weight: 700;
                 font-size: 16px;
                 line-height: 19px;
+                
                 .customer-img {
                     width : 19px;
                     height : 20px;
