@@ -9,6 +9,7 @@ const CampaignAdmin = () => {
     const [campaignTitle, setCampaignTitle] = useState('');
     const [brandInstagram, setBrandInstagram] = useState('');
     const [brandName, setBrandName] = useState('');
+    const [recuiteDate, setRecuiteDate] = useState('');
     const [dueDate, setDueDate] = useState('');
     const [mainImageUrl, setMainImageUrl] = useState('');
     const [guideDescription, setGuideDescription] = useState([]);
@@ -32,7 +33,6 @@ const CampaignAdmin = () => {
 
     const handleMainImageUpload = () => {
         if (!mainImageUrl) {
-            alert("이미지를 업로드 해주세요.");
             console.log(mainImageUrl);
         }
         // sRef = firebase/storage , ref = firebase/database
@@ -55,11 +55,11 @@ const CampaignAdmin = () => {
     };
 
     const handleGuideImageUpload = () => {
+        let imageUrlLists = [...guideImageUrls];
         if (!guideImageUrls) {
-            alert("이미지를 업로드 해주세요.");
             console.log(guideImageUrls);
         }
-        sRef(storageService, `campaignImages/${campaignTitle}/guideImages/${guideImageUrls.name}`)
+        sRef(storageService, `campaignImages/${campaignTitle}/guideImages/${imageUrlLists}`)
     }
     
     const registerCampaign = () => {
@@ -70,12 +70,13 @@ const CampaignAdmin = () => {
             set(ref(realtimeDbService, `brands/${uid}/campaigns/${campaignTitle}`), {
                 brandInstagram : brandInstagram,
                 brandName : brandName,
+                recuiteDate : recuiteDate,
                 dueDate : dueDate,
                 brandUuid : uid,
                 guides : [
                     {
                         description : guideDescription,
-                        imageUrl : guideImageUrls
+                        imageUrl : [...guideImageUrls]
                     }
                 ],
                 hashTags : {
@@ -100,12 +101,32 @@ const CampaignAdmin = () => {
             set(ref(realtimeDbService, `campaigns/${campaignTitle}`), {
                 brandInstagram : brandInstagram,
                 brandName : brandName,
+                recuiteDate : recuiteDate,
                 dueDate : dueDate,
                 brandUuid : uid,
                 guides : [
-                    
+                    {
+                        description : guideDescription,
+                        imageUrl : [...guideImageUrls]
+                    }
                 ],
-                mainImageUrl : mainImageUrl.name
+                hashTags : {
+                    ftc : ftc,
+                    option : option,
+                    required : required
+                },
+                isNew : true,
+                item : {
+                    description : itemDescription,
+                    name : itemName,
+                    price : itemPrice
+                },
+                itemDate : itemDate,
+                leastFeed : leastFeed,
+                mainImageUrl : mainImageUrl.name,
+                maintain : maintain,
+                selectionDate : selectionDate,
+                uploadDate : uploadDate,
             });
         } catch (error) {
             console.log(error.message);
@@ -117,19 +138,22 @@ const CampaignAdmin = () => {
     return (
         <CampaignAdminContainerCSS>
             <h1>Fieldby Business Suite Admin</h1>
-            <input type="text" placeholder="회사 uid" required onChange={(e) => {
+            <input type="text" placeholder="회사 uid" onChange={(e) => {
                 setUid(e.target.value);
             }} />
-            <input type="text" placeholder="캠페인 제목" required onChange={(e) => {
+            <input type="text" placeholder="캠페인 제목" onChange={(e) => {
                 setCampaignTitle(e.target.value);
             }} />
             <input type="text" placeholder="브랜드 인스타" onChange={(e) => {
                 setBrandInstagram(e.target.value);
             }} />
-            <input type="text" placeholder="브랜드 이름" required onChange={(e) => {
+            <input type="text" placeholder="브랜드 이름" onChange={(e) => {
                 setBrandName(e.target.value);
             }} />
-            <input type="text" placeholder="캠페인 만료 기한" required onChange={(e) => {
+            <input type="text" placeholder="캠페인 시작 기한" onChange={(e) => {
+                setRecuiteDate(e.target.value);
+            }} />
+            <input type="text" placeholder="캠페인 만료 기한" onChange={(e) => {
                 setDueDate(e.target.value);
             }} />
             <input type="text" placeholder="해시태그 ftc" onChange={(e) => {
@@ -172,6 +196,7 @@ const CampaignAdmin = () => {
                 <button onClick={handleMainImageUpload}>메인 이미지 업로드</button>
             </div>
 
+            
             <div className="guide-image-input">
                 <label htmlFor="input-file" className="add-btn" onChange={handleGuideChange}>
                     <h3>가이드 이미지</h3>
@@ -188,6 +213,8 @@ const CampaignAdmin = () => {
                 ))}
                 <button onClick={handleGuideImageUpload}>가이드 이미지 업로드</button>
             </div>
+            
+        
             <button onClick={registerCampaign}>캠페인 등록하기</button>
         </CampaignAdminContainerCSS>
     )
