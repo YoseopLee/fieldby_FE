@@ -38,7 +38,6 @@ const SignUp = () => {
             );
             console.log(user);
             writeUserData();
-            
         } catch (error) {
             console.log(error.message);
         }
