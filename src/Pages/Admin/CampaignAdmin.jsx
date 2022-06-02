@@ -1,4 +1,4 @@
-import { ref, set } from "firebase/database";
+import { push, ref, set } from "firebase/database";
 import { ref as sRef } from "firebase/storage";
 import React, { useState } from "react";
 import styled from "styled-components";
@@ -9,11 +9,12 @@ const CampaignAdmin = () => {
     const [campaignTitle, setCampaignTitle] = useState('');
     const [brandInstagram, setBrandInstagram] = useState('');
     const [brandName, setBrandName] = useState('');
-    const [recuiteDate, setRecuiteDate] = useState('');
+    const [recruitingDate, setRecruitingDate] = useState('');
     const [dueDate, setDueDate] = useState('');
     const [mainImageUrl, setMainImageUrl] = useState('');
     const [guideDescription, setGuideDescription] = useState([]);
     const [guideImageUrls, setGuideImageUrl] = useState([]);
+    const [recruitingNumber, setRecruitingNumber] = useState(0);
     const [ftc, setFtc] = useState('');
     const [option, setOption] = useState('');
     const [required, setRequired] = useState('');
@@ -63,46 +64,47 @@ const CampaignAdmin = () => {
     }
     
     const registerCampaign = () => {
-
-        
-
         try {
-            set(ref(realtimeDbService, `brands/${uid}/campaigns/${campaignTitle}`), {
-                brandInstagram : brandInstagram,
-                brandName : brandName,
-                recuiteDate : recuiteDate,
-                dueDate : dueDate,
-                brandUuid : uid,
-                guides : [
-                    {
-                        description : guideDescription,
-                        imageUrl : [...guideImageUrls]
-                    }
-                ],
-                hashTags : {
-                    ftc : ftc,
-                    option : option,
-                    required : required
-                },
-                isNew : true,
-                item : {
-                    description : itemDescription,
-                    name : itemName,
-                    price : itemPrice
-                },
-                itemDate : itemDate,
-                leastFeed : leastFeed,
-                mainImageUrl : mainImageUrl.name,
-                maintain : maintain,
-                selectionDate : selectionDate,
-                uploadDate : uploadDate,
+            push(ref(realtimeDbService, `brands/${uid}/campaigns/`), {   
+                    campaignTitle : campaignTitle,            
+                    brandInstagram : brandInstagram,
+                    brandName : brandName,
+                    recruitingDate : recruitingDate,
+                    dueDate : dueDate,
+                    recruitingNumber : recruitingNumber,
+                    brandUuid : uid,
+                    guides : [
+                        {
+                            description : guideDescription,
+                            imageUrl : [...guideImageUrls]
+                        }
+                    ],
+                    hashTags : {
+                        ftc : ftc,
+                        option : option,
+                        required : required
+                    },
+                    isNew : true,
+                    item : {
+                        description : itemDescription,
+                        name : itemName,
+                        price : itemPrice
+                    },
+                    itemDate : itemDate,
+                    leastFeed : leastFeed,
+                    mainImageUrl : mainImageUrl.name,
+                    maintain : maintain,
+                    selectionDate : selectionDate,
+                    uploadDate : uploadDate,             
             });
 
             set(ref(realtimeDbService, `campaigns/${campaignTitle}`), {
+                campaignTitle : campaignTitle,
                 brandInstagram : brandInstagram,
                 brandName : brandName,
-                recuiteDate : recuiteDate,
+                recruitingDate : recruitingDate,
                 dueDate : dueDate,
+                recruitingNumber : recruitingNumber,
                 brandUuid : uid,
                 guides : [
                     {
@@ -150,12 +152,21 @@ const CampaignAdmin = () => {
             <input type="text" placeholder="브랜드 이름" onChange={(e) => {
                 setBrandName(e.target.value);
             }} />
-            <input type="text" placeholder="캠페인 시작 기한" onChange={(e) => {
-                setRecuiteDate(e.target.value);
+
+            <span>캠페인 시작 기한</span>
+            <input type="date" placeholder="캠페인 시작 기한" onChange={(e) => {
+                setRecruitingDate(e.target.value);
             }} />
-            <input type="text" placeholder="캠페인 만료 기한" onChange={(e) => {
+
+            <span>캠페인 만료 기한</span>
+            <input type="date" placeholder="캠페인 만료 기한" onChange={(e) => {
                 setDueDate(e.target.value);
             }} />
+
+            <input type="text" placeholder="모집인원" onChange={(e) => {
+                setRecruitingNumber(e.target.value);
+            }}/>
+
             <input type="text" placeholder="해시태그 ftc" onChange={(e) => {
                 setFtc(e.target.value);
             }} />
@@ -174,7 +185,9 @@ const CampaignAdmin = () => {
             <input type="text" placeholder="아이템 가격" onChange={(e) => {
                 setItemPrice(e.target.value);
             }} />
-            <input type="text" placeholder="아이템 날짜" onChange={(e) => {
+
+            <span>아이템 날짜</span>
+            <input type="date" placeholder="아이템 날짜" onChange={(e) => {
                 setItemDate(e.target.value);
             }} />
             <input type="text" placeholder="최소 피드" onChange={(e) => {
@@ -183,10 +196,14 @@ const CampaignAdmin = () => {
             <input type="text" placeholder="유지" onChange={(e) => {
                 setMaintain(e.target.value);
             }} />
-            <input type="text" placeholder="선택 날짜" onChange={(e) => {
+
+            <span>선택 날짜</span>
+            <input type="date" placeholder="선택 날짜" onChange={(e) => {
                 setSelectionDate(e.target.value);
             }} />
-            <input type="text" placeholder="업로드 날짜" onChange={(e) => {
+
+            <span>업로드 날짜</span>
+            <input type="date" placeholder="업로드 날짜" onChange={(e) => {
                 setUploadDate(e.target.value);
             }} />
 

@@ -1,19 +1,23 @@
 import { child, get, getDatabase, ref } from "firebase/database";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import SideBar from "../../Components/SideBar/SideBar";
+import CampaignList from "./CampaignList";
 
 const Campaign = () => {
     const userId = sessionStorage.getItem('uid');
     const [userData, setUserData] = useState('');
-    
+    const [brandCampaignDatas, setBrandCampaignDatas] = useState([]);
+
     useEffect (() => {
         const dbRef = ref(getDatabase());
         const getUserData = () => {
             get(child(dbRef, `brands/${userId}`))
             .then((snapshot) => {
                 if (snapshot.exists()) {
-                    console.log(snapshot.val());
-                    setUserData(snapshot.val());
+                    const data_obj = snapshot.val();
+                    console.log(data_obj);
+                    setUserData(data_obj);
                 } else {
                     console.log("No Data");
                 }
@@ -24,166 +28,83 @@ const Campaign = () => {
         return getUserData;   
     }, [userId]);
 
+    useEffect(() => {
+        const dbRef = ref(getDatabase());
+        const getBrandCampaignData = () => {
+            get(child(dbRef, `brands/${userId}/campaigns/`))
+            .then((snapshot) => {
+                if (snapshot.exists()) {
+                    const data_obj = snapshot.val();
+                    console.log(data_obj);
+                    const data_ent = Object.entries(data_obj);
+                    const data_ent_arr = data_ent.map((d) => Object.assign({}, d[1], {id : d[0]}));
+                    console.log(data_ent_arr);
+                    setBrandCampaignDatas(data_ent_arr);
+                } else {
+                    console.log("No data");
+                }
+            }).catch((error) => {
+                console.log(error);
+            });
+        }
+        return getBrandCampaignData;
+    }, [userId]);
+
     return (
         <CampaignContainerCSS>
-            <div className="campaign-sidebar">
-                <div className="campaign-logo">
-                    <img src="images/필드바이 로고-47 1.png" alt=""/>
-                    <h2 className="campaign-logo-name">Business Suite</h2>
-                </div>
-
-                <div className="campaign-sidemenu">
-                    <div className="campaign-sidemenu-company-box">
-                        <span className="campaign-sidemenu-company-name">{userData.companyName}</span>
-                    </div>
-                    <div className="campaign-sidemenu-progress-box">
-                        <img src="images/image 108.png" alt="progress"/>
-                        <span className="campaign-sidemenu-progress">진행현황</span>
-                    </div>
-                    <div className="campaign-sidemenu-report-box">
-                        <img src="images/report.png" alt="report" />
-                        <span className="campaign-sidemenu-report">캠페인 보고서</span>
-                    </div>
-                </div>
-                
-                <div className="campaign-customer-center">
-                    <div className="campaign-customer-ask">
-                        <img src="images/customer.png" alt="customer-center" className="customer-img"/>
-                        <span className="customer-ask">고객센터</span>
-                        <img src="images/up-arrow.png" alt="up" className="up-arrow" />
-                    </div>
-                </div>
-
-            </div>
-            
+            <SideBar />
             <div id="campaign-cm" className="campaign-square-hc campaign-square-vc">
-                <div className="campaign-main">
-                    
-                    <div className="campaign-empty">
-                        <img src="images/campaign-empty.png" alt="no-campaign"/> 
-                        <span>캠페인 내역이 없습니다.</span>
-                    </div>
-                    
-                </div>
+                
+                    {userData.campaigns 
+                        ?
+                            <div className="campaign-main">
+                                <span className="campaign-all">전체</span>
+                                <div className="campaign-progress-table">
+                                    <div className="campaign-progress-titles">
+                                        <span>완료여부</span>
+                                    </div>
+                                    <div className="campaign-progress-titles">
+                                        <span>번호</span>
+                                    </div>
+                                    <div className="campaign-progress-titles">
+                                        <span>캠페인</span>
+                                    </div>
+                                    <div className="campaign-progress-titles">
+                                        <span>캠페인 기간</span>
+                                    </div>
+                                    <div className="campaign-progress-titles">
+                                        <span>모집인원</span>
+                                    </div>
+                                </div>
+                                
+                                 
+                                    <div className="campaign-data-container">
+                                        {brandCampaignDatas.map((brandCampaignData) =>
+                                            <CampaignList 
+                                                key={brandCampaignData.id}                                        
+                                                id={brandCampaignData.id}
+                                                campaignTitle = {brandCampaignData.campaignTitle}
+                                                recruitingDate = {brandCampaignData.recruitingDate.replace(/-/gi, '.')}
+                                                dueDate = {brandCampaignData.dueDate.replace(/-/gi, '.')}
+                                                recruitingNumber = {brandCampaignData.recruitingNumber}                                                                                                                                                                                                                                                                               
+                                            />
+                                        )}                                        
+                                    </div>  
+                                                                                                                                                                                 
+                            </div>    
+                        :   
+                            <div className="campaign-empty">
+                                <img src="images/campaign-empty.png" alt="no-campaign"/> 
+                                <span>캠페인 내역이 없습니다.</span>
+                            </div>
+                    }
+                
             </div>
         </CampaignContainerCSS>
     )
 }
 
 const CampaignContainerCSS = styled.div`
-    .campaign-sidebar {
-        position : abosolute;
-        z-index : 9999;
-        background : #ffffff;
-        height : 100vh;
-        width : 240px;
-        display : flex;
-        flex-direction : column;
-        align-items : center;
-
-        .campaign-logo {
-            padding-top : 20px;
-            img {
-                height : 43px;
-                width : 133px;
-            }
-            .campaign-logo-name {
-                margin-left : 14px;
-                margin-block-start : -10px;
-                margin-block-end : 0;
-                font-size : 18px;
-                color : #303030;
-                
-            }
-        }
-
-        .campaign-sidemenu {
-            margin-top : 45px;
-            width : calc(100% - 30px);
-
-            .campaign-sidemenu-company-box {
-                border : 1px solid #22Baa8;
-                border-radius : 5px;
-                height : 43px;
-                display : flex;
-                justify-content : center;
-                align-items : center;
-                .campaign-sidemenu-company-name {
-                    font-weight : 700;
-                    color : #303030;
-                }
-            }
-
-            .campaign-sidemenu-progress-box {
-                margin-top : 12px;
-                width : calc(120%);
-                height : 50px;
-                display : flex;
-                justify-content : center;
-                align-items : center;
-                background: #303030;
-                box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.25);
-                border-radius: 5px;
-                .campaign-sidemenu-progress {
-                    font-weight : 700;
-                    color : #ffffff;
-                }
-                img {
-                    width : 19px;
-                    height : 20px;
-                    margin-right : 8px;
-                }
-            }
-
-            .campaign-sidemenu-report-box {
-                margin-top : 12px;
-                height : 36px;
-                display : flex;
-                justify-content : center; 
-                align-items : center; 
-                .campaign-sidemenu-report {
-                    font-weight : 700;
-                    color : #303030;
-                }
-                img {
-                    width : 19px;
-                    height : 20px;
-                    margin-right : 8px;
-                }
-            }
-        }
-
-        .campaign-customer-center {
-            margin-top : auto;
-            margin-bottom : 40px;
-            
-            .campaign-customer-ask {
-                display : flex;
-                align-items : center;
-                font-style: normal;
-                font-weight: 700;
-                font-size: 16px;
-                line-height: 19px;
-                
-                .customer-img {
-                    width : 19px;
-                    height : 20px;
-                    margin-right : 12px;
-                }
-
-                .up-arrow {
-                    width : 12px;
-                    height : 12px;
-                    margin-left : 12px;
-                }
-            }
-
-            
-
-            
-        }
-    }
-
     #campaign-cm {
         position : absolute;
         min-width : 900px;
@@ -210,27 +131,54 @@ const CampaignContainerCSS = styled.div`
     }
 
     .campaign-main {
-        display : flex;
-        justify-content : center;
-        .campaign-empty {
-            display : flex;
-            flex-direction : column;
-            align-items : center;
-            padding-top : 300px;
-            img {
-                width : 47px;
-                height : 47px;
-            }
+        padding : 20px;
+        .campaign-all {
+            text-align : left;
+            font-weight : 700;
+        }
 
-            span {
-                margin-top : 8px;
-                font-style: normal;
-                font-weight: 700;
-                font-size: 16px;
-                line-height: 19px;
-                
+        .campaign-progress-table {
+            display : flex;
+            width : 100%;
+            height : 50px;
+            background : #f1f1f1;
+            margin-top : 80px;
+            justify-content : space-around;
+            align-items : center;
+            .campaign-progress-titles {
+                width : auto;
+                span {
+                    text-align : center;
+                    font-weight : 400;
+                    font-size : 15px;
+                }
             }
         }
+    }
+
+    .campaign-empty {
+        display : flex;
+        flex-direction : column;
+        align-items : center;
+        padding-top : 300px;
+        img {
+            width : 47px;
+            height : 47px;
+        }
+
+        span {
+            margin-top : 8px;
+            font-style: normal;
+            font-weight: 700;
+            font-size: 16px;
+            line-height: 19px;
+            
+        }
+    }
+
+    .campaign-data-container {
+        list-style-type : none;
+        padding-inline-start : 0;
     }
 `
 
