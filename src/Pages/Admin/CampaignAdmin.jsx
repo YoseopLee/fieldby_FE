@@ -1,5 +1,5 @@
 import { push, ref, set } from "firebase/database";
-import { ref as sRef } from "firebase/storage";
+import { getDownloadURL, ref as sRef, uploadBytesResumable } from "firebase/storage";
 import React, { useState } from "react";
 import styled from "styled-components";
 import { realtimeDbService, storageService } from "../../fBase";
@@ -12,6 +12,8 @@ const CampaignAdmin = () => {
     const [recruitingDate, setRecruitingDate] = useState('');
     const [dueDate, setDueDate] = useState('');
     const [mainImageUrl, setMainImageUrl] = useState('');
+    const [percent, setPercent] = useState(0);
+    const [guidePercent, setGuidePercent] = useState(0);
     const [guideDescription, setGuideDescription] = useState([]);
     const [guideImageUrls, setGuideImageUrl] = useState([]);
     const [recruitingNumber, setRecruitingNumber] = useState(0);
@@ -37,12 +39,29 @@ const CampaignAdmin = () => {
             console.log(mainImageUrl);
         }
         // sRef = firebase/storage , ref = firebase/database
-        sRef(storageService, `campaignImages/${campaignTitle}/${mainImageUrl.name}`);
+        const storageRef = sRef(storageService, `/campaignImages/${campaignTitle}/${mainImageUrl.name}`);
+        const uploadTask = uploadBytesResumable(storageRef, mainImageUrl);
+
+        uploadTask.on(
+            "state_changed",
+            (snapshot) => {
+                const percent = Math.round(
+                    (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                );
+                setPercent(percent);
+            },
+            (err) => console.log(err),
+            () => {
+                getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+                    console.log(url);
+                });
+            }
+        );
     };
 
     const handleGuideChange = (event) => {
         const imageLists = event.target.files;
-        let imageUrlLists = [...guideImageUrls];
+        let imageUrlLists = [...guideImageUrls]
 
         for (let i = 0; i < imageLists.length; i++) {
             const currentImageUrl = URL.createObjectURL(imageLists[i]);
@@ -60,7 +79,24 @@ const CampaignAdmin = () => {
         if (!guideImageUrls) {
             console.log(guideImageUrls);
         }
-        sRef(storageService, `campaignImages/${campaignTitle}/guideImages/${imageUrlLists}`)
+        const storageMultiRef = sRef(storageService, `campaignImages/${campaignTitle}/guideImages/${imageUrlLists}`)
+        const uploadTaskMulti = uploadBytesResumable(storageMultiRef, guideImageUrls);
+
+        uploadTaskMulti.on(
+            "state_changed",
+            (snapshot) => {
+                const percent = Math.round(
+                    (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                );
+                setGuidePercent(percent);
+            },
+            (err) => console.log(err),
+            () => {
+                getDownloadURL(uploadTaskMulti.snapshot.ref).then((url) => {
+                    console.log(url);
+                });
+            }
+        );
     }
     
     const registerCampaign = () => {
@@ -73,12 +109,10 @@ const CampaignAdmin = () => {
                     dueDate : dueDate,
                     recruitingNumber : recruitingNumber,
                     brandUuid : uid,
-                    guides : [
-                        {
-                            description : guideDescription,
-                            imageUrl : [...guideImageUrls]
-                        }
-                    ],
+                    guides : [{
+                        description : guideDescription,
+                        imageUrl : [...guideImageUrls]
+                    }],
                     hashTags : {
                         ftc : ftc,
                         option : option,
@@ -106,12 +140,11 @@ const CampaignAdmin = () => {
                 dueDate : dueDate,
                 recruitingNumber : recruitingNumber,
                 brandUuid : uid,
-                guides : [
-                    {
-                        description : guideDescription,
-                        imageUrl : [...guideImageUrls]
-                    }
-                ],
+                guides : [{
+                    description : guideDescription,
+                    imageUrl : [...guideImageUrls.name]
+                }],
+            
                 hashTags : {
                     ftc : ftc,
                     option : option,
@@ -211,13 +244,14 @@ const CampaignAdmin = () => {
                 <h3>메인 이미지</h3>
                 <input type="file" onChange={handleChange} accept="/image/*" />
                 <button onClick={handleMainImageUpload}>메인 이미지 업로드</button>
+                <p>{percent}%</p>
             </div>
 
             
             <div className="guide-image-input">
                 <label htmlFor="input-file" className="add-btn" onChange={handleGuideChange}>
                     <h3>가이드 이미지</h3>
-                    <input type="file" accept="/images/*" multiple name="guideimages[]"/>
+                    <input type="file" accept="images/*" multiple name="guideimages[]"/>
                     <input type="text" placeholder="사진 설명" onChange={(e) => {
                         setGuideDescription(e.target.value);
                     }}/>
@@ -229,6 +263,7 @@ const CampaignAdmin = () => {
                     </div>
                 ))}
                 <button onClick={handleGuideImageUpload}>가이드 이미지 업로드</button>
+                <p>{guidePercent}%</p>
             </div>
             
         

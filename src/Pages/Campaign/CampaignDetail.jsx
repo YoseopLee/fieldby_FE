@@ -9,11 +9,12 @@ const CampaignDetail = () => {
         <>
             <SideBar />
             <CampaignDetailCSS>
+                <h2 className="campaign-detail-top-main">진행 현황</h2>
                 <div id="campaign-detail-top" className="campaign-detail-top-square-hc campaign-detail-top-square-vc">
                     
                 </div>    
                 <div id="campaign-detail-cm" className="campaign-detail-square-hc campaign-detail-square-vc">
-
+                    
                 </div>
             </CampaignDetailCSS>
             
@@ -23,6 +24,17 @@ const CampaignDetail = () => {
 }
 
 const CampaignDetailCSS = styled.div`
+    .campaign-detail-top-main {
+        position : absolute;
+        left : 0;
+        right : 0;
+        top : 20px;
+        bottom : 0;
+        margin-bottom : auto;
+        margin-top : auto;
+        margin-right : auto;
+        margin-left : 20%;
+    }
     #campaign-detail-top {
         position : absolute;
         min-width : 1000px;
@@ -30,10 +42,10 @@ const CampaignDetailCSS = styled.div`
     }
 
     .campaign-detail-top-square-hc {
-        width : 83%;
+        width : 78%;
         left : 0;
         right : 0;
-        margin-left : 15%;
+        margin-left : 20%;
         margin-right : auto;
         background : #fff;
         box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.07);
@@ -54,10 +66,10 @@ const CampaignDetailCSS = styled.div`
     }
 
     .campaign-detail-square-hc {
-        width : 83%;
+        width : 78%;
         left : 0;
         right : 0;
-        margin-left : 15%;
+        margin-left : 20%;
         margin-right : auto;
         background : #fff;
         box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.07);
