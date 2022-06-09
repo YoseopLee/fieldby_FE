@@ -1,21 +1,34 @@
-import { useEffect, useState } from "react"
+import React, { useContext, useEffect, useState } from "react";
 import { authService } from "../fBase";
-import { AuthContext } from "./authContext";
 
-const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(null);
+const AuthContext = React.createContext();
+
+export function useAuth() {
+    return useContext(AuthContext);
+}
+
+export function AuthProvider({children}) {
+    const [currentUser, setCurrentUser] = useState();
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const getUserInfo = authService.onAuthStateChanged(fbUser => {
-            // console.log('유저정보담기', fbUser);
-            setUser(fbUser);
-        });
-        return getUserInfo;
-    }, []);
+        const getUserData = authService.onAuthStateChanged(user => {
+            setLoading(false);
+            setCurrentUser(user);
+        })
 
-    return <AuthContext.Provider value = {user}>
-        {children}
-    </AuthContext.Provider>;
-};
+        return getUserData
+    }, [])
 
-export default AuthProvider;
+    
+
+    const value = {
+        currentUser
+    }
+
+    return (
+        <AuthContext.Provider value={value}>
+            {!loading && children}
+        </AuthContext.Provider>
+    )
+}

@@ -1,11 +1,24 @@
 import { child, get, getDatabase, ref } from "firebase/database";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { useAuth } from "../../Context/authProvider";
+import { authService } from "../../fBase";
 
 
 const SideBar = () => {
-    const userId = sessionStorage.getItem('uid');
+    const {currentUser} = useAuth();
+    const userId = currentUser.uid;
     const [userData, setUserData] = useState('');
+    
+    const handleLogout = async() => {
+        try {
+            await authService.signOut();
+            window.location.href = `/login`;
+        } catch(error) {
+            console.log(error)
+        }
+    }
+    
 
     useEffect(() => {
         const dbRef = ref(getDatabase());
@@ -52,6 +65,10 @@ const SideBar = () => {
                         <span className="customer-ask">고객센터</span>
                         <img src="/images/up-arrow.png" alt="up" className="up-arrow" />
                     </div>
+                </div>
+
+                <div onClick={handleLogout}>
+                    <span>로그아웃</span>
                 </div>
         </SideBarContainerCSS>
     )

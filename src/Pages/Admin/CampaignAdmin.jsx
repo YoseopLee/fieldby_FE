@@ -1,4 +1,4 @@
-import { push, ref, set } from "firebase/database";
+import { ref, set } from "firebase/database";
 import { getDownloadURL, ref as sRef, uploadBytesResumable } from "firebase/storage";
 import React, { useState } from "react";
 import styled from "styled-components";
@@ -14,8 +14,8 @@ const CampaignAdmin = () => {
     const [mainImageUrl, setMainImageUrl] = useState('');
     const [percent, setPercent] = useState(0);
     const [guidePercent, setGuidePercent] = useState(0);
-    const [guideDescription, setGuideDescription] = useState([]);
-    const [guideImageUrls, setGuideImageUrl] = useState([]);
+    const [guideDescription, setGuideDescription] = useState('');
+    const [guideImageUrl, setGuideImageUrl] = useState('');
     const [recruitingNumber, setRecruitingNumber] = useState(0);
     const [ftc, setFtc] = useState('');
     const [option, setOption] = useState('');
@@ -60,27 +60,17 @@ const CampaignAdmin = () => {
     };
 
     const handleGuideChange = (event) => {
-        const imageLists = event.target.files;
-        let imageUrlLists = [...guideImageUrls]
+        const imageLists = event.target.files[0];
 
-        for (let i = 0; i < imageLists.length; i++) {
-            const currentImageUrl = URL.createObjectURL(imageLists[i]);
-            imageUrlLists.push(currentImageUrl);
-        }
-
-        if (imageUrlLists.length > 10) {
-            imageUrlLists = imageUrlLists.slice(0,10);
-        }
-        setGuideImageUrl(imageUrlLists);
+        setGuideImageUrl(imageLists);
     };
 
     const handleGuideImageUpload = () => {
-        let imageUrlLists = [...guideImageUrls];
-        if (!guideImageUrls) {
-            console.log(guideImageUrls);
+        if (!guideImageUrl) {
+            console.log(guideImageUrl);
         }
-        const storageMultiRef = sRef(storageService, `campaignImages/${campaignTitle}/guideImages/${imageUrlLists}`)
-        const uploadTaskMulti = uploadBytesResumable(storageMultiRef, guideImageUrls);
+        const storageMultiRef = sRef(storageService, `campaignImages/${campaignTitle}/guideImages/${guideImageUrl.name}`)
+        const uploadTaskMulti = uploadBytesResumable(storageMultiRef, guideImageUrl);
 
         uploadTaskMulti.on(
             "state_changed",
@@ -101,35 +91,8 @@ const CampaignAdmin = () => {
     
     const registerCampaign = () => {
         try {
-            push(ref(realtimeDbService, `brands/${uid}/campaigns/`), {   
-                    campaignTitle : campaignTitle,            
-                    brandInstagram : brandInstagram,
-                    brandName : brandName,
-                    recruitingDate : recruitingDate,
-                    dueDate : dueDate,
-                    recruitingNumber : recruitingNumber,
-                    brandUuid : uid,
-                    guides : [{
-                        description : guideDescription,
-                        imageUrl : [...guideImageUrls]
-                    }],
-                    hashTags : {
-                        ftc : ftc,
-                        option : option,
-                        required : required
-                    },
-                    isNew : true,
-                    item : {
-                        description : itemDescription,
-                        name : itemName,
-                        price : itemPrice
-                    },
-                    itemDate : itemDate,
-                    leastFeed : leastFeed,
-                    mainImageUrl : mainImageUrl.name,
-                    maintain : maintain,
-                    selectionDate : selectionDate,
-                    uploadDate : uploadDate,             
+            set(ref(realtimeDbService, `brands/${uid}/campaigns/`), {   
+                [campaignTitle] : campaignTitle                     
             });
 
             set(ref(realtimeDbService, `campaigns/${campaignTitle}`), {
@@ -142,7 +105,7 @@ const CampaignAdmin = () => {
                 brandUuid : uid,
                 guides : [{
                     description : guideDescription,
-                    imageUrl : [...guideImageUrls.name]
+                    imageUrl : guideImageUrl.name
                 }],
             
                 hashTags : {
@@ -192,7 +155,7 @@ const CampaignAdmin = () => {
             }} />
 
             <span>캠페인 만료 기한</span>
-            <input type="date" placeholder="캠페인 만료 기한" onChange={(e) => {
+            <input type="datetime-local" placeholder="캠페인 만료 기한" onChange={(e) => {
                 setDueDate(e.target.value);
             }} />
 
@@ -249,19 +212,11 @@ const CampaignAdmin = () => {
 
             
             <div className="guide-image-input">
-                <label htmlFor="input-file" className="add-btn" onChange={handleGuideChange}>
                     <h3>가이드 이미지</h3>
-                    <input type="file" accept="images/*" multiple name="guideimages[]"/>
+                    <input type="file" accept="/image/*" onChange={handleGuideChange} />
                     <input type="text" placeholder="사진 설명" onChange={(e) => {
                         setGuideDescription(e.target.value);
                     }}/>
-                </label>
-
-                {guideImageUrls.map((image, id) => (
-                    <div className="guide-image-preview-container" key={id}>
-                        <img src={image} alt={`${image}-${id}`} />
-                    </div>
-                ))}
                 <button onClick={handleGuideImageUpload}>가이드 이미지 업로드</button>
                 <p>{guidePercent}%</p>
             </div>

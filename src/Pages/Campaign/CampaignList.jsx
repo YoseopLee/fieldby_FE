@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 const CampaignList = ({id, campaignTitle, recruitingDate, dueDate,recruitingNumber}) => {
     return (
         <CampaignListContainer>
-            <Link to = {`/campaign/${id}`} className="campaign-list"> 
+            <Link to = {`/campaign/${id}/progress`} className="campaign-list"> 
             <div className="campaign-datas">
                 <div className="campaign-data">
                     <span className="progress">진행중</span>

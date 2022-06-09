@@ -2,17 +2,18 @@ import { child, get, getDatabase, ref } from "firebase/database";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import SideBar from "../../Components/SideBar/SideBar";
+import { useAuth } from "../../Context/authProvider";
 import CampaignList from "./CampaignList";
 
 const Campaign = () => {
-    const userId = sessionStorage.getItem('uid');
+    const {currentUser} = useAuth();
     const [userData, setUserData] = useState('');
     const [brandCampaignDatas, setBrandCampaignDatas] = useState([]);
 
     useEffect (() => {
         const dbRef = ref(getDatabase());
         const getUserData = () => {
-            get(child(dbRef, `brands/${userId}`))
+            get(child(dbRef, `brands/${currentUser.uid}`))
             .then((snapshot) => {
                 if (snapshot.exists()) {
                     const data_obj = snapshot.val();
@@ -26,12 +27,12 @@ const Campaign = () => {
             });
         }
         return getUserData;   
-    }, [userId]);
+    }, [currentUser.uid]);
 
     useEffect(() => {
         const dbRef = ref(getDatabase());
         const getBrandCampaignData = () => {
-            get(child(dbRef, `brands/${userId}/campaigns/`))
+            get(child(dbRef, `brands/${currentUser.uid}/campaigns/`))
             .then((snapshot) => {
                 if (snapshot.exists()) {
                     const data_obj = snapshot.val();
@@ -48,7 +49,9 @@ const Campaign = () => {
             });
         }
         return getBrandCampaignData;
-    }, [userId]);
+    }, [currentUser.uid]);
+
+    
 
     return (
         <CampaignContainerCSS>
@@ -77,19 +80,19 @@ const Campaign = () => {
                                     </div>
                                 </div>
                                 
-                                 
+                             
                                     <div className="campaign-data-container">
                                         {brandCampaignDatas.map((brandCampaignData) =>
                                             <CampaignList 
                                                 key={brandCampaignData.id}                                        
                                                 id={brandCampaignData.id}
                                                 campaignTitle = {brandCampaignData.campaignTitle}
-                                                recruitingDate = {brandCampaignData.recruitingDate.replace(/-/gi, '.')}
-                                                dueDate = {brandCampaignData.dueDate.replace(/-/gi, '.')}
+                                                recruitingDate = {brandCampaignData.recruitingDate}
+                                                dueDate = {brandCampaignData.dueDate}
                                                 recruitingNumber = {brandCampaignData.recruitingNumber}                                                                                                                                                                                                                                                                               
                                             />
                                         )}                                        
-                                    </div>  
+                                    </div>
                                                                                                                                                                                  
                             </div>    
                         :   
