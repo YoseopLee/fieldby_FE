@@ -1,14 +1,58 @@
-import React, { useEffect, useState } from "react";
+import { child, get, getDatabase, query, ref } from "firebase/database";
+import React, { useEffect, useRef, useState } from "react";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import { useAuth } from "../../Context/authProvider";
+import CampaignProgressDetail from "./CampaignProgressDetail";
 
 const CampaignProgress = () => {
-    const [userData, setUserData] = useState([]);
+    const {currentUser} = useAuth();
+    let {id} = useParams();
+    const userIdRef = useRef();
+    const [userIDs, setUserIDs] = useState([]);
+    const [userDatas, setUserDatas] = useState([]);
     const [isChecked, setIsChecked] = useState(false);
     const [isSelected, setIsSelected] = useState(false);
 
     useEffect(() => {
-        
+        const dbRef = ref(getDatabase());
+        const getCampaignUserData = () => {
+            get(child(dbRef, `brands/${currentUser.uid}/campaigns/${id}/users`))
+            .then((snapshot) => {
+                if (snapshot.exists()) {
+                    const dataObj = snapshot.val();
+                    const data_ent = Object.entries(dataObj);
+                    console.log(data_ent);
+                    const data_ent_arr = data_ent.map((d) => Object.assign(d[0]));
+                    console.log(data_ent_arr);
+                    setUserIDs(data_ent_arr);
+                    data_ent_arr.map((v) => {
+                        get(child(dbRef, `users/${v}`))
+                        .then((snapshot) => {
+                            if (snapshot.exists()) {
+                                const userDataObj = snapshot.val();
+                                const user_data_ent = Object.entries(userDataObj);
+                                console.log(user_data_ent);
+                                const user_data_ent_arr = user_data_ent.map((d) => Object.assign({}, d[1], {id : d[0]}))
+                                console.log(user_data_ent_arr);
+                            } else {
+                                console.log("No Data");
+                            }
+                        }).catch((error) => {
+                            console.log(error);
+                        })                        
+                    })                    
+                } else {
+                    console.log("No data");
+                }
+            }).catch ((error) => {
+                console.log(error);
+            });
+        }
+        return getCampaignUserData;
     }, [])
+
+
 
     const handleToggleChecked = () => {
 
@@ -20,69 +64,12 @@ const CampaignProgress = () => {
                 <div className="campaign-select">
                 </div>
             </div>
-            <div className="campaign-register-users">
-                <div className="campaign-register-user">
-                    <div className="selected-box">
-                        <img src="/images/image 122.png" alt="empty-check" />
-                    </div>
-
-                    <div className="campaign-user-container">
-
-                        <div className="campaign-user-instagram-wrapper">
-                            <div className="campaign-register-user-infos">
-                                <div className="user-name-container">
-                                    <img className="unfollowing" src="/images/image 112.png" alt="unfollow" />
-                                    <span className="user-name">TEST</span>
-                                    <img className="user-profile-img" src="/images/Ellipse 60.png" alt="profile" />
-                                </div>
-                                <div className="user-profile-container">
-                                    <span>여 22</span>
-                                    <span>174cm</span>
-                                    <span>서울</span>
-                                </div>
-
-                                <div className="user-golf-infos">
-                                    <div className="golf-info-wrapper">
-                                        <div className="user-golf-info">평균 타수 <span>80대</span></div>
-                                        <div className="user-golf-info">구력 <span>4년차</span></div>
-                                    </div>
-                                    <div className="golf-info-wrapper">
-                                        <div className="user-golf-info">월 라운딩 <span>3-4회</span></div>    
-                                        <div className="user-golf-info">스타일 <span> #귀엽 #청순</span></div>
-                                    </div>
-                                                                
-                                </div>
-
-                                <div className="user-images-container">
-                                    
-                                </div>
-                            </div>
-
-                            <div className="user-instagram-infos-container">
-                                <div className="user-instagram-logo-name">
-                                    <img className="instagram-logo" src="/images/image 120.png" alt="instagram" />
-                                    <span className="user-instagram-name">strong_jinseo</span>
-                                </div>
-                                <div className="user-instagram-profile">
-                                    <div className="user-instagram-profile-info">팔로워 <span>34,000</span></div>
-                                    <div className="user-instagram-profile-info">팔로우 <span>34,000</span></div>
-                                    <div className="user-instagram-profile-info">게시물 <span>34,000</span></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="user-images-container">
-                            <div className="user-image">
-                                <img src="/images/IMG_2739.png" alt="test2739" />
-                                <img src="/images/IMG_2739.png" alt="test2739" />
-                                <img src="/images/IMG_2739.png" alt="test2739" />
-                            </div>
-                        </div>
-                    </div>
-                    
-                    
-                </div>
-            </div>
+            {userIDs.map((userID) => 
+                <CampaignProgressDetail 
+                    key={userID}
+                    id={userID}
+                />
+            )}
         </CampaignProgressCSS>
     )
 }
@@ -99,7 +86,7 @@ const CampaignProgressCSS = styled.div`
             display : flex;
             align-items : center;
             padding : 16px;
-            margin-left : 4px;
+            margin-left : 16px;
 
             .selected-box {
 

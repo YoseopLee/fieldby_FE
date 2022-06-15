@@ -67,9 +67,6 @@ const Campaign = () => {
                                         <span>완료여부</span>
                                     </div>
                                     <div className="campaign-progress-titles">
-                                        <span>번호</span>
-                                    </div>
-                                    <div className="campaign-progress-titles">
                                         <span>캠페인</span>
                                     </div>
                                     <div className="campaign-progress-titles">

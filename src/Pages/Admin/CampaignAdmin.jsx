@@ -92,7 +92,12 @@ const CampaignAdmin = () => {
     const registerCampaign = () => {
         try {
             set(ref(realtimeDbService, `brands/${uid}/campaigns/`), {   
-                [campaignTitle] : campaignTitle                     
+                [campaignTitle] : {
+                    campaignTitle,
+                    recruitingDate : recruitingDate,
+                    dueDate : dueDate,
+                    recruitingNumber : recruitingNumber   
+                }                              
             });
 
             set(ref(realtimeDbService, `campaigns/${campaignTitle}`), {
@@ -126,6 +131,8 @@ const CampaignAdmin = () => {
                 selectionDate : selectionDate,
                 uploadDate : uploadDate,
             });
+            alert('캠페인 등록이 완료되었습니다.');
+            window.location.reload();
         } catch (error) {
             console.log(error.message);
         }
