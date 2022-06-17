@@ -1,5 +1,5 @@
 import { child, get, getDatabase, query, ref } from "firebase/database";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { useAuth } from "../../Context/authProvider";
@@ -8,11 +8,12 @@ import CampaignProgressDetail from "./CampaignProgressDetail";
 const CampaignProgress = () => {
     const {currentUser} = useAuth();
     let {id} = useParams();
-    const userIdRef = useRef();
     const [userIDs, setUserIDs] = useState([]);
     const [userDatas, setUserDatas] = useState([]);
-    const [isChecked, setIsChecked] = useState(false);
+    const [checkedItems, setCheckedItems] = useState(new Set());
+    const [checkedItemsCount, setCheckedItemsCount] = useState(0);
     const [isSelected, setIsSelected] = useState(false);
+    const userDataArray = [];
 
     useEffect(() => {
         const dbRef = ref(getDatabase());
@@ -20,28 +21,29 @@ const CampaignProgress = () => {
             get(child(dbRef, `brands/${currentUser.uid}/campaigns/${id}/users`))
             .then((snapshot) => {
                 if (snapshot.exists()) {
-                    const dataObj = snapshot.val();
+                    const dataObj = snapshot.val();                    
                     const data_ent = Object.entries(dataObj);
                     console.log(data_ent);
                     const data_ent_arr = data_ent.map((d) => Object.assign(d[0]));
                     console.log(data_ent_arr);
-                    setUserIDs(data_ent_arr);
+                    setUserIDs(dataObj);
                     data_ent_arr.map((v) => {
                         get(child(dbRef, `users/${v}`))
                         .then((snapshot) => {
                             if (snapshot.exists()) {
-                                const userDataObj = snapshot.val();
-                                const user_data_ent = Object.entries(userDataObj);
-                                console.log(user_data_ent);
-                                const user_data_ent_arr = user_data_ent.map((d) => Object.assign({}, d[1], {id : d[0]}))
-                                console.log(user_data_ent_arr);
+                                const userDataObj = snapshot.val();                                                             
+                                const userData_obj = [{                                    
+                                    ...userDataObj                                    
+                                }]                                                                        
+                                console.log(userData_obj);                                                        
+                                setUserDatas(userData_obj);                                                                                                                                                                                                                           
                             } else {
                                 console.log("No Data");
                             }
                         }).catch((error) => {
                             console.log(error);
                         })                        
-                    })                    
+                    })                                        
                 } else {
                     console.log("No data");
                 }
@@ -52,29 +54,59 @@ const CampaignProgress = () => {
         return getCampaignUserData;
     }, [])
 
+    const checkedItemHandler = (id, isChecked) => {
+        if (isChecked) {
+            checkedItems.add(id);
+            setCheckedItems(checkedItems);
+            setCheckedItemsCount(checkedItems.size);
+            console.log(checkedItems);
+        } else if (!isChecked && checkedItems.has(id)) {
+            checkedItems.delete(id);
+            setCheckedItems(checkedItems);
+            setCheckedItemsCount(checkedItemsCount - 1);
+            console.log(checkedItems);
+        }
+    }
 
-
-    const handleToggleChecked = () => {
-
+    const selectedUserHandler = () => {
+        
     }
 
     return (
         <CampaignProgressCSS>
             <div className="campaign-progress-menus">
                 <div className="campaign-select">
+
                 </div>
             </div>
-            {userIDs.map((userID) => 
+            {userDatas.map((userData, idx) =>
                 <CampaignProgressDetail 
-                    key={userID}
-                    id={userID}
-                />
+                    key={idx}
+                    id={userIDs}
+                    name={userData.name}
+                    height={userData.height}
+                    profile={userData.igInfo.profileUrl}
+                    simpleaddr={userData.simpleAddress}
+                    stroke={userData.stroke}
+                    career={userData.career}
+                    roundingFrequency={userData.roundingFrequency}
+                    style1={userData.styles[0]}
+                    style2={userData.styles[1]}
+                    style3={userData.styles[2]}
+                    igname={userData.igInfo.username}
+                    igfollower={userData.igInfo.followers}
+                    igfollow={userData.igInfo.follows}
+                    igmedia={userData.igInfo.mediaCount}
+                    bestImages={userData.bestImages}
+                    checkedItemHandler={checkedItemHandler}
+                />                                                
             )}
+            <button className="selected-btn" type="submit"><span className="selected-user-count">{checkedItemsCount}/10</span><span className="selected-detail">선택한 크리에이터 선정하기</span></button>
         </CampaignProgressCSS>
     )
 }
 
-const CampaignProgressCSS = styled.div`
+const CampaignProgressCSS = styled.form`
     .campaign-progress-menus {
         .campaign-select {
 
@@ -213,6 +245,43 @@ const CampaignProgressCSS = styled.div`
                 }
             }
             
+        }
+    }
+
+    .selected-btn {
+        background: #22BAA8;
+        border: 1px solid #E7E7E7;
+        box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.25);
+        border-radius: 5px;
+        position: absolute;
+        width: 361px;
+        height: 62px;
+        left : 70%;
+        right : 0;
+        top : 80%;
+        bottom : 0;
+        margin-left : auto;
+        margin-right : auto;
+        margin-top : auto;
+        margin-bottom : auto;
+        display : flex;
+        align-items : center;
+        justify-content : center;
+
+        .selected-user-count {
+            background: #C4F3EE;
+            border-radius: 9px;
+            color : #22BAA8;
+            width: 36px;
+            height: 15px;
+            margin-right : 6px;
+        }
+        .selected-detail {
+            color : #fff;
+            font-style: normal;
+            font-weight: 700;
+            font-size: 16px;
+            line-height: 19px;
         }
     }
 `

@@ -1,14 +1,20 @@
-import { child, get, getDatabase} from "firebase/database";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
-const CampaignProgressDetail = ({id}) => {
-    
+const CampaignProgressDetail = ({ id, name, height, profile,simpleaddr, stroke, career, roundingFrequency, style1, style2, style3, igname, igfollower, igfollow, igmedia, bestImages, checkedItemHandler}) => {
+    const [bChecked, setChecked] = useState(false);
+
+    const checkHandler = ({target}) => {
+        setChecked(!bChecked);
+        checkedItemHandler(id, target.checked);
+        console.log(bChecked);
+    }
+
     return(
-        <CampaignProgressDetailCSS>
-            <div className="campaign-register-user">
+        <CampaignProgressDetailCSS>            
+                <div className="campaign-register-user">
                     <div className="selected-box">
-                        <img src="/images/image 122.png" alt="empty-check" />
+                        <input className="selected-checkbox" type='checkbox' checked={bChecked} onChange={(e) => checkHandler(e)}/>
                     </div>
 
                     <div className="campaign-user-container">
@@ -17,23 +23,23 @@ const CampaignProgressDetail = ({id}) => {
                             <div className="campaign-register-user-infos">
                                 <div className="user-name-container">
                                     <img className="unfollowing" src="/images/image 112.png" alt="unfollow" />
-                                    <span className="user-name">{id}</span>
-                                    <img className="user-profile-img" src="/images/Ellipse 60.png" alt="profile" />
+                                    <span className="user-name">{name}</span>
+                                    <img className="user-profile-img" src={profile} alt="profile" />
                                 </div>
                                 <div className="user-profile-container">
-                                    <span>여 22</span>
-                                    <span>174cm</span>
-                                    <span>서울</span>
+                                    <span>남 26</span>
+                                    <span>{height}cm</span>
+                                    <span>{simpleaddr}</span>
                                 </div>
 
                                 <div className="user-golf-infos">
                                     <div className="golf-info-wrapper">
-                                        <div className="user-golf-info">평균 타수 <span>80대</span></div>
-                                        <div className="user-golf-info">구력 <span>4년차</span></div>
+                                        <div className="user-golf-info">평균 타수 <span>{stroke}</span></div>
+                                        <div className="user-golf-info">구력 <span>{career}차</span></div>
                                     </div>
                                     <div className="golf-info-wrapper">
-                                        <div className="user-golf-info">월 라운딩 <span>3-4회</span></div>    
-                                        <div className="user-golf-info">스타일 <span> #귀엽 #청순</span></div>
+                                        <div className="user-golf-info">월 라운딩 <span>{roundingFrequency}</span></div>    
+                                        <div className="user-golf-info">스타일 <span> #{style1} #{style2} #{style3}</span></div>
                                     </div>
                                                                 
                                 </div>
@@ -46,27 +52,29 @@ const CampaignProgressDetail = ({id}) => {
                             <div className="user-instagram-infos-container">
                                 <div className="user-instagram-logo-name">
                                     <img className="instagram-logo" src="/images/image 120.png" alt="instagram" />
-                                    <span className="user-instagram-name">strong_jinseo</span>
+                                    <span className="user-instagram-name">{igname}</span>
                                 </div>
                                 <div className="user-instagram-profile">
-                                    <div className="user-instagram-profile-info">팔로워 <span>34,000</span></div>
-                                    <div className="user-instagram-profile-info">팔로우 <span>34,000</span></div>
-                                    <div className="user-instagram-profile-info">게시물 <span>34,000</span></div>
+                                    <div className="user-instagram-profile-info">팔로워 <span>{igfollower}</span></div>
+                                    <div className="user-instagram-profile-info">팔로우 <span>{igfollow}</span></div>
+                                    <div className="user-instagram-profile-info">게시물 <span>{igmedia}</span></div>
                                 </div>
                             </div>
                         </div>
 
                         <div className="user-images-container">
                             <div className="user-image">
-                                <img src="/images/IMG_2739.png" alt="test2739" />
-                                <img src="/images/IMG_2739.png" alt="test2739" />
-                                <img src="/images/IMG_2739.png" alt="test2739" />
+                                {bestImages
+                                    ?                                    
+                                    <img src={bestImages} alt="bestImage1" />                                                                                                                
+                                    :
+                                    <h3 className="empty-feed">등록된 피드가 없습니다.</h3>
+                                }
                             </div>
                         </div>
                     </div>
-                    
-                    
-                </div>
+                                        
+            </div>            
         </CampaignProgressDetailCSS>
     )
 }
@@ -79,10 +87,10 @@ const CampaignProgressDetailCSS = styled.div`
     margin-left : 16px;
 
     .selected-box {
-
-        img {
-            height : 20px;
-            width : 20px;
+        .selected-checkbox {
+            border : 2px solid #747474;
+            background-color : #22BAA8;
+            padding : 12px;
         }
     }
     
@@ -147,7 +155,7 @@ const CampaignProgressDetailCSS = styled.div`
                         margin-left : 16px;
                         font-weight : 700;
                         font-size : 14px;
-                        min-width : 200px;
+                        min-width : 100px;
                         text-align : center;
                     }
                     .user-profile-img {
