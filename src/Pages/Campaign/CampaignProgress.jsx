@@ -1,8 +1,9 @@
-import { child, get, getDatabase, query, ref } from "firebase/database";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import { child, get, getDatabase, ref, set } from "firebase/database";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { useAuth } from "../../Context/authProvider";
+import { realtimeDbService } from "../../fBase";
 import CampaignProgressDetail from "./CampaignProgressDetail";
 
 const CampaignProgress = () => {
@@ -12,8 +13,6 @@ const CampaignProgress = () => {
     const [userDatas, setUserDatas] = useState([]);
     const [checkedItems, setCheckedItems] = useState(new Set());
     const [checkedItemsCount, setCheckedItemsCount] = useState(0);
-    const [isSelected, setIsSelected] = useState(false);
-    const userDataArray = [];
 
     useEffect(() => {
         const dbRef = ref(getDatabase());
@@ -62,14 +61,31 @@ const CampaignProgress = () => {
             console.log(checkedItems);
         } else if (!isChecked && checkedItems.has(id)) {
             checkedItems.delete(id);
-            setCheckedItems(checkedItems);
+            setCheckedItems(checkedItems);            
             setCheckedItemsCount(checkedItemsCount - 1);
             console.log(checkedItems);
         }
     }
 
     const selectedUserHandler = () => {
-        
+        if(checkedItems.size > 0) {
+            const selectedUser = Object.entries(...checkedItems);
+            const selectedUser_ent = selectedUser.map((d) => Object.assign(d[0])); 
+            console.log(selectedUser_ent);
+            selectedUser_ent.map((v) => {
+                try {
+                    set(ref(realtimeDbService, `brands/${currentUser.uid}/campaigns/${id}/selecteduser/`), {
+                        [v] : {
+                            v
+                        }
+                    });
+                } catch (error) {
+                    console.log(error.message);
+                }
+            })                  
+        } else {
+            alert('크리에이터를 선정해주세요!');
+        }
     }
 
     return (
@@ -101,12 +117,12 @@ const CampaignProgress = () => {
                     checkedItemHandler={checkedItemHandler}
                 />                                                
             )}
-            <button className="selected-btn" type="submit"><span className="selected-user-count">{checkedItemsCount}/10</span><span className="selected-detail">선택한 크리에이터 선정하기</span></button>
+            <button className="selected-btn" type="button" onClick={selectedUserHandler}><span className="selected-user-count">{checkedItemsCount}/10</span><span className="selected-detail">선택한 크리에이터 선정하기</span></button>
         </CampaignProgressCSS>
     )
 }
 
-const CampaignProgressCSS = styled.form`
+const CampaignProgressCSS = styled.div`
     .campaign-progress-menus {
         .campaign-select {
 
