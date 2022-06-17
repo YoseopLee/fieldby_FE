@@ -54,6 +54,9 @@ const CampaignResult = () => {
         <CampaignResultCSS>
             <div className="campaign-progress-table">
                 <div className="campaign-progress-titles">
+                    <span>번호</span>
+                </div>
+                <div className="campaign-progress-titles">
                     <span>이름</span>
                 </div>
                 <div className="campaign-progress-titles">
@@ -66,9 +69,11 @@ const CampaignResult = () => {
                     <span>송장번호</span>
                 </div>
             </div>
+            <hr/>
             {userDatas.map((userData, idx) => 
                 <CampaignResultDetail 
                     key={idx}
+                    id={idx}
                     name={userData.name}
                     profile={userData.igInfo.profileUrl}
                     phoneNumber={userData.phoneNumber}
@@ -91,9 +96,15 @@ const CampaignResultCSS = styled.div`
             span {
                 text-align : center;
                 font-weight : 400;
-                font-size : 15px;
+                font-size : 13px;
             }
         }
+    }
+    hr {
+        border : 1px solid #303030;
+        width : 90%;
+        margin-top : 20px;
+        margin-bottom : 20px;
     }
 `
 export default CampaignResult;
