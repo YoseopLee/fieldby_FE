@@ -1,93 +1,112 @@
-import React, { useEffect, useState } from "react";
+import { child, get, getDatabase, query, ref } from "firebase/database";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import { useAuth } from "../../Context/authProvider";
+import CampaignProgressDetail from "./CampaignProgressDetail";
 
 const CampaignProgress = () => {
-    const [userData, setUserData] = useState([]);
-    const [isChecked, setIsChecked] = useState(false);
+    const {currentUser} = useAuth();
+    let {id} = useParams();
+    const [userIDs, setUserIDs] = useState([]);
+    const [userDatas, setUserDatas] = useState([]);
+    const [checkedItems, setCheckedItems] = useState(new Set());
+    const [checkedItemsCount, setCheckedItemsCount] = useState(0);
     const [isSelected, setIsSelected] = useState(false);
+    const userDataArray = [];
 
     useEffect(() => {
-        
+        const dbRef = ref(getDatabase());
+        const getCampaignUserData = () => {
+            get(child(dbRef, `brands/${currentUser.uid}/campaigns/${id}/users`))
+            .then((snapshot) => {
+                if (snapshot.exists()) {
+                    const dataObj = snapshot.val();                    
+                    const data_ent = Object.entries(dataObj);
+                    console.log(data_ent);
+                    const data_ent_arr = data_ent.map((d) => Object.assign(d[0]));
+                    console.log(data_ent_arr);
+                    setUserIDs(dataObj);
+                    data_ent_arr.map((v) => {
+                        get(child(dbRef, `users/${v}`))
+                        .then((snapshot) => {
+                            if (snapshot.exists()) {
+                                const userDataObj = snapshot.val();                                                             
+                                const userData_obj = [{                                    
+                                    ...userDataObj                                    
+                                }]                                                                        
+                                console.log(userData_obj);                                                        
+                                setUserDatas(userData_obj);                                                                                                                                                                                                                           
+                            } else {
+                                console.log("No Data");
+                            }
+                        }).catch((error) => {
+                            console.log(error);
+                        })                        
+                    })                                        
+                } else {
+                    console.log("No data");
+                }
+            }).catch ((error) => {
+                console.log(error);
+            });
+        }
+        return getCampaignUserData;
     }, [])
 
-    const handleToggleChecked = () => {
+    const checkedItemHandler = (id, isChecked) => {
+        if (isChecked) {
+            checkedItems.add(id);
+            setCheckedItems(checkedItems);
+            setCheckedItemsCount(checkedItems.size);
+            console.log(checkedItems);
+        } else if (!isChecked && checkedItems.has(id)) {
+            checkedItems.delete(id);
+            setCheckedItems(checkedItems);
+            setCheckedItemsCount(checkedItemsCount - 1);
+            console.log(checkedItems);
+        }
+    }
 
+    const selectedUserHandler = () => {
+        
     }
 
     return (
         <CampaignProgressCSS>
             <div className="campaign-progress-menus">
                 <div className="campaign-select">
+
                 </div>
             </div>
-            <div className="campaign-register-users">
-                <div className="campaign-register-user">
-                    <div className="selected-box">
-                        <img src="/images/image 122.png" alt="empty-check" />
-                    </div>
-
-                    <div className="campaign-user-container">
-
-                        <div className="campaign-user-instagram-wrapper">
-                            <div className="campaign-register-user-infos">
-                                <div className="user-name-container">
-                                    <img className="unfollowing" src="/images/image 112.png" alt="unfollow" />
-                                    <span className="user-name">TEST</span>
-                                    <img className="user-profile-img" src="/images/Ellipse 60.png" alt="profile" />
-                                </div>
-                                <div className="user-profile-container">
-                                    <span>여 22</span>
-                                    <span>174cm</span>
-                                    <span>서울</span>
-                                </div>
-
-                                <div className="user-golf-infos">
-                                    <div className="golf-info-wrapper">
-                                        <div className="user-golf-info">평균 타수 <span>80대</span></div>
-                                        <div className="user-golf-info">구력 <span>4년차</span></div>
-                                    </div>
-                                    <div className="golf-info-wrapper">
-                                        <div className="user-golf-info">월 라운딩 <span>3-4회</span></div>    
-                                        <div className="user-golf-info">스타일 <span> #귀엽 #청순</span></div>
-                                    </div>
-                                                                
-                                </div>
-
-                                <div className="user-images-container">
-                                    
-                                </div>
-                            </div>
-
-                            <div className="user-instagram-infos-container">
-                                <div className="user-instagram-logo-name">
-                                    <img className="instagram-logo" src="/images/image 120.png" alt="instagram" />
-                                    <span className="user-instagram-name">strong_jinseo</span>
-                                </div>
-                                <div className="user-instagram-profile">
-                                    <div className="user-instagram-profile-info">팔로워 <span>34,000</span></div>
-                                    <div className="user-instagram-profile-info">팔로우 <span>34,000</span></div>
-                                    <div className="user-instagram-profile-info">게시물 <span>34,000</span></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="user-images-container">
-                            <div className="user-image">
-                                <img src="/images/IMG_2739.png" alt="test2739" />
-                                <img src="/images/IMG_2739.png" alt="test2739" />
-                                <img src="/images/IMG_2739.png" alt="test2739" />
-                            </div>
-                        </div>
-                    </div>
-                    
-                    
-                </div>
-            </div>
+            {userDatas.map((userData, idx) =>
+                <CampaignProgressDetail 
+                    key={idx}
+                    id={userIDs}
+                    name={userData.name}
+                    height={userData.height}
+                    profile={userData.igInfo.profileUrl}
+                    simpleaddr={userData.simpleAddress}
+                    stroke={userData.stroke}
+                    career={userData.career}
+                    roundingFrequency={userData.roundingFrequency}
+                    style1={userData.styles[0]}
+                    style2={userData.styles[1]}
+                    style3={userData.styles[2]}
+                    igname={userData.igInfo.username}
+                    igfollower={userData.igInfo.followers}
+                    igfollow={userData.igInfo.follows}
+                    igmedia={userData.igInfo.mediaCount}
+                    bestImages={userData.bestImages}
+                    checkedItemHandler={checkedItemHandler}
+                />                                                
+            )}
+            <button className="selected-btn" type="submit"><span className="selected-user-count">{checkedItemsCount}/10</span><span className="selected-detail">선택한 크리에이터 선정하기</span></button>
         </CampaignProgressCSS>
     )
 }
 
-const CampaignProgressCSS = styled.div`
+const CampaignProgressCSS = styled.form`
     .campaign-progress-menus {
         .campaign-select {
 
@@ -99,7 +118,7 @@ const CampaignProgressCSS = styled.div`
             display : flex;
             align-items : center;
             padding : 16px;
-            margin-left : 4px;
+            margin-left : 16px;
 
             .selected-box {
 
@@ -226,6 +245,43 @@ const CampaignProgressCSS = styled.div`
                 }
             }
             
+        }
+    }
+
+    .selected-btn {
+        background: #22BAA8;
+        border: 1px solid #E7E7E7;
+        box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.25);
+        border-radius: 5px;
+        position: absolute;
+        width: 361px;
+        height: 62px;
+        left : 70%;
+        right : 0;
+        top : 80%;
+        bottom : 0;
+        margin-left : auto;
+        margin-right : auto;
+        margin-top : auto;
+        margin-bottom : auto;
+        display : flex;
+        align-items : center;
+        justify-content : center;
+
+        .selected-user-count {
+            background: #C4F3EE;
+            border-radius: 9px;
+            color : #22BAA8;
+            width: 36px;
+            height: 15px;
+            margin-right : 6px;
+        }
+        .selected-detail {
+            color : #fff;
+            font-style: normal;
+            font-weight: 700;
+            font-size: 16px;
+            line-height: 19px;
         }
     }
 `
