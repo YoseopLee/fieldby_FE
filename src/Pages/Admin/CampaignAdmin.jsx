@@ -1,4 +1,4 @@
-import { ref, set } from "firebase/database";
+import { push, ref, set, update } from "firebase/database";
 import { getDownloadURL, ref as sRef, uploadBytesResumable } from "firebase/storage";
 import React, { useState } from "react";
 import styled from "styled-components";
@@ -24,6 +24,7 @@ const CampaignAdmin = () => {
     const [itemName, setItemName] = useState('');
     const [itemPrice, setItemPrice] = useState(0);
     const [itemDate, setItemDate] = useState('');
+    const [itemUrl, setItemUrl] = useState('');
     const [leastFeed, setLeastFeed] = useState(0);
     const [maintain, setMaintain] = useState(0);
     const [selectionDate, setSelectionDate] = useState('');
@@ -61,7 +62,6 @@ const CampaignAdmin = () => {
 
     const handleGuideChange = (event) => {
         const imageLists = event.target.files[0];
-
         setGuideImageUrl(imageLists);
     };
 
@@ -91,21 +91,19 @@ const CampaignAdmin = () => {
     
     const registerCampaign = () => {
         try {
-            set(ref(realtimeDbService, `brands/${uid}/campaigns/`), {   
-                [campaignTitle] : {
-                    campaignTitle,
+            push(ref(realtimeDbService, `brands/${uid}/campaigns/`), {                   
+                    campaignTitle : campaignTitle,
                     recruitingDate : recruitingDate,
-                    dueDate : dueDate,
-                    recruitingNumber : recruitingNumber   
-                }                              
+                    dueDate : dueDate.replace(/T/gi, '-').replace(/\:/, '-'),
+                    recruitingNumber : recruitingNumber                                              
             });
 
-            set(ref(realtimeDbService, `campaigns/${campaignTitle}`), {
+            push(ref(realtimeDbService, `campaigns/`), {
                 campaignTitle : campaignTitle,
                 brandInstagram : brandInstagram,
                 brandName : brandName,
                 recruitingDate : recruitingDate,
-                dueDate : dueDate,
+                dueDate : dueDate.replace(/T/gi, '-').replace(/\:/, '-') ,
                 recruitingNumber : recruitingNumber,
                 brandUuid : uid,
                 guides : [{
@@ -122,7 +120,8 @@ const CampaignAdmin = () => {
                 item : {
                     description : itemDescription,
                     name : itemName,
-                    price : itemPrice
+                    price : itemPrice,
+                    url : itemUrl
                 },
                 itemDate : itemDate,
                 leastFeed : leastFeed,
@@ -132,12 +131,18 @@ const CampaignAdmin = () => {
                 uploadDate : uploadDate,
             });
             alert('캠페인 등록이 완료되었습니다.');
-            window.location.reload();
         } catch (error) {
             console.log(error.message);
         }
     }
 
+    const updataCampaign = () => {
+        try {
+            update(ref(realtimeDbService, ))
+        } catch (error) {
+            console.log(error.message);
+        }
+    }
 
 
     return (
@@ -188,9 +193,11 @@ const CampaignAdmin = () => {
             <input type="text" placeholder="아이템 가격" onChange={(e) => {
                 setItemPrice(e.target.value);
             }} />
-
+            <input type="text" placeholder="아이템 Url" onChange={(e) => {
+                setItemUrl(e.target.value);
+            }}/>
             <span>아이템 날짜</span>
-            <input type="date" placeholder="아이템 날짜" onChange={(e) => {
+            <input type="date" placeholder="배송 날짜" onChange={(e) => {
                 setItemDate(e.target.value);
             }} />
             <input type="text" placeholder="최소 피드" onChange={(e) => {
@@ -201,7 +208,7 @@ const CampaignAdmin = () => {
             }} />
 
             <span>선택 날짜</span>
-            <input type="date" placeholder="선택 날짜" onChange={(e) => {
+            <input type="date" placeholder="선정 날짜" onChange={(e) => {
                 setSelectionDate(e.target.value);
             }} />
 
