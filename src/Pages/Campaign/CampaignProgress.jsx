@@ -13,6 +13,7 @@ const CampaignProgress = () => {
     const [userDatas, setUserDatas] = useState([]);
     const [checkedItems, setCheckedItems] = useState(new Set());
     const [checkedItemsCount, setCheckedItemsCount] = useState(0);
+    const newUsersArrays = [];
 
     useEffect(() => {
         const dbRef = ref(getDatabase());
@@ -25,17 +26,14 @@ const CampaignProgress = () => {
                     console.log(data_ent);
                     const data_ent_arr = data_ent.map((d) => Object.assign(d[0]));
                     console.log(data_ent_arr);
-                    setUserIDs(dataObj);
+                    setUserIDs(dataObj);                                        
                     data_ent_arr.map((v) => {
                         get(child(dbRef, `users/${v}`))
-                        .then((snapshot) => {
+                        .then((snapshot) => {                            
                             if (snapshot.exists()) {
-                                const userDataObj = snapshot.val();                                                             
-                                const userData_obj = [{                                    
-                                    ...userDataObj                                    
-                                }]                                                                        
-                                console.log(userData_obj);                                                        
-                                setUserDatas(userData_obj);                                                                                                                                                                                                                           
+                                const userDataObj = snapshot.val();                            
+                                newUsersArrays.push(userDataObj);
+                                setUserDatas(newUsersArrays);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
                             } else {
                                 console.log("No Data");
                             }
