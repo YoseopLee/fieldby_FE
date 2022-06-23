@@ -1,4 +1,4 @@
-import { child, get, getDatabase, ref, set } from "firebase/database";
+import { child, get, getDatabase, push, ref, set } from "firebase/database";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
@@ -14,7 +14,7 @@ const CampaignProgress = () => {
     const [checkedItems, setCheckedItems] = useState(new Set());
     const [checkedItemsCount, setCheckedItemsCount] = useState(0);
     const newUsersArrays = [];
-
+    
     useEffect(() => {
         const dbRef = ref(getDatabase());
         const getCampaignUserData = () => {
@@ -26,21 +26,23 @@ const CampaignProgress = () => {
                     console.log(data_ent);
                     const data_ent_arr = data_ent.map((d) => Object.assign(d[0]));
                     console.log(data_ent_arr);
-                    setUserIDs(dataObj);                                        
-                    data_ent_arr.map((v) => {
-                        get(child(dbRef, `users/${v}`))
-                        .then((snapshot) => {                            
-                            if (snapshot.exists()) {
-                                const userDataObj = snapshot.val();                            
-                                newUsersArrays.push(userDataObj);
-                                setUserDatas(newUsersArrays);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
-                            } else {
-                                console.log("No Data");
-                            }
-                        }).catch((error) => {
-                            console.log(error);
-                        })                        
-                    })                                        
+                    setUserIDs(dataObj);                    
+                        data_ent_arr.map((v) => {              
+                            get(child(dbRef, `users/${v}`))
+                            .then((snapshot) => {              
+                                if (snapshot.exists()) {
+                                    const userDataObj = snapshot.val();
+                                    
+                                    newUsersArrays.push(userDataObj);
+                                    console.log(newUsersArrays);
+                                    setUserDatas(newUsersArrays);
+                                } else {
+                                    console.log("No Data");
+                                }
+                            }).catch((error) => {
+                                console.log(error);
+                            })
+                        })                                   
                 } else {
                     console.log("No data");
                 }
@@ -71,11 +73,10 @@ const CampaignProgress = () => {
             const selectedUser_ent = selectedUser.map((d) => Object.assign(d[0])); 
             console.log(selectedUser_ent);
             selectedUser_ent.map((v) => {
+                console.log(v);
                 try {
-                    set(ref(realtimeDbService, `brands/${currentUser.uid}/campaigns/${id}/selecteduser/`), {
-                        [v] : {
-                            v
-                        }
+                    push(ref(realtimeDbService, `brands/${currentUser.uid}/campaigns/${id}/selecteduser/`), {
+                        v
                     });
                 } catch (error) {
                     console.log(error.message);
