@@ -11,6 +11,7 @@ const CampaignList = ({id, campaignTitle, recruitingDate, dueDate,recruitingNumb
                     <span className="progress">진행중</span>
                 </div>
                 <div className="campaign-data">
+                    <img src="" alt="" />
                     <span>{campaignTitle}</span>
                 </div>
                 <div className="campaign-data">

@@ -1,4 +1,4 @@
-import { push, ref, set, update } from "firebase/database";
+import { push, ref, update } from "firebase/database";
 import { getDownloadURL, ref as sRef, uploadBytesResumable } from "firebase/storage";
 import React, { useState } from "react";
 import styled from "styled-components";
@@ -92,6 +92,7 @@ const CampaignAdmin = () => {
     const registerCampaign = () => {
         try {
             push(ref(realtimeDbService, `brands/${uid}/campaigns/`), {                   
+                    mainImageUrl : mainImageUrl.name,
                     campaignTitle : campaignTitle,
                     recruitingDate : recruitingDate,
                     dueDate : dueDate.replace(/T/gi, '-').replace(/\:/, '-'),
