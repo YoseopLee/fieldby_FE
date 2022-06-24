@@ -31,8 +31,7 @@ const CampaignProgress = () => {
                             get(child(dbRef, `users/${v}`))
                             .then((snapshot) => {              
                                 if (snapshot.exists()) {
-                                    const userDataObj = snapshot.val();
-                                    
+                                    const userDataObj = snapshot.val();                                    
                                     newUsersArrays.push(userDataObj);
                                     console.log(newUsersArrays);
                                     setUserDatas(newUsersArrays);
@@ -99,8 +98,7 @@ const CampaignProgress = () => {
                     key={idx}
                     id={userIDs}
                     name={userData.name}
-                    height={userData.height}
-                    profile={userData.igInfo.profileUrl}
+                    height={userData.height}                    
                     simpleaddr={userData.simpleAddress}
                     stroke={userData.stroke}
                     career={userData.career}
@@ -111,8 +109,7 @@ const CampaignProgress = () => {
                     igname={userData.igInfo.username}
                     igfollower={userData.igInfo.followers}
                     igfollow={userData.igInfo.follows}
-                    igmedia={userData.igInfo.mediaCount}
-                    bestImages={userData.bestImages}
+                    igmedia={userData.igInfo.mediaCount}                    
                     checkedItemHandler={checkedItemHandler}
                 />                                                
             )}

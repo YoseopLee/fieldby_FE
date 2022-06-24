@@ -16,11 +16,9 @@ export function AuthProvider({children}) {
             setLoading(false);
             setCurrentUser(user);
         })
-
         return getUserData
     }, [])
 
-    
 
     const value = {
         currentUser

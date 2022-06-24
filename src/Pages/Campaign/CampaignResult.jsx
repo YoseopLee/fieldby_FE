@@ -31,7 +31,7 @@ const CampaignResult = () => {
                                 const userData_obj = [{
                                     ...userDataObj
                                 }]
-                                console.log(userData_obj);
+                                console.log(userDataObj);
                                 setUserDatas(userData_obj);
                             } else {
                                 console.log("No Data");

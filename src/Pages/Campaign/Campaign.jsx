@@ -51,13 +51,10 @@ const Campaign = () => {
         return getBrandCampaignData;
     }, [currentUser.uid]);
 
-    
-
     return (
         <CampaignContainerCSS>
             <SideBar />
-            <div id="campaign-cm" className="campaign-square-hc campaign-square-vc">
-                
+            <div id="campaign-cm" className="campaign-square-hc campaign-square-vc">                
                     {userData.campaigns 
                         ?
                             <div className="campaign-main">
@@ -83,6 +80,7 @@ const Campaign = () => {
                                             <CampaignList 
                                                 key={brandCampaignData.id}                                        
                                                 id={brandCampaignData.id}
+                                                mainImageUrl={brandCampaignData.mainImageUrl}
                                                 campaignTitle = {brandCampaignData.campaignTitle}
                                                 recruitingDate = {brandCampaignData.recruitingDate}
                                                 dueDate = {brandCampaignData.dueDate}

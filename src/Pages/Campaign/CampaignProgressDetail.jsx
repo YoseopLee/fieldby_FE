@@ -66,7 +66,7 @@ const CampaignProgressDetail = ({ id, name, height, profile,simpleaddr, stroke, 
                             <div className="user-image">
                                 {bestImages
                                     ?                                    
-                                    <img src={bestImages} alt="bestImage1" />                                                                                                                
+                                    <img src={bestImages} alt="bestImage" />                                                                                                                
                                     :
                                     <h3 className="empty-feed">등록된 피드가 없습니다.</h3>
                                 }

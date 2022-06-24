@@ -1,5 +1,6 @@
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, signInWithRedirect } from "firebase/auth";
 import React, { useState } from "react"
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components"
 import { authService } from "../../fBase";
 
@@ -7,6 +8,7 @@ import { authService } from "../../fBase";
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const navigate = useNavigate();
 
     const onChange = (event) => {
         const {target : {name, value}} = event;
@@ -25,7 +27,7 @@ const Login = () => {
                 password
             );
             console.log(user);
-            window.location.href = `/campaign`;
+            navigate("/campaign");
         } catch (error) {
             console.log(error.message);
         }

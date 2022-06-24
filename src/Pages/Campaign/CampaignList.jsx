@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
-const CampaignList = ({id, campaignTitle, recruitingDate, dueDate,recruitingNumber}) => {
+const CampaignList = ({id, mainImageUrl,campaignTitle, recruitingDate, dueDate,recruitingNumber}) => {
     return (
         <CampaignListContainer>
             <Link to = {`/campaign/${id}/progress`} className="campaign-list"> 
@@ -11,7 +11,7 @@ const CampaignList = ({id, campaignTitle, recruitingDate, dueDate,recruitingNumb
                     <span className="progress">진행중</span>
                 </div>
                 <div className="campaign-data">
-                    <img src="" alt="" />
+                    <img className="campaign-mainImage" src={mainImageUrl} alt="mainImage" />
                     <span>{campaignTitle}</span>
                 </div>
                 <div className="campaign-data">
