@@ -13,7 +13,7 @@ const CampaignProgress = () => {
     const [userDatas, setUserDatas] = useState([]);
     const [checkedItems, setCheckedItems] = useState(new Set());
     const [checkedItemsCount, setCheckedItemsCount] = useState(0);
-    const newUsersArrays = [];
+    const newUsersArrays = [];  
     
     useEffect(() => {
         const dbRef = ref(getDatabase());
@@ -52,14 +52,14 @@ const CampaignProgress = () => {
         return getCampaignUserData;
     }, [])
 
-    const checkedItemHandler = (id, isChecked) => {
+    const checkedItemHandler = (uid, isChecked) => {
         if (isChecked) {
-            checkedItems.add(id);
+            checkedItems.add(uid);
             setCheckedItems(checkedItems);
             setCheckedItemsCount(checkedItems.size);
             console.log(checkedItems);
-        } else if (!isChecked && checkedItems.has(id)) {
-            checkedItems.delete(id);
+        } else if (!isChecked && checkedItems.has(uid)) {
+            checkedItems.delete(uid);
             setCheckedItems(checkedItems);            
             setCheckedItemsCount(checkedItemsCount - 1);
             console.log(checkedItems);
@@ -68,15 +68,11 @@ const CampaignProgress = () => {
 
     const selectedUserHandler = () => {
         if(checkedItems.size > 0) {
-            const selectedUser = Object.entries(...checkedItems);
-            const selectedUser_ent = selectedUser.map((d) => Object.assign(d[0])); 
-            console.log(selectedUser_ent);
-            selectedUser_ent.map((v) => {
+            const selectedUser = [...checkedItems];            
+            selectedUser.map((v) => {            
                 console.log(v);
                 try {
-                    push(ref(realtimeDbService, `brands/${currentUser.uid}/campaigns/${id}/selecteduser/`), {
-                        v
-                    });
+                    push(ref(realtimeDbService, `brands/${currentUser.uid}/campaigns/${id}/selecteduser/`), v);
                 } catch (error) {
                     console.log(error.message);
                 }
@@ -96,7 +92,7 @@ const CampaignProgress = () => {
             {userDatas.map((userData, idx) =>
                 <CampaignProgressDetail 
                     key={idx}
-                    id={userIDs}
+                    uid={userData.uid}
                     name={userData.name}
                     height={userData.height}                    
                     simpleaddr={userData.simpleAddress}

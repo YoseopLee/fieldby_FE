@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { useAuth } from "../../Context/authProvider";
+import { authService } from "../../fBase";
 import CampaignResultDetail from "./CampaignResultDetail";
 
 const CampaignResult = () => {
@@ -10,6 +11,7 @@ const CampaignResult = () => {
     let {id} = useParams();
     const [userIDs, setUserIDs] = useState([]);
     const [userDatas, setUserDatas] = useState([]);
+    const newUsersArrays = [];
 
     useEffect(() => {
         const dbRef = ref(getDatabase());
@@ -18,28 +20,27 @@ const CampaignResult = () => {
             .then((snapshot) => {
                 if (snapshot.exists()) {
                     const dataObj = snapshot.val();
+                    console.log(dataObj);
                     const data_ent = Object.entries(dataObj);
                     console.log(data_ent);
-                    const data_ent_arr = data_ent.map((d) => Object.assign(d[0]));
+                    const data_ent_arr = data_ent.map((d) => Object.assign(d[1]));
                     console.log(data_ent_arr);
-                    data_ent_arr.map((v) => {
-                        get(child(dbRef, `users/${v}`))
+                    for (const id in data_ent_arr) {
+                        console.log(id);
+                        get(child(dbRef, `users/${id}`))
                         .then((snapshot) => {
                             if (snapshot.exists()) {
                                 const userDataObj = snapshot.val();
-                                console.log(userDataObj);
-                                const userData_obj = [{
-                                    ...userDataObj
-                                }]
-                                console.log(userDataObj);
-                                setUserDatas(userData_obj);
+                                newUsersArrays.push(userDataObj)
+                                console.log(newUsersArrays);
+                                setUserDatas(newUsersArrays);
                             } else {
                                 console.log("No Data");
                             }
                         }).catch((error) => {
                             console.log(error);
                         })
-                    })
+                    }                    
                 } else {
                     console.log("No Data");
                 }
