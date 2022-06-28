@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-const CampaignProgressDetail = ({ id, name, height, profile,simpleaddr, stroke, career, roundingFrequency, style1, style2, style3, igname, igfollower, igfollow, igmedia, bestImages, checkedItemHandler}) => {
+const CampaignProgressDetail = ({ uid, name, height, profile,simpleaddr, stroke, career, roundingFrequency, style1, style2, style3, igname, igfollower, igfollow, igmedia, bestImages, checkedItemHandler}) => {
     const [bChecked, setChecked] = useState(false);
+    
 
     const checkHandler = ({target}) => {
         setChecked(!bChecked);
-        checkedItemHandler(id, target.checked);
+        checkedItemHandler(uid, target.checked);
         console.log(bChecked);
     }
 

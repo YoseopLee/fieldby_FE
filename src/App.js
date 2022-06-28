@@ -14,8 +14,8 @@ import PrivateRoute from './PrivateRoute';
 
 const App = () => { 
   return (
-    <BrowserRouter>
-      <AuthProvider>
+    <AuthProvider>
+    <BrowserRouter>      
         <Routes>
           <Route path="/" element={<PreLogin/>}/>
           <Route path="/login" element={<Login/>}/>
@@ -38,9 +38,9 @@ const App = () => {
               <CampaignAdmin/>
             </PrivateRoute> 
           } />
-        </Routes>
-      </AuthProvider>
+        </Routes>      
     </BrowserRouter>
+    </AuthProvider>
   );
 }
 
