@@ -85,7 +85,7 @@ const SignUp = () => {
                         <option value="일반">일반</option>
                         <option value="에이전시">에이전시</option>
                         <option value="소상공인">소상공인</option>
-                    </select>c
+                    </select>
                 </div>
                 
                 <div className="sign-up-box">
