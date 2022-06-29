@@ -17,8 +17,8 @@ const CampaignProgress = () => {
     
     useEffect(() => {
         const dbRef = ref(getDatabase());
-        const getCampaignUserData = () => {
-            get(child(dbRef, `brands/${currentUser.uid}/campaigns/${id}/users`))
+        const getCampaignUserData = async() => {
+            const json = await get(child(dbRef, `brands/${currentUser.uid}/campaigns/${id}/users`))
             .then((snapshot) => {
                 if (snapshot.exists()) {
                     const dataObj = snapshot.val();                    
@@ -49,7 +49,7 @@ const CampaignProgress = () => {
                 console.log(error);
             });
         }
-        return getCampaignUserData;
+        getCampaignUserData();
     }, [])
 
     const checkedItemHandler = (uid, isChecked) => {

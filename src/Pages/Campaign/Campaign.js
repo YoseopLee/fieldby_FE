@@ -1,58 +1,60 @@
 import { child, get, getDatabase, onValue, ref } from "firebase/database";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { http } from "../../Components/Api/CacheApi";
 import Spinner from "../../Components/Common/Spinner";
 import SideBar from "../../Components/SideBar/SideBar";
 import { useAuth } from "../../Context/authProvider";
-import { authService } from "../../fBase";
 import CampaignList from "./CampaignList";
 
 const Campaign = () => {
     const {currentUser} = useAuth();
-    console.log(currentUser.uid);
-    const [userData, setUserData] = useState(null);
-    const [brandCampaignDatas, setBrandCampaignDatas] = useState([]);
+    const userId = currentUser.uid;
+    const [userData, setUserData] = useState('');
     const [loading, setLoading] = useState(true);
 
-    useEffect (() => {
-        const dbRef = ref(getDatabase(), `brands/${currentUser.uid}`);
-        const getUserData = () => {
-            onValue(dbRef, (snapshot) => {
+    useEffect (() => {        
+        const dbRef = ref(getDatabase());
+        const getUserData = async() => {
+            const json = await get(child(dbRef, `brands/${userId}`))
+            .then((snapshot) => {
                 if (snapshot.exists()) {
-                    const data_obj = snapshot.val();
-                    console.log(data_obj);
-                    setUserData(data_obj);
+                    const dataObj = snapshot.val();
+                    console.log(dataObj);
                     setLoading(false);
+                    setUserData(dataObj);
                 } else {
                     console.log("No data");
                 }
-            }, {
-                onlyOnce : true
+            }).catch ((error) => {
+                console.log(error);
             })
         }
-        return getUserData;
+        getUserData();
     }, []);
 
+    const [brandCampaignDatas, setBrandCampaignDatas] = useState([]);
     useEffect(() => {
-        const dbBrandRef = ref(getDatabase(), `brands/${currentUser.uid}/campaigns/`);
-        const getBrandCampaignData = () => {
-            onValue(dbBrandRef, (snapshot) => {
+        const dbBrandRef = ref(getDatabase());
+        const getBrandCampaignData = async () => {
+            const json = await get(child(dbBrandRef, `brands/${userId}/campaigns/`))
+            .then((snapshot) => {
                 if (snapshot.exists()) {
-                    const data_obj = snapshot.val();                    
+                    const data_obj = snapshot.val();
                     console.log(data_obj);
                     const data_ent = Object.entries(data_obj);
                     console.log(data_ent);
                     const data_ent_arr = data_ent.map((d) => Object.assign({}, d[1], {id:d[0]}));
                     console.log(data_ent_arr);
-                    setBrandCampaignDatas(data_ent_arr);                    
+                    setBrandCampaignDatas(data_ent_arr);
                 } else {
                     console.log("No data");
                 }
-            }, {
-                onlyOnce : true
-            });            
+            }).catch((error) => {
+                console.log(error);
+            })          
         }
-        return getBrandCampaignData;
+        getBrandCampaignData();
     }, []);
 
     return (

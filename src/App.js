@@ -14,7 +14,6 @@ import PrivateRoute from './PrivateRoute';
 
 const App = () => { 
   return (
-    <AuthProvider>
     <BrowserRouter>      
         <Routes>
           <Route path="/" element={<PreLogin/>}/>
@@ -39,8 +38,7 @@ const App = () => {
             </PrivateRoute> 
           } />
         </Routes>      
-    </BrowserRouter>
-    </AuthProvider>
+    </BrowserRouter>    
   );
 }
 
