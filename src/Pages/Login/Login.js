@@ -1,4 +1,4 @@
-import { signInWithEmailAndPassword, signInWithRedirect } from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import React, { useState } from "react"
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components"
@@ -10,15 +10,16 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
 
-    const onChange = (event) => {
-        const {target : {name, value}} = event;
-        if (name === "email") {
-            setEmail(value);
-        } else if (name === "password") {
-            setPassword(value);
-        }
-    }
+    // const onChange = (event) => {
+    //     const {target : {name, value}} = event;
+    //     if (name === "email") {
+    //         setEmail(value);
+    //     } else if (name === "password") {
+    //         setPassword(value);
+    //     }
+    // }
 
+    
     const signIn = async () => {
         try {
             const user = await signInWithEmailAndPassword(
@@ -42,8 +43,12 @@ const Login = () => {
                 </div>
                 <div className="login-box-container">
                     <div className="login-box">
-                        <input name="email" type="email" placeholder="이메일" className="login-email" value={email} onChange={onChange}/>
-                        <input name="password" type="password" placeholder="비밀번호" className="login-pw" value={password} onChange={onChange}/>
+                        <input name="email" type="email" placeholder="이메일" className="login-email" value={email} onChange={(e) => {
+                            setEmail(e.target.value);
+                        }}/>
+                        <input name="password" type="password" placeholder="비밀번호" className="login-pw" value={password} onChange={(e) => {
+                            setPassword(e.target.value);
+                        }}/>
                     </div>
                     <div className="login-maintain">
                         <img src="images/login-maintain.png" alt=""/>

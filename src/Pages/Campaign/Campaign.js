@@ -9,6 +9,7 @@ import CampaignList from "./CampaignList";
 
 const Campaign = () => {
     const {currentUser} = useAuth();
+    console.log(currentUser.uid);
     const [userData, setUserData] = useState(null);
     const [brandCampaignDatas, setBrandCampaignDatas] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -30,7 +31,7 @@ const Campaign = () => {
             })
         }
         return getUserData;
-    }, [currentUser.uid]);
+    }, []);
 
     useEffect(() => {
         const dbBrandRef = ref(getDatabase(), `brands/${currentUser.uid}/campaigns/`);
@@ -52,7 +53,7 @@ const Campaign = () => {
             });            
         }
         return getBrandCampaignData;
-    }, [currentUser.uid]);
+    }, []);
 
     return (
         <CampaignContainerCSS>
