@@ -22,11 +22,7 @@ const Login = () => {
     
     const signIn = async () => {
         try {
-            const user = await signInWithEmailAndPassword(
-                authService,
-                email,
-                password
-            );
+            const user = await signInWithEmailAndPassword(authService, email,password);
             console.log(user);
             navigate("/campaign");
         } catch (error) {

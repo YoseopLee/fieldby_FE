@@ -15,7 +15,7 @@ const CampaignResult = () => {
 
     useEffect(() => {
         const dbRef = ref(getDatabase());
-        const getCampaignSelectedUserData = () => {
+        const getCampaignSelectedUserData =
             get(child(dbRef, `brands/${currentUser.uid}/campaigns/${id}/selecteduser/`))
             .then((snapshot) => {
                 if (snapshot.exists()) {
@@ -47,7 +47,6 @@ const CampaignResult = () => {
             }).catch((error) => {
                 console.log(error);
             })
-        }
         return getCampaignSelectedUserData;
     }, [])
 

@@ -1,3 +1,4 @@
+import { onAuthStateChanged } from "firebase/auth";
 import React, { useContext, useEffect, useState } from "react";
 import { authService } from "../fBase";
 
@@ -11,14 +12,14 @@ export function AuthProvider({children}) {
     const [currentUser, setCurrentUser] = useState();
     const [loading, setLoading] = useState(true);
 
-
     useEffect(() => {
-        const getUserData = authService.onAuthStateChanged(user => {
+        const getUserData = onAuthStateChanged(authService, (user) => {
             setLoading(false);
             setCurrentUser(user);
+            console.log(user);              
         })
         return getUserData
-    }, [])
+    }, []);
 
     const value = {
         currentUser,        

@@ -6,7 +6,8 @@ import { authService } from "../../fBase";
 
 
 const SideBar = () => {
-    const {currentUser} = useAuth()
+    const {currentUser} = useAuth();
+    const userId = currentUser.uid;
     const [userData, setUserData] = useState('');
     
     const handleLogout = async() => {
@@ -18,11 +19,10 @@ const SideBar = () => {
         }
     }
     
-
     useEffect(() => {
         const dbRef = ref(getDatabase());
-        const getUserData = () => {
-            get(child(dbRef, `brands/${currentUser.uid}`))
+        const getUserData = async () => {
+            const json = await get(child(dbRef, `brands/${userId}`))
             .then((snapshot) => {
                 if (snapshot.exists()) {
                     const data_obj = snapshot.val();
@@ -34,8 +34,8 @@ const SideBar = () => {
                 console.error(error);
             });
         }
-        return getUserData;
-    }, [currentUser.uid]);
+        getUserData();
+    }, []);
 
     return (
         <SideBarContainerCSS>
