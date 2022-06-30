@@ -110,11 +110,11 @@ const CampaignProgress = () => {
                             style1={userData.styles[0]}
                             style2={userData.styles[1]}
                             style3={userData.styles[2]}
-                            igname={userData.igInfo.username}
-                            profile={userData.igInfo.profileUrl}
-                            igfollower={userData.igInfo.followers}
-                            igfollow={userData.igInfo.follows}
-                            igmedia={userData.igInfo.mediaCount}                    
+                            igname={userData.igInfo?.username}
+                            profile={userData.igInfo?.profileUrl}
+                            igfollower={userData.igInfo?.followers}
+                            igfollow={userData.igInfo?.follows}
+                            igmedia={userData.igInfo?.mediaCount}                    
                             checkedItemHandler={checkedItemHandler}
                         />                                                
                     )}
