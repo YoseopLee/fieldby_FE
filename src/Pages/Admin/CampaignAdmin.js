@@ -12,6 +12,7 @@ const CampaignAdmin = () => {
     const [recruitingDate, setRecruitingDate] = useState('');
     const [dueDate, setDueDate] = useState('');
     const [mainImageUrl, setMainImageUrl] = useState('');
+    const [downloadImageUrl, setDownLoadImageUrl] = useState('');
     const [percent, setPercent] = useState(0);
     const [guidePercent, setGuidePercent] = useState(0);
     const [guideDescription, setGuideDescription] = useState('');
@@ -54,6 +55,7 @@ const CampaignAdmin = () => {
             (err) => console.log(err),
             () => {
                 getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+                    setDownLoadImageUrl(url);
                     console.log(url);
                 });
             }
@@ -92,7 +94,7 @@ const CampaignAdmin = () => {
     const registerCampaign = () => {
         try {
             push(ref(realtimeDbService, `brands/${uid}/campaigns/`), {                   
-                    mainImageUrl : mainImageUrl.name,
+                    mainImageUrl : downloadImageUrl,
                     campaignTitle : campaignTitle,
                     recruitingDate : recruitingDate,
                     dueDate : dueDate.replace(/T/gi, '-').replace(/\:/, '-'),
@@ -126,7 +128,7 @@ const CampaignAdmin = () => {
                 },
                 itemDate : itemDate,
                 leastFeed : leastFeed,
-                mainImageUrl : mainImageUrl.name,
+                mainImageUrl : downloadImageUrl,
                 maintain : maintain,
                 selectionDate : selectionDate,
                 uploadDate : uploadDate,

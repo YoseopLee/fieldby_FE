@@ -10,7 +10,6 @@ import CampaignProgressDetail from "./CampaignProgressDetail";
 const CampaignProgress = () => {
     const {currentUser} = useAuth();
     let {id} = useParams();
-    const [userIDs, setUserIDs] = useState([]);
     const [userDatas, setUserDatas] = useState([]);
     const [checkedItems, setCheckedItems] = useState(new Set());
     const [checkedItemsCount, setCheckedItemsCount] = useState(0);
@@ -28,7 +27,6 @@ const CampaignProgress = () => {
                     console.log(data_ent);
                     const data_ent_arr = data_ent.map((d) => Object.assign(d[0]));
                     console.log(data_ent_arr);
-                    setUserIDs(dataObj);
                     const newUsersArrays = [];                     
                         for (let i = 0; i < data_ent_arr.length; i++) {              
                             get(child(dbRef, `users/${data_ent_arr[i]}`))
