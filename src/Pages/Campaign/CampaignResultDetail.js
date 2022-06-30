@@ -34,6 +34,7 @@ const CampaignResultDetail = ({id, name, profile, phoneNumber, zipno,detailaddre
 }
 
 const CampaignResultDetailCSS = styled.div`
+margin-bottom : 32px;
 .selected-datas {
     display : flex;
     justify-content : space-evenly;
@@ -66,6 +67,7 @@ const CampaignResultDetailCSS = styled.div`
         color : #766F6F;
         font-size : 15px;
         line-height :18px;
+        max-width : 200px;
     }
 }
 `

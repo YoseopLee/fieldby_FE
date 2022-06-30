@@ -97,7 +97,7 @@ const CampaignDetailCSS = styled.div`
     
     #campaign-detail-top {
         position : absolute;
-        min-width : 1000px;
+        max-width : 80%;
         min-height : auto;
     }
 
@@ -121,7 +121,7 @@ const CampaignDetailCSS = styled.div`
 
     #campaign-detail-cm {
         position : absolute;
-        min-width : 1000px;
+        max-width : 80%;
         min-height : auto;
     }
 

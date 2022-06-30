@@ -27,21 +27,21 @@ const CampaignProgress = () => {
                     const data_ent_arr = data_ent.map((d) => Object.assign(d[0]));
                     console.log(data_ent_arr);
                     setUserIDs(dataObj);                    
-                        data_ent_arr.map((v) => {              
-                            get(child(dbRef, `users/${v}`))
+                        for (let i = 0; i < data_ent_arr.length; i++) {              
+                            get(child(dbRef, `users/${data_ent_arr[i]}`))
                             .then((snapshot) => {              
                                 if (snapshot.exists()) {
                                     const userDataObj = snapshot.val();                                    
                                     newUsersArrays.push(userDataObj);
                                     console.log(newUsersArrays);
-                                    setUserDatas(newUsersArrays);
+                                    setUserDatas([...newUsersArrays]);
                                 } else {
                                     console.log("No Data");
                                 }
                             }).catch((error) => {
                                 console.log(error);
                             })
-                        })                                   
+                        }                               
                 } else {
                     console.log("No data");
                 }

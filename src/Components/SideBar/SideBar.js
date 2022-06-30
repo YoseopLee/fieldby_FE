@@ -1,5 +1,6 @@
 import { child, get, getDatabase, ref } from "firebase/database";
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { useAuth } from "../../Context/authProvider";
 import { authService } from "../../fBase";
@@ -50,12 +51,8 @@ const SideBar = () => {
                     </div>
                     <div className="campaign-sidemenu-progress-box">
                         <img src="/images/image 108.png" alt="progress"/>
-                        <span className="campaign-sidemenu-progress">진행현황</span>
-                    </div>
-                    <div className="campaign-sidemenu-report-box">
-                        <img src="/images/report.png" alt="report" />
-                        <span className="campaign-sidemenu-report">캠페인 보고서</span>
-                    </div>
+                        <Link to='/campaign' className="campaign-sidemenu-progress">캠페인</Link>
+                    </div>                    
                 </div>
                 
                 <div className="campaign-customer-center">
@@ -130,6 +127,7 @@ const SideBarContainerCSS = styled.div`
             .campaign-sidemenu-progress {
                 font-weight : 700;
                 color : #ffffff;
+                text-decoration : none;
             }
             img {
                 width : 19px;

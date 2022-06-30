@@ -1,7 +1,6 @@
-import { child, get, getDatabase, onValue, ref } from "firebase/database";
+import { child, get, getDatabase, ref } from "firebase/database";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { http } from "../../Components/Api/CacheApi";
 import Spinner from "../../Components/Common/Spinner";
 import SideBar from "../../Components/SideBar/SideBar";
 import { useAuth } from "../../Context/authProvider";
