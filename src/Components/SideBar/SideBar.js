@@ -1,6 +1,6 @@
 import { child, get, getDatabase, ref } from "firebase/database";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useAuth } from "../../Context/authProvider";
 import { authService } from "../../fBase";
@@ -10,11 +10,12 @@ const SideBar = () => {
     const {currentUser} = useAuth();
     const userId = currentUser.uid;
     const [userData, setUserData] = useState('');
+    const navigate = useNavigate();
     
     const handleLogout = async() => {
         try {
             await authService.signOut();
-            window.location.href = `/login`;
+            navigate('/login');
         } catch(error) {
             console.log(error)
         }
