@@ -11,11 +11,11 @@ const CampaignResult = () => {
     let {id} = useParams();
     const [userIDs, setUserIDs] = useState([]);
     const [userDatas, setUserDatas] = useState([]);
-    const newUsersArrays = [];
+    
 
     useEffect(() => {
         const dbRef = ref(getDatabase());
-        const getCampaignSelectedUserData =
+        const getCampaignSelectedUserData = async() => {
             get(child(dbRef, `brands/${currentUser.uid}/campaigns/${id}/selecteduser/`))
             .then((snapshot) => {
                 if (snapshot.exists()) {
@@ -25,15 +25,16 @@ const CampaignResult = () => {
                     console.log(data_ent);
                     const data_ent_arr = data_ent.map((d) => Object.assign(d[1]));
                     console.log(data_ent_arr);
-                    for (const id in data_ent_arr) {
-                        console.log(id);
-                        get(child(dbRef, `users/${id}`))
+                    const newUsersArrays = [];
+                    for (let i = 0; i < data_ent_arr.length; i++) {                        
+                        
+                        get(child(dbRef, `users/${data_ent_arr[i]}`))
                         .then((snapshot) => {
                             if (snapshot.exists()) {
                                 const userDataObj = snapshot.val();
                                 newUsersArrays.push(userDataObj)
                                 console.log(newUsersArrays);
-                                setUserDatas(newUsersArrays);
+                                setUserDatas([...newUsersArrays]);
                             } else {
                                 console.log("No Data");
                             }
@@ -47,7 +48,8 @@ const CampaignResult = () => {
             }).catch((error) => {
                 console.log(error);
             })
-        return getCampaignSelectedUserData;
+        }
+        getCampaignSelectedUserData();
     }, [])
 
     return (        
