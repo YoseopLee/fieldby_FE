@@ -11,8 +11,11 @@ const CampaignList = ({id, mainImageUrl,campaignTitle, recruitingDate, dueDate,r
                     <span className="progress">진행중</span>
                 </div>
                 <div className="campaign-data">
-                    <img className="campaign-mainImage" src={mainImageUrl} alt="mainImage" />
-                    <span>{campaignTitle}</span>
+                    <div className="campaign-data-wrapper">
+                        <img className="campaign-mainImage" src={mainImageUrl} alt="mainImage" />
+                        <span>{campaignTitle}</span>
+                    </div>
+                    
                 </div>
                 <div className="campaign-data">
                     <span>{recruitingDate} - {dueDate}</span>
@@ -39,6 +42,16 @@ const CampaignListContainer = styled.div`
             align-items : center;
             height : 60px;
             .campaign-data {
+                .campaign-data-wrapper {
+                    display : flex;
+                    justify-content : center;
+                    align-items : center;
+                    .campaign-mainImage {
+                        width : 50px;
+                        height : 50px;
+                    }
+                }
+
                 .progress {
                     color : #22BAA8;
                     font-weight: 400;
