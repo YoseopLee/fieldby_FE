@@ -2,6 +2,7 @@ import { child, get, getDatabase, push, ref, set } from "firebase/database";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import Spinner from "../../Components/Common/Spinner";
 import { useAuth } from "../../Context/authProvider";
 import { realtimeDbService } from "../../fBase";
 import CampaignProgressDetail from "./CampaignProgressDetail";
@@ -13,7 +14,8 @@ const CampaignProgress = () => {
     const [userDatas, setUserDatas] = useState([]);
     const [checkedItems, setCheckedItems] = useState(new Set());
     const [checkedItemsCount, setCheckedItemsCount] = useState(0);
-    const newUsersArrays = [];  
+    const [loading, setLoading] = useState(true);
+    
     
     useEffect(() => {
         const dbRef = ref(getDatabase());
@@ -26,15 +28,17 @@ const CampaignProgress = () => {
                     console.log(data_ent);
                     const data_ent_arr = data_ent.map((d) => Object.assign(d[0]));
                     console.log(data_ent_arr);
-                    setUserIDs(dataObj);                    
+                    setUserIDs(dataObj);
+                    const newUsersArrays = [];                     
                         for (let i = 0; i < data_ent_arr.length; i++) {              
                             get(child(dbRef, `users/${data_ent_arr[i]}`))
                             .then((snapshot) => {              
                                 if (snapshot.exists()) {
                                     const userDataObj = snapshot.val();                                    
                                     newUsersArrays.push(userDataObj);
-                                    console.log(newUsersArrays);
+                                    console.log(newUsersArrays);                                    
                                     setUserDatas([...newUsersArrays]);
+                                    setLoading(false);
                                 } else {
                                     console.log("No Data");
                                 }
@@ -84,32 +88,42 @@ const CampaignProgress = () => {
 
     return (
         <CampaignProgressCSS>
-            <div className="campaign-progress-menus">
-                <div className="campaign-select">
-
+            {loading ? (
+                <div className="spinner-cm">
+                    <Spinner />
                 </div>
-            </div>
-            {userDatas.map((userData, idx) =>
-                <CampaignProgressDetail 
-                    key={idx}
-                    uid={userData.uid}
-                    name={userData.name}
-                    height={userData.height}                    
-                    simpleaddr={userData.simpleAddress}
-                    stroke={userData.stroke}
-                    career={userData.career}
-                    roundingFrequency={userData.roundingFrequency}
-                    style1={userData.styles[0]}
-                    style2={userData.styles[1]}
-                    style3={userData.styles[2]}
-                    igname={userData.igInfo.username}
-                    igfollower={userData.igInfo.followers}
-                    igfollow={userData.igInfo.follows}
-                    igmedia={userData.igInfo.mediaCount}                    
-                    checkedItemHandler={checkedItemHandler}
-                />                                                
+            ) : (
+                <>
+                    <div className="campaign-progress-menus">
+                        <div className="campaign-select">
+
+                        </div>
+                    </div>
+                    {userDatas.map((userData, idx) =>
+                        <CampaignProgressDetail 
+                            key={idx}
+                            uid={userData.uid}
+                            name={userData.name}
+                            height={userData.height}                    
+                            simpleaddr={userData.simpleAddress}
+                            stroke={userData.stroke}
+                            career={userData.career}
+                            roundingFrequency={userData.roundingFrequency}
+                            style1={userData.styles[0]}
+                            style2={userData.styles[1]}
+                            style3={userData.styles[2]}
+                            igname={userData.igInfo.username}
+                            profile={userData.igInfo.profileUrl}
+                            igfollower={userData.igInfo.followers}
+                            igfollow={userData.igInfo.follows}
+                            igmedia={userData.igInfo.mediaCount}                    
+                            checkedItemHandler={checkedItemHandler}
+                        />                                                
+                    )}
+                    <button className="selected-btn" type="button" onClick={selectedUserHandler}><span className="selected-user-count">{checkedItemsCount}/10</span><span className="selected-detail">선택한 크리에이터 선정하기</span></button>
+                </>
             )}
-            <button className="selected-btn" type="button" onClick={selectedUserHandler}><span className="selected-user-count">{checkedItemsCount}/10</span><span className="selected-detail">선택한 크리에이터 선정하기</span></button>
+            
         </CampaignProgressCSS>
     )
 }
@@ -261,7 +275,7 @@ const CampaignProgressCSS = styled.div`
         border: 1px solid #E7E7E7;
         box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.25);
         border-radius: 5px;
-        position: absolute;
+        position: fixed;
         width: 361px;
         height: 62px;
         left : 70%;

@@ -44,16 +44,15 @@ const CampaignProgressDetail = ({ uid, name, height, profile,simpleaddr, stroke,
                                     </div>
                                                                 
                                 </div>
-
-                                <div className="user-images-container">
-                                    
-                                </div>
                             </div>
 
                             <div className="user-instagram-infos-container">
                                 <div className="user-instagram-logo-name">
-                                    <img className="instagram-logo" src="/images/image 120.png" alt="instagram" />
-                                    <span className="user-instagram-name">{igname}</span>
+                                    <a href={`https://www.instagram.com/${igname}`} className="instagram-link" target="_blank">
+                                        <img className="instagram-logo" src="/images/image 120.png" alt="instagram" />
+                                        <span className="user-instagram-name">{igname}</span>
+                                    </a>
+                                    
                                 </div>
                                 <div className="user-instagram-profile">
                                     <div className="user-instagram-profile-info">팔로워 <span>{igfollower}</span></div>
@@ -109,10 +108,12 @@ const CampaignProgressDetailCSS = styled.div`
                 margin-left : 112px;
                 padding : 13px;
                 justify-content : space-between;
-                .user-instagram-logo-name {
-                    
+                .user-instagram-logo-name {                    
                     display : flex;
                     align-items : center;
+                    .instagram-link{
+                        text-decoration : none;
+                    }
                     .instagram-logo {
                         height : 15px;
                         width : 15px;

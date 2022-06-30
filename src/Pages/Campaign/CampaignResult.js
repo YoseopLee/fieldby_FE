@@ -2,15 +2,15 @@ import { child, get, getDatabase, ref } from "firebase/database";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import Spinner from "../../Components/Common/Spinner";
 import { useAuth } from "../../Context/authProvider";
-import { authService } from "../../fBase";
 import CampaignResultDetail from "./CampaignResultDetail";
 
 const CampaignResult = () => {
     const {currentUser} = useAuth();    
     let {id} = useParams();
-    const [userIDs, setUserIDs] = useState([]);
     const [userDatas, setUserDatas] = useState([]);
+    const [loading, setLoading] = useState(true);
     
 
     useEffect(() => {
@@ -33,8 +33,9 @@ const CampaignResult = () => {
                             if (snapshot.exists()) {
                                 const userDataObj = snapshot.val();
                                 newUsersArrays.push(userDataObj)
-                                console.log(newUsersArrays);
+                                console.log(newUsersArrays);                                
                                 setUserDatas([...newUsersArrays]);
+                                setLoading(false);
                             } else {
                                 console.log("No Data");
                             }
@@ -54,35 +55,44 @@ const CampaignResult = () => {
 
     return (        
         <CampaignResultCSS>
-            <div className="campaign-progress-table">
-                <div className="campaign-progress-titles">
-                    <span>번호</span>
+            {loading ? (
+                <div className="spinner-cm">
+                    <Spinner />
                 </div>
-                <div className="campaign-progress-titles">
-                    <span>이름</span>
-                </div>
-                <div className="campaign-progress-titles">
-                    <span>전화번호</span>
-                </div>
-                <div className="campaign-progress-titles">
-                    <span>주소</span>
-                </div>
-                <div className="campaign-progress-titles">
-                    <span>송장번호</span>
-                </div>
-            </div>
-            <hr/>
-            {userDatas.map((userData, idx) => 
-                <CampaignResultDetail 
-                    key={idx}
-                    id={idx}
-                    name={userData.name}
-                    profile={userData.igInfo.profileUrl}
-                    phoneNumber={userData.phoneNumber}
-                    zipno={userData.address.zipNo}
-                    detailaddress={userData.address.roadAddr}
-                />
+            ) : (
+                <>
+                    <div className="campaign-progress-table">
+                        <div className="campaign-progress-titles">
+                            <span>번호</span>
+                        </div>
+                        <div className="campaign-progress-titles">
+                            <span>이름</span>
+                        </div>
+                        <div className="campaign-progress-titles">
+                            <span>전화번호</span>
+                        </div>
+                        <div className="campaign-progress-titles">
+                            <span>주소</span>
+                        </div>
+                        <div className="campaign-progress-titles">
+                            <span>송장번호</span>
+                        </div>
+                    </div>
+                    <hr/>
+                    {userDatas.map((userData, idx) => 
+                        <CampaignResultDetail 
+                            key={idx}
+                            id={idx + 1}
+                            name={userData.name}
+                            profile={userData.igInfo.profileUrl}
+                            phoneNumber={userData.phoneNumber}
+                            zipno={userData.address.zipNo}
+                            detailaddress={userData.address.roadAddr}
+                        />
+                    )}
+                </>
             )}
+            
         </CampaignResultCSS>
     )
 }

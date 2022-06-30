@@ -123,6 +123,7 @@ const CampaignDetailCSS = styled.div`
         position : absolute;
         max-width : 80%;
         min-height : auto;
+        overflow-y : scroll;
     }
 
     .campaign-detail-square-hc {
