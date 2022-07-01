@@ -113,6 +113,7 @@ const CampaignProgressDetailCSS = styled.div`
                     align-items : center;
                     .instagram-link{
                         text-decoration : none;
+                        display : flex;
                     }
                     .instagram-logo {
                         height : 15px;
