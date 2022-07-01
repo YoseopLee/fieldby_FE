@@ -1,8 +1,39 @@
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
-const CampaignProgressDetail = ({ uid, name, height, profile,simpleaddr, stroke, career, roundingFrequency, style1, style2, style3, igname, igfollower, igfollow, igmedia, bestImages, checkedItemHandler, isSelected}) => {
+const CampaignProgressDetail = ({ uid, name, height, profile,simpleaddr, stroke, career, roundingFrequency, style1, style2, style3, igname, igfollower, igfollow, igmedia, bestImage1, bestImage2, bestImage3, token,checkedItemHandler, isSelected}) => {
     const [bChecked, setChecked] = useState(false);
+    const [userBestImage1, setUserBestImage1] = useState('');
+    const [userBestImage2, setUserBestImage2] = useState('');
+    const [userBestImage3, setUserBestImage3] = useState(''); 
+                                               
+    useEffect(() => {
+        const getUserBestImages = async() => {
+            try {   
+                    // for 문 사용 가능         
+                    const json1 = await axios.get(
+                        `https://graph.facebook.com/v14.0/${bestImage1}?fields=media_url&access_token=${token}`                        
+                    );
+
+                    const json2 = await axios.get(
+                        `https://graph.facebook.com/v14.0/${bestImage2}?fields=media_url&access_token=${token}`
+                    )
+
+                    const json3 = await axios.get(
+                        `https://graph.facebook.com/v14.0/${bestImage3}?fields=media_url&access_token=${token}`
+                    )
+                    
+                    console.log(json1.data);
+                    setUserBestImage1(json1.data.media_url);
+                    setUserBestImage2(json2.data.media_url);
+                    setUserBestImage3(json3.data.media_url);                
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        getUserBestImages();
+    }, [])
     
 
     const checkHandler = ({target}) => {
@@ -28,7 +59,7 @@ const CampaignProgressDetail = ({ uid, name, height, profile,simpleaddr, stroke,
                                     <img className="user-profile-img" src={profile} alt="profile" />
                                 </div>
                                 <div className="user-profile-container">
-                                    <span>남 26{isSelected}</span>
+                                    <span>남 26</span>
                                     <span>{height}cm</span>
                                     <span>{simpleaddr}</span>
                                 </div>
@@ -64,9 +95,13 @@ const CampaignProgressDetail = ({ uid, name, height, profile,simpleaddr, stroke,
 
                         <div className="user-images-container">
                             <div className="user-image">
-                                {bestImages
-                                    ?                                    
-                                    <img src={bestImages} alt="bestImage" />                                                                                                                
+                                {userBestImage1
+                                    ?
+                                    <div>
+                                        <img src={userBestImage1} alt="1" />                                                                                                            
+                                        <img src={userBestImage2} alt="2" />
+                                        <img src={userBestImage3} alt="3" />
+                                    </div>                                    
                                     :
                                     <h3 className="empty-feed">등록된 피드가 없습니다.</h3>
                                 }
@@ -208,6 +243,7 @@ const CampaignProgressDetailCSS = styled.div`
 
         .user-images-container {
             .user-image {
+                overflow-x : auto;
                 img {
                     margin-left : 16px;
                     height : 150px;

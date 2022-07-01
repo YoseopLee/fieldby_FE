@@ -128,7 +128,7 @@ const CampaignAdmin = () => {
                 },
                 itemDate : itemDate,
                 leastFeed : leastFeed,
-                mainImageUrl : downloadImageUrl,
+                mainImageUrl : mainImageUrl.name,
                 maintain : maintain,
                 selectionDate : selectionDate,
                 uploadDate : uploadDate,

@@ -123,7 +123,7 @@ const SideBarContainerCSS = styled.div`
             justify-content : center;
             align-items : center;
             background: #303030;
-            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.25);
+            : 2px 2px 10px rgba(0, 0, 0, 0.25);
             border-radius: 5px;
             .campaign-sidemenu-progress {
                 font-weight : 700;
