@@ -32,7 +32,7 @@ const CampaignProgress = () => {
                             .then((snapshot) => {              
                                 if (snapshot.exists()) {
                                     const userDataObj = snapshot.val();                                    
-                                    newUsersArrays.push(userDataObj);
+                                    newUsersArrays.push(userDataObj);                                
                                     console.log(newUsersArrays);                                                              
                                     setUserDatas([...newUsersArrays]);
                                     setLoading(false);
@@ -110,9 +110,13 @@ const CampaignProgress = () => {
                             stroke={userData.stroke}
                             career={userData.career}
                             roundingFrequency={userData.roundingFrequency}
-                            style1={userData.styles[0]}
+                            style1={userData.styles[0]} 
                             style2={userData.styles[1]}
-                            style3={userData.styles[2]}
+                            style3={userData.styles[2]}                                                     
+                            bestImage1={userData.bestImages ? userData.bestImages[0] : null}
+                            bestImage2={userData.bestImages ? userData.bestImages[1] : null}
+                            bestImage3={userData.bestImages ? userData.bestImages[2] : null}
+                            token={userData.igInfo?.token}
                             igname={userData.igInfo?.username}
                             profile={userData.igInfo?.profileUrl}
                             igfollower={userData.igInfo?.followers}

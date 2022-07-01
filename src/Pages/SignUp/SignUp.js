@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { authService, realtimeDbService } from "../../fBase";
 import { ref, set } from "firebase/database";
+import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
     const [phoneNumber, setPhoneNumber] = useState('');
@@ -12,6 +13,7 @@ const SignUp = () => {
     const [companyKind, setCompanyKind] = useState('');
     const [name, setName] = useState('');
     const [companyName, setCompanyName] = useState('');
+    const navigate = useNavigate();
 
    const writeUserData = () => {
        try {
@@ -38,6 +40,7 @@ const SignUp = () => {
             );
             console.log(user);
             writeUserData();
+            navigate('/login');
         } catch (error) {
             console.log(error.message);
         }
