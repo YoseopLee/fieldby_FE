@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-const CampaignProgressDetail = ({ uid, name, height, profile,simpleaddr, stroke, career, roundingFrequency, style1, style2, style3, igname, igfollower, igfollow, igmedia, bestImages, checkedItemHandler}) => {
+const CampaignProgressDetail = ({ uid, name, height, profile,simpleaddr, stroke, career, roundingFrequency, style1, style2, style3, igname, igfollower, igfollow, igmedia, bestImages, checkedItemHandler, isSelected}) => {
     const [bChecked, setChecked] = useState(false);
     
 
@@ -28,7 +28,7 @@ const CampaignProgressDetail = ({ uid, name, height, profile,simpleaddr, stroke,
                                     <img className="user-profile-img" src={profile} alt="profile" />
                                 </div>
                                 <div className="user-profile-container">
-                                    <span>남 26</span>
+                                    <span>남 26{isSelected}</span>
                                     <span>{height}cm</span>
                                     <span>{simpleaddr}</span>
                                 </div>

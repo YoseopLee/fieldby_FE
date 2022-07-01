@@ -1,4 +1,4 @@
-import { child, get, getDatabase, push, ref, set, update } from "firebase/database";
+import { child, get, getDatabase, push, ref, remove, set, update } from "firebase/database";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
@@ -14,8 +14,7 @@ const CampaignProgress = () => {
     const [checkedItems, setCheckedItems] = useState(new Set());
     const [checkedItemsCount, setCheckedItemsCount] = useState(0);
     const [loading, setLoading] = useState(true);
-    
-    
+        
     useEffect(() => {
         const dbRef = ref(getDatabase());
         const getCampaignUserData = async() => {
@@ -34,7 +33,7 @@ const CampaignProgress = () => {
                                 if (snapshot.exists()) {
                                     const userDataObj = snapshot.val();                                    
                                     newUsersArrays.push(userDataObj);
-                                    console.log(newUsersArrays);                                    
+                                    console.log(newUsersArrays);                                                              
                                     setUserDatas([...newUsersArrays]);
                                     setLoading(false);
                                 } else {
@@ -78,6 +77,7 @@ const CampaignProgress = () => {
                     update(ref(realtimeDbService, `users/${v}/campaigns/${id}/`), {
                         isSelected : true
                     });
+                    // remove()로 해당 유저의 uid만 지워야함.
                 } catch (error) {
                     console.log(error.message);
                 }
@@ -117,8 +117,9 @@ const CampaignProgress = () => {
                             profile={userData.igInfo?.profileUrl}
                             igfollower={userData.igInfo?.followers}
                             igfollow={userData.igInfo?.follows}
-                            igmedia={userData.igInfo?.mediaCount}                    
-                            checkedItemHandler={checkedItemHandler}
+                            igmedia={userData.igInfo?.mediaCount}
+                            isSelected={userData.campaigns.isSelected}                    
+                            checkedItemHandler={checkedItemHandler}                            
                         />                                                
                     )}
                     <button className="selected-btn" type="button" onClick={selectedUserHandler}><span className="selected-user-count">{checkedItemsCount}/10</span><span className="selected-detail">선택한 크리에이터 선정하기</span></button>
