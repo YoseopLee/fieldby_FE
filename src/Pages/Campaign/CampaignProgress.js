@@ -1,4 +1,4 @@
-import { child, get, getDatabase, push, ref, set } from "firebase/database";
+import { child, get, getDatabase, push, ref, set, update } from "firebase/database";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
@@ -75,6 +75,9 @@ const CampaignProgress = () => {
                 console.log(v);
                 try {
                     push(ref(realtimeDbService, `brands/${currentUser.uid}/campaigns/${id}/selecteduser/`), v);
+                    update(ref(realtimeDbService, `users/${v}/campaigns/${id}/`), {
+                        isSelected : true
+                    });
                 } catch (error) {
                     console.log(error.message);
                 }

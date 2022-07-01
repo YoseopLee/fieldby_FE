@@ -58,7 +58,7 @@ const CampaignDetail = () => {
                     <div className="campaign-detail-top-contents-wrapper">
 
                         <div className="campaign-detail-top-image-box">
-                            <img src={campaignMainImage} alt="top-image" className="campaign-detail-top-image"/>
+                            <img src={campaignMainImage} alt="top-main" className="campaign-detail-top-image"/>
                         </div>
 
                         <div className="campaign-detail-top-title-wrapper">
@@ -76,25 +76,25 @@ const CampaignDetail = () => {
                                 <div className="campaign-timeline-status">
                                     <img src="/images/image 84.png" className="campaign-status-sign" alt="sign"/>
                                     <span>크리에이터 모집</span>
-                                    <span>{recruitingDate} - {dueDate}</span>
+                                    <span className="campaign-status-date">{recruitingDate.replace(/-/gi, '.')} - {dueDate.slice(0, 10).replace(/-/gi, '.')}</span>
                                 </div>
                                 <div className="campaign-timeline-status">
                                     <img src="/images/image 84.png" className="campaign-status-sign" alt="sign"/>
                                     <span>크리에이터 선정</span>
-                                    <span>{dueDate} - {dueDate}</span>
+                                    <span className="campaign-status-date">{dueDate.slice(0, 10).replace(/-/gi, '.')} - {dueDate.slice(0, 10).replace(/-/gi, '.')}</span>
                                 </div>
                                 <div className="campaign-timeline-status">
                                     <img src="/images/image 84.png" className="campaign-status-sign" alt="sign"/>
                                     <span>크리에이터 발표</span>
-                                    <span>{dueDate} - {dueDate}</span>
+                                    <span className="campaign-status-date">{dueDate.slice(0, 10).replace(/-/gi, '.')} - {dueDate.slice(0, 10).replace(/-/gi, '.')}</span>
                                 </div>
                                 <div className="campaign-timeline-status">                                    
                                     <span>콘텐츠 등록 기간</span>
-                                    <span></span>
+                                    <span className="campaign-status-date"></span>
                                 </div>
                                 <div className="campaign-timeline-status">                                    
                                     <span>보고서 확인</span>
-                                    <span></span>
+                                    <span className="campaign-status-date"></span>
                                 </div>
                             </div>
                         </div>
@@ -127,7 +127,7 @@ const CampaignDetailCSS = styled.div`
         justify-content : space-between;
         left : 0;
         right : 0;
-        top : 15px;
+        top : 20px;
         bottom : 0;
         margin-bottom : auto;
         margin-top : auto;
@@ -200,7 +200,7 @@ const CampaignDetailCSS = styled.div`
             .campaign-detail-top-title-wrapper {
                 display : flex;
                 flex-direction : column;
-                width : 75%;
+                width : 80%;
                 .campaign-detail-top-title {
                     margin-bottom : -4px;
                     .campaign-detail-top-instagram {
@@ -252,12 +252,15 @@ const CampaignDetailCSS = styled.div`
                         z-index : 999;
                         .campaign-status-sign {
                             margin-top : -10px;
-                            margin-bottom : 10px;
+                            margin-bottom : 5px;
                             width : 20px;
                         }
                         span {
                             font-size : 12px;
-                            margin-bottom : 1px;
+                            
+                        }
+                        .campaign-status-date {
+                            font-size : 10px;
                         }
                     }
                 }
@@ -280,8 +283,8 @@ const CampaignDetailCSS = styled.div`
     }
 
     .campaign-detail-top-square-vc {
-        height : 12%;
-        top : 70px;        
+        height : 15%;
+        top : 80px;        
         margin-top : auto;
         margin-bottom : auto;
     }
@@ -306,7 +309,7 @@ const CampaignDetailCSS = styled.div`
     
     .campaign-detail-square-vc {
         height : 70%;
-        bottom : 40px;
+        bottom : 0px;
         margin-top : auto;
         margin-bottom : auto;
     }
@@ -341,6 +344,36 @@ const CampaignDetailCSS = styled.div`
             font-size : 14px;
             color : #ffffff;
             text-decoration : none;           
+        }
+
+        .campaign-complete-posts {
+            margin-left : 20px;
+            border-radius : 5px;
+            background : #303030;
+            height : 40px;
+            width : 200px;
+            display : flex;
+            align-items : center;
+            justify-content : center;
+            font-weight : 700;
+            font-size : 14px;
+            color : #ffffff;
+            text-decoration : none;
+        }
+
+        .campaign-report {
+            margin-left : 20px;
+            border-radius : 5px;
+            background : #303030;
+            height : 40px;
+            width : 200px;
+            display : flex;
+            align-items : center;
+            justify-content : center;
+            font-weight : 700;
+            font-size : 14px;
+            color : #ffffff;
+            text-decoration : none;
         }
     }
 `
