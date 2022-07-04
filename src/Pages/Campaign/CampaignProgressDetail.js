@@ -6,7 +6,7 @@ const CampaignProgressDetail = ({ uid, name, height, profile,simpleaddr, stroke,
     const [bChecked, setChecked] = useState(false);
     const [userBestImage1, setUserBestImage1] = useState('');
     const [userBestImage2, setUserBestImage2] = useState('');
-    const [userBestImage3, setUserBestImage3] = useState(''); 
+    const [userBestImage3, setUserBestImage3] = useState('');
                                                
     useEffect(() => {
         const getUserBestImages = async() => {
@@ -22,9 +22,7 @@ const CampaignProgressDetail = ({ uid, name, height, profile,simpleaddr, stroke,
 
                     const json3 = await axios.get(
                         `https://graph.facebook.com/v14.0/${bestImage3}?fields=media_url&access_token=${token}`
-                    )
-                    
-                    console.log(json1.data);
+                    )                    
                     setUserBestImage1(json1.data.media_url);
                     setUserBestImage2(json2.data.media_url);
                     setUserBestImage3(json3.data.media_url);                

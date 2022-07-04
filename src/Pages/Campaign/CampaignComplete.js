@@ -12,7 +12,7 @@ const CampaignComplete = () => {
     const {id} = useParams();
     const [userDatas, setUserDatas] = useState([]);
     const [userPostDatas, setUserPostDatas] = useState([]);
-    const [loading, setLoading] = useState(true);
+    
     
 
     useEffect(() => {
@@ -37,7 +37,7 @@ const CampaignComplete = () => {
                                 userArray.push(userDataObj);
                                 console.log(userArray);
                                 setUserDatas([...userArray]);
-                                setLoading(false);
+                                
                                 const userSelectedData = userDataObj.campaigns;
                                 console.log(userSelectedData);                                                          
                             } else {
@@ -59,12 +59,7 @@ const CampaignComplete = () => {
 
     return (
         <CampaignCompleteCSS>
-            {loading ? (
-                <div className="spinner-cm">
-                    <Spinner />
-                </div>
-            ) : (
-                <>
+            
                     <span className="campaign-complete-title">완료 포스팅</span>
                     <div className="campaign-complete-posts-wrapper">
                         {userDatas.map((userData, idx) =>
@@ -77,8 +72,7 @@ const CampaignComplete = () => {
                             />
                         )}
                     </div>
-                </>
-            )}
+                
            
         </CampaignCompleteCSS>
     )
@@ -96,7 +90,7 @@ const CampaignCompleteCSS = styled.div`
         margin-bottom : 60px;
     }
     .campaign-complete-posts-wrapper {
-
+        
     }
 `
 
