@@ -93,15 +93,8 @@ const CampaignAdmin = () => {
     
     const registerCampaign = () => {
         try {
-            push(ref(realtimeDbService, `brands/${uid}/campaigns/`), {                   
-                    mainImageUrl : downloadImageUrl,
-                    campaignTitle : campaignTitle,
-                    recruitingDate : recruitingDate,
-                    dueDate : dueDate.replace(/T/gi, '-').replace(/\:/, '-'),
-                    recruitingNumber : recruitingNumber                                              
-            });
-
-            push(ref(realtimeDbService, `campaigns/`), {
+            
+            const campaignUid = push(ref(realtimeDbService, `campaigns/`), {
                 campaignTitle : campaignTitle,
                 brandInstagram : brandInstagram,
                 brandName : brandName,
@@ -133,6 +126,17 @@ const CampaignAdmin = () => {
                 selectionDate : selectionDate,
                 uploadDate : uploadDate,
             });
+
+            const campaignKey = campaignUid.key;
+
+            update(ref(realtimeDbService, `brands/${uid}/campaigns/${campaignKey}`), {                   
+                mainImageUrl : downloadImageUrl,
+                campaignTitle : campaignTitle,
+                recruitingDate : recruitingDate,
+                dueDate : dueDate.replace(/T/gi, '-').replace(/\:/, '-'),
+                recruitingNumber : recruitingNumber                                              
+        });
+
             alert('캠페인 등록이 완료되었습니다.');
         } catch (error) {
             console.log(error.message);

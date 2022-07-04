@@ -5,8 +5,8 @@ const CampaignReport = () => {
     return (
         <CampaignReportCSS>
             <div className="report-container">총 도달 수</div>
-            <div className="report-container"></div>
-            <div className="report-container"></div>
+            <div className="report-container">총 인터렉션 수</div>
+            <div className="report-container">총 </div>
             <div className="report-container"></div>
             <div className="report-container"></div>
             <div className="report-container"></div>

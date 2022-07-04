@@ -134,7 +134,7 @@ const CampaignProgressDetailCSS = styled.div`
 
         .campaign-user-instagram-wrapper {
             display : grid;
-            
+            min-width : 700px;
             .user-instagram-infos-container {
                 display : flex;
                 align-items : center;
@@ -218,6 +218,7 @@ const CampaignProgressDetailCSS = styled.div`
                 }
 
                 .user-golf-infos {
+                    min-width : 285px;
                     margin-left : 28px;
                     display : grid;
                     padding : 12px;
