@@ -60,7 +60,7 @@ const CampaignComplete = () => {
     return (
         <CampaignCompleteCSS>
             
-                    <span className="campaign-complete-title">완료 포스팅</span>
+                    <span className="campaign-complete-title">완료 포스팅</span>                
                     <div className="campaign-complete-posts-wrapper">
                         {userDatas.map((userData, idx) =>
                             <CampaignCompleteDetail 
@@ -68,7 +68,7 @@ const CampaignComplete = () => {
                                 igname={userData.igInfo?.username}
                                 followers={userData.igInfo?.followers}
                                 token={userData.igInfo?.token}
-                                postImageUrl={userData.campaigns?.[id].images}
+                                postImageUrl={userData.campaigns?.[id].images?.[0]}
                             />
                         )}
                     </div>
@@ -90,7 +90,11 @@ const CampaignCompleteCSS = styled.div`
         margin-bottom : 60px;
     }
     .campaign-complete-posts-wrapper {
-        
+        display : grid;  
+        grid-template-columns: repeat(3, 1fr);
+	    grid-template-rows: repeat(3, minmax(100px, auto));  
+        gap : 50px 25px;    
+        margin-top : 50px;
     }
 `
 
