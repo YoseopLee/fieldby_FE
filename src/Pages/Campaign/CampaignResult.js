@@ -91,7 +91,7 @@ const CampaignResult = () => {
                                     key={idx}
                                     id={idx + 1}
                                     name={userData.name}
-                                    profile={userData.igInfo.profileUrl}
+                                    profile={userData.igInfo?.profileUrl}
                                     phoneNumber={userData.phoneNumber}
                                     zipno={userData.address.zipNo}
                                     detailaddress={userData.address.roadAddr}
