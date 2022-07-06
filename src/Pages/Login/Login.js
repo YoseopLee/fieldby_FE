@@ -46,10 +46,10 @@ const Login = () => {
                             setPassword(e.target.value);
                         }}/>
                     </div>
-                    <div className="login-maintain">
+                    {/* <div className="login-maintain">
                         <img src="images/login-maintain.png" alt=""/>
                         <span className="login-maintain-check">로그인 유지</span>
-                    </div>
+                    </div> */}
                     <div className="login-btn-wrapper">
                         <button onClick={signIn} id="login-btn">로그인</button>
                         
@@ -174,7 +174,7 @@ const LoginContainerCSS = styled.div`
     .login-btn-wrapper {
         display : flex;
         justify-content : center;
-        margin-top : 16px;
+        margin-top : 110px;
 
         #login-btn{
             background: #303030;
