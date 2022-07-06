@@ -112,6 +112,17 @@ const CampaignResult = () => {
 }
 
 const CampaignResultCSS = styled.div`
+    .spinner-cm {
+        position : absolute;
+        left : 50%;
+        top : 50%;
+        right : 50%;
+        bottom : 50%;
+        margin-top : auto;
+        margin-bottom : auto;
+        margin-right : auto;
+        margin-left : auto;
+    }
     .campaign-progress-table {
         display : flex;
         width : 100%;

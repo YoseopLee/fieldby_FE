@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
-import { AuthProvider } from './Context/authProvider';
+import LoggedInRoute from './LoggedInRoute';
 import CampaignAdmin from './Pages/Admin/CampaignAdmin';
 import Campaign from './Pages/Campaign/Campaign';
 import CampaignComplete from './Pages/Campaign/CampaignComplete';
@@ -18,9 +18,23 @@ const App = () => {
   return (
     <BrowserRouter>      
         <Routes>
-          <Route path="/" element={<PreLogin/>}/>
-          <Route path="/login" element={<Login/>}/>
-          <Route path="/sign-up" element={<SignUp/>}/>
+          <Route path="/" element={
+            <LoggedInRoute>
+              <PreLogin/>
+            </LoggedInRoute>
+          }/>
+          <Route path="/login" element={
+            <LoggedInRoute>
+              <Login/>
+            </LoggedInRoute>            
+          }/>
+          <Route path="/sign-up" element={
+            <LoggedInRoute>
+              <SignUp/>
+            </LoggedInRoute>            
+          }/>
+
+          
           <Route exact path='/campaign' element={
             <PrivateRoute>
               <Campaign/>

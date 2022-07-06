@@ -4,12 +4,24 @@ import styled from "styled-components";
 const CampaignReport = () => {
     return (
         <CampaignReportCSS>
-            <div className="report-container">총 도달 수</div>
-            <div className="report-container"></div>
-            <div className="report-container"></div>
-            <div className="report-container"></div>
-            <div className="report-container"></div>
-            <div className="report-container"></div>
+            <div className="report-container">
+                총 도달 수
+            </div>
+            <div className="report-container">
+                총 인터렉션 수
+            </div>
+            <div className="report-container">
+                총 팔로워
+            </div>
+            <div className="report-container">
+                프로필 활동
+            </div>
+            <div className="report-container">
+                BEST 크리에이터 TOP 3
+            </div>
+            <div className="report-container">
+                인사이트 데이터
+            </div>
         </CampaignReportCSS>
     )
 }
