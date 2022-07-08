@@ -63,11 +63,11 @@ const CampaignReport = () => {
                         try {
                             const json1 = await axios.get(
                                 // token에 권한이 없어서 불러오지 못함.
-                                `https://graph.facebook.com/v14.0/17875403288663005/insights?metric=reach,impressions,engagement,saved&access_token=EAAIJMALXHyQBAKkcHawID2dUSxFCiI5mEBUZBANIefkZApcnvpPL2hVSwzTKgwmCX8GTk0EvC2tPAUguXLIgNZA7RjDEQ511Mo0gqV4ilYvwTHmOiLzbSiSezcr293XL8xtMdR3nUNyicGHw7jfSg5BZBWxlfP46aKZBB7fW0BJ6EVMpP76YgTFkxnlSf4wMRYaoLFdiBdEsQr7iMpZCP55KBn0Qbrs1EUCK7zMClhcVu5226BnBbA`
+                                `https://graph.facebook.com/v14.0/17875403288663005/insights?metric=reach,impressions,engagement,saved&access_token=EAAIJMALXHyQBAHHJfs170PHlNV8YvVZAgAK2upZBIbxVSSf0WEZBe9YSp6YtY2NG32GttYq0LYN2G92jiUHZCNJhVi1CFuWaK9UawdKRKizV3PizUmf5eOJZA6OuRHIO2p0COEFenkaK18szjzmLkNDidIJTKKrdDUm1ZC3NTEILW3hRApZBaXO0Gq29z00BfipouLMDF2iUYbmtTWasc1om0L0AIjSrFW0azgF4kjHZBsVYYB7bCPKZC`
                             );
                             
                             const json2 = await axios.get(
-                                `https://graph.facebook.com/v14.0/17875403288663005?fields=comments_count,like_count&access_token=EAAIJMALXHyQBAKkcHawID2dUSxFCiI5mEBUZBANIefkZApcnvpPL2hVSwzTKgwmCX8GTk0EvC2tPAUguXLIgNZA7RjDEQ511Mo0gqV4ilYvwTHmOiLzbSiSezcr293XL8xtMdR3nUNyicGHw7jfSg5BZBWxlfP46aKZBB7fW0BJ6EVMpP76YgTFkxnlSf4wMRYaoLFdiBdEsQr7iMpZCP55KBn0Qbrs1EUCK7zMClhcVu5226BnBbA`
+                                `https://graph.facebook.com/v14.0/17875403288663005?fields=comments_count,like_count&access_token=EAAIJMALXHyQBAHHJfs170PHlNV8YvVZAgAK2upZBIbxVSSf0WEZBe9YSp6YtY2NG32GttYq0LYN2G92jiUHZCNJhVi1CFuWaK9UawdKRKizV3PizUmf5eOJZA6OuRHIO2p0COEFenkaK18szjzmLkNDidIJTKKrdDUm1ZC3NTEILW3hRApZBaXO0Gq29z00BfipouLMDF2iUYbmtTWasc1om0L0AIjSrFW0azgF4kjHZBsVYYB7bCPKZC`
                             );
 
                             const reach = json1.data.data[0].values[0].value;
@@ -184,6 +184,7 @@ const CampaignReport = () => {
             </div>
             <div className="report-container">
                 <span className="report-container-title">인사이트 데이터</span>
+                
             </div>
         </CampaignReportCSS>
     )
