@@ -74,17 +74,17 @@ const CampaignDetail = () => {
                             </div>
                             <div className="campaign-detail-top-timeline">
                                 <div className="campaign-timeline-status">
-                                    <img src="/images/image 84.png" className="campaign-status-sign" alt="sign"/>
+                                    <img src="/images/Group 65.png" className="campaign-status-sign" alt="sign"/>
                                     <span>크리에이터 모집</span>
                                     <span className="campaign-status-date">{recruitingDate.replace(/-/gi, '.')} - {dueDate.slice(0, 10).replace(/-/gi, '.')}</span>
                                 </div>
                                 <div className="campaign-timeline-status">
-                                    <img src="/images/image 84.png" className="campaign-status-sign" alt="sign"/>
+                                    <img src="/images/Group 65.png" className="campaign-status-sign" alt="sign"/>
                                     <span>크리에이터 선정</span>
                                     <span className="campaign-status-date">{dueDate.slice(0, 10).replace(/-/gi, '.')} - {dueDate.slice(0, 10).replace(/-/gi, '.')}</span>
                                 </div>
                                 <div className="campaign-timeline-status">
-                                    <img src="/images/image 84.png" className="campaign-status-sign" alt="sign"/>
+                                    <img src="/images/Group 65.png" className="campaign-status-sign" alt="sign"/>
                                     <span>크리에이터 발표</span>
                                     <span className="campaign-status-date">{dueDate.slice(0, 10).replace(/-/gi, '.')} - {dueDate.slice(0, 10).replace(/-/gi, '.')}</span>
                                 </div>

@@ -63,11 +63,11 @@ const CampaignReport = () => {
                         try {
                             const json1 = await axios.get(
                                 // token에 권한이 없어서 불러오지 못함.
-                                `https://graph.facebook.com/v14.0/17875403288663005/insights?metric=reach,impressions,engagement,saved&access_token=EAAIJMALXHyQBAHHJfs170PHlNV8YvVZAgAK2upZBIbxVSSf0WEZBe9YSp6YtY2NG32GttYq0LYN2G92jiUHZCNJhVi1CFuWaK9UawdKRKizV3PizUmf5eOJZA6OuRHIO2p0COEFenkaK18szjzmLkNDidIJTKKrdDUm1ZC3NTEILW3hRApZBaXO0Gq29z00BfipouLMDF2iUYbmtTWasc1om0L0AIjSrFW0azgF4kjHZBsVYYB7bCPKZC`
+                                `https://graph.facebook.com/v14.0/17875403288663005/insights?metric=reach,impressions,engagement,saved&access_token=EAAIJMALXHyQBAMJZAigKrkZCZAfZBr9PTQjxfJqD7nnbtLw7dlZBMQUN86yptRzAKIPt8hVSBmhVy4DqyPcIvu2HMLrbbp6nUtq7NZBTB4uWtKhZCtYSsgowMKrs3muFmZBbPJB7exAZCJZBQvVn8u5G83ixkLBDPlRwIwkSgni1LfeIvejCRfURBCnjQCC2ZAQB9bumWyrDIBnmm6LPjG3fgD4fXjqcsCpp41EpQ4XCx1ub26jcFprAI9u`
                             );
                             
                             const json2 = await axios.get(
-                                `https://graph.facebook.com/v14.0/17875403288663005?fields=comments_count,like_count&access_token=EAAIJMALXHyQBAHHJfs170PHlNV8YvVZAgAK2upZBIbxVSSf0WEZBe9YSp6YtY2NG32GttYq0LYN2G92jiUHZCNJhVi1CFuWaK9UawdKRKizV3PizUmf5eOJZA6OuRHIO2p0COEFenkaK18szjzmLkNDidIJTKKrdDUm1ZC3NTEILW3hRApZBaXO0Gq29z00BfipouLMDF2iUYbmtTWasc1om0L0AIjSrFW0azgF4kjHZBsVYYB7bCPKZC`
+                                `https://graph.facebook.com/v14.0/17875403288663005?fields=comments_count,like_count&access_token=EAAIJMALXHyQBAMJZAigKrkZCZAfZBr9PTQjxfJqD7nnbtLw7dlZBMQUN86yptRzAKIPt8hVSBmhVy4DqyPcIvu2HMLrbbp6nUtq7NZBTB4uWtKhZCtYSsgowMKrs3muFmZBbPJB7exAZCJZBQvVn8u5G83ixkLBDPlRwIwkSgni1LfeIvejCRfURBCnjQCC2ZAQB9bumWyrDIBnmm6LPjG3fgD4fXjqcsCpp41EpQ4XCx1ub26jcFprAI9u`
                             );
 
                             const reach = json1.data.data[0].values[0].value;
