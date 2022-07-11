@@ -21,7 +21,8 @@ const CampaignProgress = () => {
             const json = await get(child(dbRef, `brands/${currentUser.uid}/campaigns/${id}/users`))
             .then((snapshot) => {
                 if (snapshot.exists()) {
-                    const dataObj = snapshot.val();                    
+                    const dataObj = snapshot.val();  
+                    console.log(dataObj);                  
                     const data_ent = Object.entries(dataObj);
                     console.log(data_ent);
                     const data_ent_arr = data_ent.map((d) => Object.assign(d[0]));
@@ -122,7 +123,8 @@ const CampaignProgress = () => {
                             igfollower={userData.igInfo?.followers}
                             igfollow={userData.igInfo?.follows}
                             igmedia={userData.igInfo?.mediaCount}
-                            isSelected={userData.campaigns.isSelected}                    
+                            isSelected={userData.campaigns.isSelected}
+                            isFollowed={userData.campaigns?.[id].isFollowed}                    
                             checkedItemHandler={checkedItemHandler}                            
                         />                                                
                     )}
