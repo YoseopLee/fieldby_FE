@@ -10,7 +10,7 @@ const PreLogin = () => {
         <PreLoginCSS>
             <div id="prelogin-cm" className="prelogin-square-hc prelogin-square-vc">
                 <div className="prelogin-logo">
-                    <img src="images/필드바이 로고-47 1.png" alt=""/>
+                    <img src="images/필드바이 로고-47.png" alt=""/>
                     <h2 className="prelogin-logo-name">Business Suite</h2>
                 </div>
                 <p className="prelogin-info">
@@ -56,8 +56,7 @@ const PreLoginCSS = styled.div`
         display : flex;
         justify-content : center;
         margin-top : 60px;
-        img{
-            width : 200px;
+        img{            
             height : 60px;
         }
         .prelogin-logo-name {
