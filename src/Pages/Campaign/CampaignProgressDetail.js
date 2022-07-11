@@ -1,12 +1,19 @@
 import axios from "axios";
+import { push, ref, remove, set, update } from "firebase/database";
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import { useAuth } from "../../Context/authProvider";
+import { realtimeDbService } from "../../fBase";
 
-const CampaignProgressDetail = ({ uid, name, height, profile,simpleaddr, stroke, career, roundingFrequency, style1, style2, style3, igname, igfollower, igfollow, igmedia, bestImage1, bestImage2, bestImage3, token,checkedItemHandler, isSelected}) => {
+const CampaignProgressDetail = ({ uid, name, height, profile,simpleaddr, stroke, career, roundingFrequency, style1, style2, style3, igname, igfollower, igfollow, igmedia, bestImage1, bestImage2, bestImage3, token,checkedItemHandler, isSelected, isFollowed}) => {
     const [bChecked, setChecked] = useState(false);
     const [userBestImage1, setUserBestImage1] = useState('');
     const [userBestImage2, setUserBestImage2] = useState('');
     const [userBestImage3, setUserBestImage3] = useState('');
+    const {currentUser} = useAuth();
+    const [userIsFollowed, setIsUserFollowed] = useState(isFollowed);
+    let {id} = useParams();
                                                
     useEffect(() => {
         const getUserBestImages = async() => {
@@ -40,6 +47,34 @@ const CampaignProgressDetail = ({ uid, name, height, profile,simpleaddr, stroke,
         console.log(bChecked);
     }
 
+    const follwedUserHandler = () => {
+        try {
+            update(ref(realtimeDbService, `brands/${currentUser.uid}/campaigns/${id}/followedUser`), {
+                [uid] : uid
+            });
+            update(ref(realtimeDbService, `users/${uid}/campaigns/${id}/`), {
+                isFollowed : true
+        });
+            setIsUserFollowed(true);
+            console.log("follwing-success");
+        } catch (error) {
+            console.log(error);
+        }              
+    }
+
+    const unfollowUserHandler = () => {
+        try {
+            remove(ref(realtimeDbService, `brands/${currentUser.uid}/campaigns/${id}/followedUser/${uid}`));
+            update(ref(realtimeDbService, `users/${uid}/campaigns/${id}/`), {
+                isFollowed : false
+            });
+            setIsUserFollowed(false);
+            console.log("unfollow");
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     return(
         <CampaignProgressDetailCSS>            
                 <div className="campaign-register-user">
@@ -51,11 +86,20 @@ const CampaignProgressDetail = ({ uid, name, height, profile,simpleaddr, stroke,
                         
                         <div className="campaign-user-instagram-wrapper">
                             <div className="campaign-register-user-infos">
-                                <div className="user-name-container">
-                                    <img className="unfollowing" src="/images/image 112.png" alt="unfollow" />
-                                    <span className="user-name">{name}</span>
-                                    <img className="user-profile-img" src={profile} alt="profile" />
-                                </div>
+                                {userIsFollowed === true ? (
+                                    <div className="user-name-container">                                    
+                                        <img className="unfollowing" src="/images/image 121.png" alt="follow" onClick={unfollowUserHandler} />                                                                        
+                                        <span className="user-name">{name}</span>
+                                        <img className="user-profile-img" src={profile} alt="profile" />
+                                    </div>
+                                ) : (
+                                    <div className="user-name-container">                                    
+                                        <img className="unfollowing" src="/images/image 112.png" alt="unfollow" onClick={follwedUserHandler}/>                                                                        
+                                        <span className="user-name">{name}</span>
+                                        <img className="user-profile-img" src={profile} alt="profile" />
+                                    </div>
+                                )}
+                                
                                 <div className="user-profile-container">
                                     <span>남 26</span>
                                     <span>{height}cm</span>
