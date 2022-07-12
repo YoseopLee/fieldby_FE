@@ -34,7 +34,7 @@ const Login = () => {
         <LoginContainerCSS>
             <div className="login-square-hc login-square-vc" id="login-cm">
                 <div className="login-logo">
-                    <img src="images/필드바이 로고-47 1.png" alt=""/>
+                    <img src="/images/fieldbylogo.png" alt=""/>
                     <h2 className="login-logo-name">Business Suite</h2>
                 </div>
                 <div className="login-box-container">

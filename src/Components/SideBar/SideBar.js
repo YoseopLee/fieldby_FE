@@ -42,7 +42,7 @@ const SideBar = () => {
     return (
         <SideBarContainerCSS>
             <div className="campaign-logo">
-                    <img src="/images/필드바이 로고-47 1.png" alt=""/>
+                    <img src="/images/fieldbylogo.png" alt="main"/>
                     <h2 className="campaign-logo-name">Business Suite</h2>
                 </div>
 
