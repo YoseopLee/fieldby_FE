@@ -116,7 +116,7 @@ const SignUp = () => {
         <SignUpContainerCSS>
             <div className="sign-up-square-hc sign-up-square-vc" id="sign-up-cm">
                 <div className="sign-up-logo">
-                    <img src="images/필드바이 로고-47 1.png" alt=""/>
+                    <img src="/images/fieldbylogo.png" alt="signup"/>
                     <h2 className="sign-up-logo-name">Business Suite</h2>
                 </div>
                 <div className="sign-up-title">회원가입</div>
