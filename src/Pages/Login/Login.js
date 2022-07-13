@@ -108,7 +108,7 @@ const LoginContainerCSS = styled.div`
             width : 133px;
         }
         .login-logo-name {
-            margin-left : 14px;
+            margin-left : 8px;
             margin-block-start : -10px;
             margin-block-end : 0;
             font-size : 18px;

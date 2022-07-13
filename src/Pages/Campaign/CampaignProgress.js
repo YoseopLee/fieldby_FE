@@ -1,6 +1,6 @@
 import { child, get, getDatabase, push, ref, remove, set, update } from "firebase/database";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Spinner from "../../Components/Common/Spinner";
 import { useAuth } from "../../Context/authProvider";
@@ -13,8 +13,10 @@ const CampaignProgress = () => {
     const [userDatas, setUserDatas] = useState([]);
     const [checkedItems, setCheckedItems] = useState(new Set());
     const [checkedItemsCount, setCheckedItemsCount] = useState(0);
+    const [isUserSelected, setIsUserSelected] = useState(false);
     const [loading, setLoading] = useState(true);
-        
+    const navigate = useNavigate();    
+
     useEffect(() => {
         const dbRef = ref(getDatabase());
         const getCampaignUserData = async() => {
@@ -54,6 +56,26 @@ const CampaignProgress = () => {
         getCampaignUserData();
     }, [])
 
+    useEffect(() => {
+        const dbRef = ref(getDatabase());
+        const getCampaignData = async() => {
+            const json1 = await get(child(dbRef, `brands/${currentUser.uid}/campaigns/${id}`))
+            .then((snapshot) => {
+                if (snapshot.exists()) {
+                    const campaignDataObj = snapshot.val();
+                    console.log(campaignDataObj.selectCompleted);
+                    const isSelected = campaignDataObj.selectCompleted;
+                    setIsUserSelected(isSelected);
+                } else {
+                    console.log("No Data");
+                }
+            }).catch((error) => {
+                console.log(error);
+            })
+        }
+        getCampaignData();
+    }, []);
+
     const checkedItemHandler = (uid, isChecked) => {
         if (isChecked) {
             checkedItems.add(uid);
@@ -78,10 +100,13 @@ const CampaignProgress = () => {
                     update(ref(realtimeDbService, `users/${v}/campaigns/${id}/`), {
                         isSelected : true
                     });
-                    // remove()로 해당 유저의 uid만 지워야함.
+                    update(ref(realtimeDbService, `brands/${currentUser.uid}/campaigns/${id}`), {
+                        selectCompleted : true
+                    });                             
                 } catch (error) {
                     console.log(error.message);
                 }
+                navigate(`/campaign/${id}/result`);
             })                  
         } else {
             alert('크리에이터를 선정해주세요!');
@@ -90,47 +115,66 @@ const CampaignProgress = () => {
 
     return (
         <CampaignProgressCSS>
-            {loading ? (
-                <div className="spinner-cm">
-                    <Spinner />
-                </div>
+            {isUserSelected ? (
+                <>
+                    {loading ? (
+                        <div className="spinner-cm">
+                            <Spinner />
+                        </div>
+                    ) : (
+                        <div className="campaign-empty">
+                            <img src="/images/campaign-empty.png" alt="no-campaign"/> 
+                            <span>이미 인플루언서 선정이 완료된 캠페인이에요 : (</span>
+                        </div>
+                    )}
+                </>
             ) : (
                 <>
-                    <div className="campaign-progress-menus">
-                        <div className="campaign-select">
-
+                    {loading ? (
+                        <div className="spinner-cm">
+                            <Spinner />
                         </div>
-                    </div>
-                    {userDatas.map((userData, idx) =>
-                        <CampaignProgressDetail 
-                            key={idx}
-                            uid={userData.uid}
-                            name={userData.name}
-                            height={userData.height}                    
-                            simpleaddr={userData.simpleAddress}
-                            stroke={userData.stroke}
-                            career={userData.career}
-                            roundingFrequency={userData.roundingFrequency}
-                            style1={userData.styles[0]} 
-                            style2={userData.styles[1]}
-                            style3={userData.styles[2]}                                                     
-                            bestImage1={userData.bestImages ? userData.bestImages[0] : null}
-                            bestImage2={userData.bestImages ? userData.bestImages[1] : null}
-                            bestImage3={userData.bestImages ? userData.bestImages[2] : null}
-                            token={userData.igInfo?.token}
-                            igname={userData.igInfo?.username}
-                            profile={userData.igInfo?.profileUrl}
-                            igfollower={userData.igInfo?.followers}
-                            igfollow={userData.igInfo?.follows}
-                            igmedia={userData.igInfo?.mediaCount}
-                            isSelected={userData.campaigns.isSelected}
-                            isFollowed={userData.campaigns?.[id].isFollowed}                    
-                            checkedItemHandler={checkedItemHandler}                            
-                        />                                                
+                    ) : (
+                        <>
+                            <div className="campaign-progress-menus">
+                                <div className="campaign-select">
+
+                                </div>
+                            </div>
+                            {userDatas.map((userData, idx) =>
+                                <CampaignProgressDetail 
+                                    key={idx}
+                                    uid={userData.uid}
+                                    name={userData.name}
+                                    height={userData.height}                    
+                                    simpleaddr={userData.simpleAddress}
+                                    stroke={userData.stroke}
+                                    career={userData.career}
+                                    roundingFrequency={userData.roundingFrequency}
+                                    style1={userData.styles[0]} 
+                                    style2={userData.styles[1]}
+                                    style3={userData.styles[2]}                                                     
+                                    bestImage1={userData.bestImages ? userData.bestImages[0] : null}
+                                    bestImage2={userData.bestImages ? userData.bestImages[1] : null}
+                                    bestImage3={userData.bestImages ? userData.bestImages[2] : null}
+                                    token={userData.igInfo?.token}
+                                    igname={userData.igInfo?.username}
+                                    profile={userData.igInfo?.profileUrl}
+                                    igfollower={userData.igInfo?.followers}
+                                    igfollow={userData.igInfo?.follows}
+                                    igmedia={userData.igInfo?.mediaCount}
+                                    isSelected={userData.campaigns.isSelected}
+                                    isFollowed={userData.campaigns?.[id].isFollowed}                    
+                                    checkedItemHandler={checkedItemHandler}                            
+                                />                                                
+                            )}
+                            <button className="selected-btn" type="button" onClick={selectedUserHandler}><span className="selected-user-count">{checkedItemsCount}/10</span><span className="selected-detail">선택한 크리에이터 선정하기</span></button>
+                        </>
                     )}
-                    <button className="selected-btn" type="button" onClick={selectedUserHandler}><span className="selected-user-count">{checkedItemsCount}/10</span><span className="selected-detail">선택한 크리에이터 선정하기</span></button>
                 </>
             )}
+
+            
             
         </CampaignProgressCSS>
     )
@@ -323,6 +367,26 @@ const CampaignProgressCSS = styled.div`
             font-weight: 700;
             font-size: 16px;
             line-height: 19px;
+        }
+    }
+
+    .campaign-empty {
+        display : flex;
+        flex-direction : column;
+        align-items : center;
+        padding-top : 300px;
+        img {
+            width : 65px;
+            height : 65px;
+        }
+
+        span {
+            margin-top : 16px;
+            font-style: normal;
+            font-weight: 700;
+            font-size: 24px;
+            line-height: 19px;
+            color : #303030;
         }
     }
 `

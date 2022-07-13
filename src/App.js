@@ -8,7 +8,10 @@ import CampaignDetail from './Pages/Campaign/CampaignDetail';
 import CampaignProgress from './Pages/Campaign/CampaignProgress';
 import CampaignReport from './Pages/Campaign/CampaignReport';
 import CampaignResult from './Pages/Campaign/CampaignResult';
+import FindPassword from './Pages/Login/FindPassword';
 import Login from './Pages/Login/Login';
+import Policy from './Pages/Login/Policy';
+import Privacy from './Pages/Login/Privacy';
 import PreLogin from './Pages/Login/PreLogin';
 import SignUp from './Pages/SignUp/SignUp';
 import PrivateRoute from './PrivateRoute';
@@ -33,8 +36,13 @@ const App = () => {
               <SignUp/>
             </LoggedInRoute>            
           }/>
-
-          
+          <Route path="/find-pw" element={
+            <LoggedInRoute>
+              <FindPassword />
+            </LoggedInRoute>
+          }/>
+          <Route path="/policy" element={<Policy />} />
+          <Route path='/privacy' element={<Privacy />}/>
           <Route exact path='/campaign' element={
             <PrivateRoute>
               <Campaign/>
