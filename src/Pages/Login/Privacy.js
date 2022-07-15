@@ -392,38 +392,31 @@ const Privacy = () => {
                     <br/><br/><br/>
 
                     <h2>8. 개인정보보호최고책임자 및 관리자의 연락처</h2>
-                    <br/>이용자는 회사의 서비스를 이용하는 중 발생하는 모든 개인정보 관련 문의, 불만처리 등에 관한 사항을 개인정보 관리 책임자 혹은 담당부서로 문의할 수 있습니다. 회사는 이용자의 문의에 대한 신속하고 성실한 답변 및 처리를 위해 노력하고 있습니다.
-                    <br/>
+                    <br/><span className="privacy-info-detail">이용자는 회사의 서비스를 이용하는 중 발생하는 모든 개인정보 관련 문의, 불만처리 등에 관한 사항을 개인정보 관리 책임자 혹은 담당부서로 문의할 수 있습니다. 회사는 이용자의 문의에 대한 신속하고 성실한 답변 및 처리를 위해 노력하고 있습니다.</span>                    
                     <ul>
                         <li>[개인정보보호최고책임자] 김형우 대표 전화번호 : 070-7954-6410 이메일주소 : fieldby@gmail.com</li>
-                        <br/><li>[개인정보보호관리자] 김형우 대표 전화번호 : 070-7954-6410이메일주소 : fieldby@gmail.com</li>>
+                        <br/><li>[개인정보보호관리자] 김형우 대표 전화번호 : 070-7954-6410이메일주소 : fieldby@gmail.com</li>
                     </ul>    
+                    기타 개인정보침해에 대한 신고나 상담이 필요하신 경우에는 아래 기관으로 문의하시기 바랍니다.
+                    <ul>
+                        <li>개인정보침해신고센터, 개인정보 분쟁조정위원회 ([privacy.kisa.or.kr](https://privacy.kisa.or.kr/) / 국번없이 118)</li>
+                        <li>대검찰청 사이버수사과 ([www.spo.go.kr](https://www.spo.go.kr/) / 02-3480-3571)</li>
+                        <li>경찰청 사이버테러대응센터 ([ecrm.cyber.go.kr](https://ecrm.cyber.go.kr/) / 1566-0112)</li>
+                    </ul>
+                    <br/><br/>
 
+                    <h2>9. 링크 사이트에 대한 책임</h2>
+                    <span className="privacy-info-detail">회사는 이용자에게 다른 웹사이트에 대한 링크를 제공할 수 있습니다. 그러나 링크 웹사이트들은 회사의 개인정보처리방침이 적용되지 않으므로, 해당 링크를 통해 외부 웹사이트로 이동하시는 경우, 해당 서비스의 정책을 검토하시기 바랍니다.</span>
+                    <br/><br/>
 
+                    <h2>10. 개인정보처리방침의 고지 의무</h2>
+                    <span className="privacy-info-detail">
+                    회사는 개인정보처리방침에 대한 변경이 있을 경우에는 개정 개인정보처리방침의 시행일로부터 최소 7일 전에 비즈니스 스위트 웹사이트의 공지사항 또는 이메일을 통해 고지합니다.
+                    <br/>
+                    <br/>1. 공고 일자 : 2022. 06. 01
+                    <br/>2. 시행 일자 : 2022. 06. 01
+                    </span>
 
-
-
-
-
-- 
-- 
-
-기타 개인정보침해에 대한 신고나 상담이 필요하신 경우에는 아래 기관으로 문의하시기 바랍니다.
-
-- 개인정보침해신고센터, 개인정보 분쟁조정위원회 ([privacy.kisa.or.kr](https://privacy.kisa.or.kr/) / 국번없이 118)
-- 대검찰청 사이버수사과 ([www.spo.go.kr](https://www.spo.go.kr/) / 02-3480-3571)
-- 경찰청 사이버테러대응센터 ([ecrm.cyber.go.kr](https://ecrm.cyber.go.kr/) / 1566-0112)
-
-# **9. 링크 사이트에 대한 책임**
-
-회사는 이용자에게 다른 웹사이트에 대한 링크를 제공할 수 있습니다. 그러나 링크 웹사이트들은 회사의 개인정보처리방침이 적용되지 않으므로, 해당 링크를 통해 외부 웹사이트로 이동하시는 경우, 해당 서비스의 정책을 검토하시기 바랍니다.
-
-# **10. 개인정보처리방침의 고지 의무**
-
-회사는 개인정보처리방침에 대한 변경이 있을 경우에는 개정 개인정보처리방침의 시행일로부터 최소 7일 전에 비즈니스 스위트 웹사이트의 공지사항 또는 이메일을 통해 고지합니다.
-
-1. 공고 일자 : 2022. 06. 01
-2. 시행 일자 : 2022. 06. 01
 
                 </div>
             </div>
@@ -473,8 +466,8 @@ const PrivacyContainerCSS = styled.div`
         
         .privacy-info-detail {
             font-size : 15px;
-            letter-spacing : 0.6px;
-            line-height : 18px;
+            letter-spacing : 0.4px;
+            line-height : 1.5;
         }
         
         .privacy-table {
@@ -495,7 +488,7 @@ const PrivacyContainerCSS = styled.div`
                             padding: 7px 9px;
                             background-color: transparent;
                             font-size: 14px;
-                            line-height: 20px;
+                            line-height: 1.2;
                         }
                     }
                 }
@@ -519,7 +512,7 @@ const PrivacyContainerCSS = styled.div`
                             padding: 7px 9px;
                             background-color: transparent;
                             font-size: 14px;
-                            line-height: 20px;
+                            line-height: 1.2;
                         }
                     }
                 }
