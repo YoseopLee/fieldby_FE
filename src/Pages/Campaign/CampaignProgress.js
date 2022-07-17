@@ -1,4 +1,4 @@
-import { child, get, getDatabase, push, ref, remove, set, update } from "firebase/database";
+import { child, get, getDatabase, push, ref, remove, update } from "firebase/database";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
@@ -102,7 +102,8 @@ const CampaignProgress = () => {
                     });
                     update(ref(realtimeDbService, `brands/${currentUser.uid}/campaigns/${id}`), {
                         selectCompleted : true
-                    });                             
+                    });
+                    remove(ref(realtimeDbService, `brands/${currentUser.uid}/campaigns/${id}/users/${v}`));             
                 } catch (error) {
                     console.log(error.message);
                 }
@@ -124,7 +125,7 @@ const CampaignProgress = () => {
                     ) : (
                         <div className="campaign-empty">
                             <img src="/images/campaign-empty.png" alt="no-campaign"/> 
-                            <span>이미 인플루언서 선정이 완료된 캠페인이에요 : (</span>
+                            <span>이미 인플루언서 선정이 완료된 캠페인이에요 : )</span>
                         </div>
                     )}
                 </>
