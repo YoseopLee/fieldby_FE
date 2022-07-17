@@ -82,6 +82,10 @@ const SignUp = () => {
         }
     }, [registerPassword])
 
+    const phoneAuth = () => {
+
+    }
+
     const writeUserData = () => {
         try {
             const userId = authService.currentUser.uid;
@@ -123,7 +127,7 @@ const SignUp = () => {
                 <div className="sign-up-box">
                     <span className="sign-up-name">휴대폰 번호</span>
                     <div className="sign-up-phone-wrapper">
-                        <input className="sign-up-phone" placeholder="핸드폰" value={phoneNumber} onChange={onChangePhone}/>
+                        <input className="sign-up-phone" placeholder="핸드폰('-' 없이 입력해주세요.)" value={phoneNumber} onChange={onChangePhone}/>
                         <button className="sign-up-phone-btn" disabled={!isPhone}>인증번호 발송</button>
                     </div>
                     {phoneNumber.length > 0 && <span className={`message ${isPhone ? 'success' : 'error'}`}>{phoneMessage}</span>}
