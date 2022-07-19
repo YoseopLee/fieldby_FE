@@ -58,54 +58,54 @@ const CampaignResult = () => {
 
     return (        
         <CampaignResultCSS>
-            {loading ? (
-                <div className="spinner-cm">
-                    <Spinner />
-                </div>
-            ) : (
+            {datas ? (
                 <>
-                    {datas 
-                      ?
-                        <>
-                            <div className="campaign-progress-table">
-                                <div className="campaign-progress-titles">
-                                    <span>번호</span>
-                                </div>
-                                <div className="campaign-progress-titles">
-                                    <span>이름</span>
-                                </div>
-                                <div className="campaign-progress-titles">
-                                    <span>전화번호</span>
-                                </div>
-                                <div className="campaign-progress-titles">
-                                    <span>주소</span>
-                                </div>
-                                <div className="campaign-progress-titles">
-                                    <span>송장번호</span>
-                                </div>
-                            </div>
-                            <hr/>
-                    
-                            {userDatas.map((userData, idx) => 
-                                <CampaignResultDetail 
-                                    key={idx}
-                                    id={idx + 1}
-                                    name={userData.name}
-                                    profile={userData.igInfo?.profileUrl}
-                                    phoneNumber={userData.phoneNumber}
-                                    zipno={userData.address.zipNo}
-                                    detailaddress={userData.address.roadAddr}
-                                />
-                            )}
-                        </>
-                      :
-                        <div className="campaign-result-empty">
-                            <img src="/images/campaign-empty.png" alt="no-campaign"/> 
-                            <span>아직 선정된 크리에이터들이 없습니다.</span>
+                    {loading ? (
+                        <div className="spinner-cm">
+                            <Spinner />
                         </div>
-                    }
+                    ) : (
+                        <>                                        
+                        <div className="campaign-progress-table">
+                            <div className="campaign-progress-titles">
+                                <span>번호</span>
+                            </div>
+                            <div className="campaign-progress-titles">
+                                <span>이름</span>
+                            </div>
+                            <div className="campaign-progress-titles">
+                                <span>전화번호</span>
+                            </div>
+                            <div className="campaign-progress-titles">
+                                <span>주소</span>
+                            </div>
+                            <div className="campaign-progress-titles">
+                                <span>송장번호</span>
+                            </div>
+                        </div>
+                        <hr/>
+                            
+                        {userDatas.map((userData, idx) => 
+                            <CampaignResultDetail 
+                                key={idx}
+                                id={idx + 1}
+                                name={userData.name}
+                                profile={userData.igInfo?.profileUrl}
+                                phoneNumber={userData.phoneNumber}
+                                zipno={userData.address.zipNo}
+                                detailaddress={userData.address.roadAddr}
+                            />
+                        )}                      
+                        </>
+                    )}
                 </>
+            ) : (
+                <div className="campaign-result-empty">
+                    <img src="/images/campaign-empty.png" alt="no-campaign"/> 
+                    <span>아직 선정된 크리에이터들이 없습니다.</span>
+                </div>
             )}
+            
             
         </CampaignResultCSS>
     )

@@ -113,11 +113,11 @@ const CampaignProgress = () => {
                     update(ref(realtimeDbService, `brands/${currentUser.uid}/campaigns/${id}`), {
                         selectCompleted : true
                     });
-                    remove(ref(realtimeDbService, `brands/${currentUser.uid}/campaigns/${id}/users/${v}`));
+                    // brands => user 필드 지우기
+                    remove(ref(realtimeDbService, `brands/${currentUser.uid}/campaigns/${id}/users/`));
                     set(ref(realtimeDbService, `campaigns/${id}/users/`), {
                         [v] : v
-                    })
-                                                     
+                    })                                                     
                 } catch (error) {
                     console.log(error.message);
                 }
@@ -216,7 +216,7 @@ const CampaignProgress = () => {
                                         igfollower={userData.igInfo?.followers}
                                         igfollow={userData.igInfo?.follows}
                                         igmedia={userData.igInfo?.mediaCount}
-                                        isSelected={userData.campaigns.isSelected}
+                                        isSelected={userData.campaigns?.isSelected}
                                         isFollowed={userData.campaigns?.[id].isFollowed}                    
                                         checkedItemHandler={checkedItemHandler}                            
                                     />                                                

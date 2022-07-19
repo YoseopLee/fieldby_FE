@@ -135,22 +135,31 @@ const CampaignProgressDetail = ({ uid, name, height, profile,simpleaddr, stroke,
                             </div>
                         </div>
 
+                        {userBestImage1
+                            ?            
                         <div className="user-images-container">
                             <div className="user-image">
-                                {userBestImage1
-                                    ?
-                                    <div>
-                                        <img src={userBestImage1} alt="1" />                                                                                                            
-                                        <img src={userBestImage2} alt="2" />
-                                        <img src={userBestImage3} alt="3" />
-                                    </div>                                    
-                                    :
-                                    <h3 className="empty-feed">등록된 피드가 없습니다.</h3>
-                                }
+                                
+                                    <div className="user-images-wrapper">
+                                        <a href={userBestImage1}>
+                                            <img src={userBestImage1} alt="1" />                                                                                                            
+                                        </a>
+                                        <a href={userBestImage2}>
+                                            <img src={userBestImage2} alt="2" />
+                                        </a>
+                                        <a href={userBestImage3}>
+                                            <img src={userBestImage3} alt="3" />
+                                        </a>                                        
+                                    </div>                                                                                                                                            
                             </div>
                         </div>
-                    </div>
-                                        
+                        :
+                            <div className="empty-feed-wrapper">
+                                <img src="/images/campaign-empty.png" alt="no-campaign"/> 
+                                <span className="empty-feed">등록된 피드가 없습니다 : (</span>
+                            </div>
+                        }
+                    </div>                                        
             </div>            
         </CampaignProgressDetailCSS>
     )
@@ -285,15 +294,46 @@ const CampaignProgressDetailCSS = styled.div`
         }
 
         .user-images-container {
+            display : flex;
+            justify-content : center;
+            align-items : center;            
             .user-image {
                 overflow-x : auto;
-                img {
-                    margin-left : 16px;
-                    height : 150px;
+                .user-images-wrapper {
+                    a {
+                        height : 150px;
+                        width : 150px;
+                        img {
+                            margin-left : 16px;
+                            width : 150px;
+                            height : 150px;                            
+                        }
+                    }
+                    
                 }
+                                
+            }
+        }
+        .empty-feed-wrapper {                    
+            display : flex;
+            flex-direction : column;
+            justify-content : center;
+            align-items : center;                                    
+            img {
+                width : 36px;
+                height : 36px;
+                margin-bottom : 4px;
+            }
+            .empty-feed {                        
+                font-size : 15px;
+                font-weight : 700;
+                color : #303030;
+                text-align : center;
             }
         }
     }
+    
+    
     
 }
 `
