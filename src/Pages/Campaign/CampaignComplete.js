@@ -59,19 +59,28 @@ const CampaignComplete = () => {
 
     return (
         <CampaignCompleteCSS>
-            
-                    <span className="campaign-complete-title">완료 포스팅</span>                
-                    <div className="campaign-complete-posts-wrapper">
-                        {userDatas.map((userData, idx) =>
-                            <CampaignCompleteDetail 
-                                key={idx}
-                                igname={userData.igInfo?.username}
-                                followers={userData.igInfo?.followers}
-                                token={userData.igInfo?.token}
-                                postImageUrl={userData.campaigns?.[id].images?.[0]}
-                            />
-                        )}
-                    </div>
+            {userDatas[0] ? (
+                <>
+                <span className="campaign-complete-title">완료 포스팅</span>                
+                <div className="campaign-complete-posts-wrapper">
+                    {userDatas.map((userData, idx) =>
+                        <CampaignCompleteDetail 
+                            key={idx}
+                            igname={userData.igInfo?.username}
+                            followers={userData.igInfo?.followers}
+                            token={userData.igInfo?.token}
+                            postImageUrl={userData.campaigns?.[id].images?.[0]}
+                        />
+                    )}
+                </div>
+                </>
+            ) : (
+                <div className="campaign-complete-empty">
+                    <img src="/images/campaign-empty.png" alt="no-campaign"/> 
+                    <span>아직 선정된 크리에이터들이 없습니다.</span>
+                </div>
+            )}            
+                    
                 
            
         </CampaignCompleteCSS>
@@ -95,6 +104,25 @@ const CampaignCompleteCSS = styled.div`
 	    grid-template-rows: repeat(3, minmax(100px, auto));  
         gap : 50px 25px;    
         margin-top : 50px;
+    }
+    .campaign-complete-empty {
+        display : flex;
+        flex-direction : column;
+        align-items : center;
+        padding-top : 300px;
+        img {
+            width : 65px;
+            height : 65px;
+        }
+
+        span {
+            margin-top : 16px;
+            font-style: normal;
+            font-weight: 700;
+            font-size: 24px;
+            line-height: 19px;
+            color : #303030;
+        }
     }
 `
 

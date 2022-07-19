@@ -1,4 +1,4 @@
-import { child, get, getDatabase, push, ref, remove, update } from "firebase/database";
+import { child, get, getDatabase, push, ref, remove, set, update } from "firebase/database";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
@@ -10,11 +10,13 @@ import CampaignProgressDetail from "./CampaignProgressDetail";
 const CampaignProgress = () => {
     const {currentUser} = useAuth();
     let {id} = useParams();
+    const [datas, setDatas] = useState([]);
     const [userDatas, setUserDatas] = useState([]);
     const [checkedItems, setCheckedItems] = useState(new Set());
     const [checkedItemsCount, setCheckedItemsCount] = useState(0);
     const [isUserSelected, setIsUserSelected] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [recruitingNumber, setRecruitingNumber] = useState(0);
     const navigate = useNavigate();    
 
     useEffect(() => {
@@ -24,7 +26,8 @@ const CampaignProgress = () => {
             .then((snapshot) => {
                 if (snapshot.exists()) {
                     const dataObj = snapshot.val();  
-                    console.log(dataObj);                  
+                    console.log(dataObj);          
+                    setDatas(dataObj);        
                     const data_ent = Object.entries(dataObj);
                     console.log(data_ent);
                     const data_ent_arr = data_ent.map((d) => Object.assign(d[0]));
@@ -66,6 +69,8 @@ const CampaignProgress = () => {
                     console.log(campaignDataObj.selectCompleted);
                     const isSelected = campaignDataObj.selectCompleted;
                     setIsUserSelected(isSelected);
+                    const campaignRecruitingNumber = campaignDataObj.recruitingNumber;
+                    setRecruitingNumber(campaignRecruitingNumber);
                 } else {
                     console.log("No Data");
                 }
@@ -77,11 +82,16 @@ const CampaignProgress = () => {
     }, []);
 
     const checkedItemHandler = (uid, isChecked) => {
-        if (isChecked) {
-            checkedItems.add(uid);
-            setCheckedItems(checkedItems);
-            setCheckedItemsCount(checkedItems.size);
-            console.log(checkedItems);
+        if (isChecked) {            
+            if (checkedItems.size >= recruitingNumber) {
+                alert(`최대 ${recruitingNumber}명까지 선택할 수 있어요!`);
+                console.log(checkedItems);
+            } else if (checkedItems.size < recruitingNumber){
+                checkedItems.add(uid);
+                setCheckedItems(checkedItems);
+                setCheckedItemsCount(checkedItems.size);
+                console.log(checkedItems);
+            }
         } else if (!isChecked && checkedItems.has(uid)) {
             checkedItems.delete(uid);
             setCheckedItems(checkedItems);            
@@ -103,12 +113,52 @@ const CampaignProgress = () => {
                     update(ref(realtimeDbService, `brands/${currentUser.uid}/campaigns/${id}`), {
                         selectCompleted : true
                     });
-                    remove(ref(realtimeDbService, `brands/${currentUser.uid}/campaigns/${id}/users/${v}`));             
+                    // brands => user 필드 지우기
+                    remove(ref(realtimeDbService, `brands/${currentUser.uid}/campaigns/${id}/users/`));
+                    set(ref(realtimeDbService, `campaigns/${id}/users/`), {
+                        [v] : v
+                    })                                                     
                 } catch (error) {
                     console.log(error.message);
                 }
+                
+            })
+            
+            const dbRef = ref(getDatabase());
+            
+            const getUserArray = async() => {
+                get(child(dbRef, `brands/${currentUser.uid}/campaigns/${id}/users`))
+                .then((snapshot) => {
+                    if (snapshot.exists()) {
+                        const userDataObj = snapshot.val();
+                        console.log(userDataObj);
+                        const user_data_ent = Object.entries(userDataObj);
+                        console.log(user_data_ent);
+                        const user_data_ent_arr = user_data_ent.map((d) => Object.assign(d[1]));
+                        console.log(user_data_ent_arr);
+                        const noSelectedUserDataArray = [];
+                        for (let i = 0; i < user_data_ent_arr.length; i++) {
+                            noSelectedUserDataArray.push(user_data_ent_arr[i]);
+                        }
+                        console.log(noSelectedUserDataArray);
+                        noSelectedUserDataArray.map((v) => {
+                            try {
+                                remove(ref(realtimeDbService, `users/${v}/campaigns/${id}`));
+                            } catch (error) {
+                                console.log(error);
+                            }                            
+                        })
+                    } else {
+                        console.log("No Data");
+                    }
+                }).catch((error) => {
+                    console.log(error);
+                })
                 navigate(`/campaign/${id}/result`);
-            })                  
+            }
+            getUserArray();
+            
+            
         } else {
             alert('크리에이터를 선정해주세요!');
         }
@@ -116,64 +166,74 @@ const CampaignProgress = () => {
 
     return (
         <CampaignProgressCSS>
-            {isUserSelected ? (
+            {datas ? (
                 <>
-                    {loading ? (
-                        <div className="spinner-cm">
-                            <Spinner />
-                        </div>
-                    ) : (
-                        <div className="campaign-empty">
-                            <img src="/images/campaign-empty.png" alt="no-campaign"/> 
-                            <span>이미 인플루언서 선정이 완료된 캠페인이에요 : )</span>
-                        </div>
-                    )}
+                {isUserSelected ? (
+                    <>
+                        {loading ? (
+                            <div className="spinner-cm">
+                                <Spinner />
+                            </div>
+                        ) : (
+                            <div className="campaign-empty">
+                                <img src="/images/campaign-empty.png" alt="no-campaign"/> 
+                                <span>이미 인플루언서 선정이 완료된 캠페인이에요 : )</span>
+                            </div>
+                        )}
+                    </>
+                ) : (
+                    <>
+                        {loading ? (
+                            <div className="spinner-cm">
+                                <Spinner />
+                            </div>
+                        ) : (
+                            <>
+                                <div className="campaign-progress-menus">
+                                    <div className="campaign-select">
+    
+                                    </div>
+                                </div>
+                                {userDatas.map((userData, idx) =>
+                                    <CampaignProgressDetail 
+                                        key={idx}
+                                        uid={userData.uid}
+                                        name={userData.name}
+                                        height={userData.height}                    
+                                        simpleaddr={userData.simpleAddress}
+                                        stroke={userData.stroke}
+                                        career={userData.career}
+                                        roundingFrequency={userData.roundingFrequency}
+                                        style1={userData.styles[0]} 
+                                        style2={userData.styles[1]}
+                                        style3={userData.styles[2]}                                                     
+                                        bestImage1={userData.bestImages ? userData.bestImages[0] : null}
+                                        bestImage2={userData.bestImages ? userData.bestImages[1] : null}
+                                        bestImage3={userData.bestImages ? userData.bestImages[2] : null}
+                                        token={userData.igInfo?.token}
+                                        igname={userData.igInfo?.username}
+                                        profile={userData.igInfo?.profileUrl}
+                                        igfollower={userData.igInfo?.followers}
+                                        igfollow={userData.igInfo?.follows}
+                                        igmedia={userData.igInfo?.mediaCount}
+                                        isSelected={userData.campaigns?.isSelected}
+                                        isFollowed={userData.campaigns?.[id].isFollowed}                    
+                                        checkedItemHandler={checkedItemHandler}                            
+                                    />                                                
+                                )}
+                                <button className="selected-btn" type="button" onClick={selectedUserHandler}><span className="selected-user-count">{checkedItemsCount}/{recruitingNumber}</span><span className="selected-detail">선택한 크리에이터 선정하기</span></button>
+                            </>
+                        )}
+                    </>
+                )}
                 </>
             ) : (
-                <>
-                    {loading ? (
-                        <div className="spinner-cm">
-                            <Spinner />
-                        </div>
-                    ) : (
-                        <>
-                            <div className="campaign-progress-menus">
-                                <div className="campaign-select">
-
-                                </div>
-                            </div>
-                            {userDatas.map((userData, idx) =>
-                                <CampaignProgressDetail 
-                                    key={idx}
-                                    uid={userData.uid}
-                                    name={userData.name}
-                                    height={userData.height}                    
-                                    simpleaddr={userData.simpleAddress}
-                                    stroke={userData.stroke}
-                                    career={userData.career}
-                                    roundingFrequency={userData.roundingFrequency}
-                                    style1={userData.styles[0]} 
-                                    style2={userData.styles[1]}
-                                    style3={userData.styles[2]}                                                     
-                                    bestImage1={userData.bestImages ? userData.bestImages[0] : null}
-                                    bestImage2={userData.bestImages ? userData.bestImages[1] : null}
-                                    bestImage3={userData.bestImages ? userData.bestImages[2] : null}
-                                    token={userData.igInfo?.token}
-                                    igname={userData.igInfo?.username}
-                                    profile={userData.igInfo?.profileUrl}
-                                    igfollower={userData.igInfo?.followers}
-                                    igfollow={userData.igInfo?.follows}
-                                    igmedia={userData.igInfo?.mediaCount}
-                                    isSelected={userData.campaigns.isSelected}
-                                    isFollowed={userData.campaigns?.[id].isFollowed}                    
-                                    checkedItemHandler={checkedItemHandler}                            
-                                />                                                
-                            )}
-                            <button className="selected-btn" type="button" onClick={selectedUserHandler}><span className="selected-user-count">{checkedItemsCount}/10</span><span className="selected-detail">선택한 크리에이터 선정하기</span></button>
-                        </>
-                    )}
-                </>
+                <div className="campaign-empty">
+                    <img src="/images/campaign-empty.png" alt="no-campaign"/> 
+                    <span>아직 캠페인에 신청한 인플루언서가 없어요 : (</span>
+                </div>
             )}
+            
 
             
             
