@@ -100,7 +100,7 @@ const CampaignResult = () => {
                         </>
                       :
                         <div className="campaign-result-empty">
-                            <img src="images/campaign-empty.png" alt="no-campaign"/> 
+                            <img src="/images/campaign-empty.png" alt="no-campaign"/> 
                             <span>아직 선정된 크리에이터들이 없습니다.</span>
                         </div>
                     }
@@ -149,17 +149,17 @@ const CampaignResultCSS = styled.div`
         align-items : center;
         padding-top : 300px;
         img {
-            width : 47px;
-            height : 47px;
+            width : 65px;
+            height : 65px;
         }
 
         span {
-            margin-top : 8px;
+            margin-top : 16px;
             font-style: normal;
             font-weight: 700;
-            font-size: 16px;
+            font-size: 24px;
             line-height: 19px;
-            
+            color : #303030;
         }
     }
 `

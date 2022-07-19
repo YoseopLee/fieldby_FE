@@ -101,7 +101,7 @@ const CampaignProgressDetail = ({ uid, name, height, profile,simpleaddr, stroke,
                                 )}
                                 
                                 <div className="user-profile-container">
-                                    <span>남 26</span>
+                                    
                                     <span>{height}cm</span>
                                     <span>{simpleaddr}</span>
                                 </div>
