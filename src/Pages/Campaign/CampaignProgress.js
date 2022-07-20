@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Spinner from "../../Components/Common/Spinner";
+import SelectCompleteModal from "../../Components/Modal/SelectCompleteModal";
+import SelectUserModal from "../../Components/Modal/SelectUserModal";
 import { useAuth } from "../../Context/authProvider";
 import { realtimeDbService } from "../../fBase";
 import CampaignProgressDetail from "./CampaignProgressDetail";
@@ -17,6 +19,8 @@ const CampaignProgress = () => {
     const [isUserSelected, setIsUserSelected] = useState(false);
     const [loading, setLoading] = useState(true);
     const [recruitingNumber, setRecruitingNumber] = useState(0);
+    const [modalOpen, setModalOpen] = useState(false);
+    const [confirmModalOpen, setConfirmModalOpen] = useState(false);
     const navigate = useNavigate();    
 
     useEffect(() => {
@@ -100,6 +104,19 @@ const CampaignProgress = () => {
         }
     }
 
+    const openModal = () => {
+        setModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setModalOpen(false);
+    }
+
+    const closeConfirmModal = () => {
+        setConfirmModalOpen(false);
+        navigate(`/campaign/${id}/result`);
+    }
+
     const selectedUserHandler = () => {
         if(checkedItems.size > 0) {
             const selectedUser = [...checkedItems];            
@@ -154,7 +171,8 @@ const CampaignProgress = () => {
                 }).catch((error) => {
                     console.log(error);
                 })
-                navigate(`/campaign/${id}/result`);
+                setModalOpen(false);
+                setConfirmModalOpen(true);
             }
             getUserArray();
             
@@ -177,7 +195,7 @@ const CampaignProgress = () => {
                         ) : (
                             <div className="campaign-empty">
                                 <img src="/images/campaign-empty.png" alt="no-campaign"/> 
-                                <span>이미 인플루언서 선정이 완료된 캠페인이에요 : )</span>
+                                <span>이미 인플루언서 선정이 완료된 캠페인이에요.</span>
                             </div>
                         )}
                     </>
@@ -221,7 +239,15 @@ const CampaignProgress = () => {
                                         checkedItemHandler={checkedItemHandler}                            
                                     />                                                
                                 )}
-                                <button className="selected-btn" type="button" onClick={selectedUserHandler}><span className="selected-user-count">{checkedItemsCount}/{recruitingNumber}</span><span className="selected-detail">선택한 크리에이터 선정하기</span></button>
+                                <button className="selected-btn" type="button" onClick={openModal}><span className="selected-user-count">{checkedItemsCount}/{recruitingNumber}</span><span className="selected-detail">선택한 크리에이터 선정하기</span></button>
+                                <SelectUserModal open={modalOpen} close={closeModal} confirm={selectedUserHandler}>
+                                    <span className="main-info">크리에어터 선정 후에는 변경이 불가합니다.</span>
+                                    <span className="main-ask">선정을 확정하시겠습니까?</span>
+                                </SelectUserModal>
+                                <SelectCompleteModal open={confirmModalOpen} result={closeConfirmModal}>
+                                    <span className="complete-main-info">모든 크리에어터 선정이 확정되었습니다.</span>
+                                    <span className="complete-main-detail">선정결과에서 선정된 크리에이터를 확인할 수 있습니다.</span>
+                                </SelectCompleteModal>
                             </>
                         )}
                     </>
@@ -230,7 +256,7 @@ const CampaignProgress = () => {
             ) : (
                 <div className="campaign-empty">
                     <img src="/images/campaign-empty.png" alt="no-campaign"/> 
-                    <span>아직 캠페인에 신청한 인플루언서가 없어요 : (</span>
+                    <span>아직 캠페인에 신청한 인플루언서가 없어요.</span>
                 </div>
             )}
             
