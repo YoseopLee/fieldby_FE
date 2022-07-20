@@ -2,20 +2,22 @@ import React from "react";
 import styled from 'styled-components';
 
 const CampaignResultDetail = ({id, name, profile, phoneNumber, zipno,detailaddress }) => {
+
+    
     return (
         <CampaignResultDetailCSS>
-            <div className="selected-datas">
-                <div className="selected-data">
+            <tr className="selected-datas">
+                <td className="selected-data">
                     <span>{id}</span>
-                </div>
-                <div className="selected-data-profile">
+                </td>
+                <td className="selected-data-profile">
                     <img className="selected-user-profile" src={profile} alt="profile" />
                     <span className="selected-username">{name}</span>
-                </div>
-                <div className="selected-data">
+                </td>
+                <td className="selected-data">
                     <span>{phoneNumber}</span>
-                </div>
-                <div className="selected-data-address">
+                </td>
+                <td className="selected-data-address">
                     <div>우편번호 <span>{zipno}</span></div>
                     <span>{detailaddress}</span>
                     <div>
@@ -24,11 +26,11 @@ const CampaignResultDetail = ({id, name, profile, phoneNumber, zipno,detailaddre
                         <option value="CJ대한통운">CJ대한통운</option>
                     </select>
                     </div>
-                </div>
-                <div className="selected-data">
+                </td>
+                <td className="selected-data">
                     <span>000000001</span>
-                </div>
-            </div>
+                </td>
+            </tr>
         </CampaignResultDetailCSS>
     )
 }

@@ -155,8 +155,9 @@ const CampaignProgressDetail = ({ uid, name, height, profile,simpleaddr, stroke,
                         </div>
                         :
                             <div className="empty-feed-wrapper">
-                                <img src="/images/campaign-empty.png" alt="no-campaign"/> 
-                                <span className="empty-feed">등록된 피드가 없습니다.</span>
+                                <div className="empty-feed">이미지 업로드 전</div>
+                                <div className="empty-feed">이미지 업로드 전</div>
+                                <div className="empty-feed">이미지 업로드 전</div>
                             </div>
                         }
                     </div>                                        
@@ -300,13 +301,15 @@ const CampaignProgressDetailCSS = styled.div`
             .user-image {
                 overflow-x : auto;
                 .user-images-wrapper {
+                    
                     a {
                         height : 150px;
                         width : 150px;
                         img {
                             margin-left : 16px;
-                            width : 150px;
-                            height : 150px;                            
+                            width : 160px;
+                            height : 160px;     
+                            border-radius : 6px;                                                   
                         }
                     }
                     
@@ -315,20 +318,22 @@ const CampaignProgressDetailCSS = styled.div`
             }
         }
         .empty-feed-wrapper {                    
-            display : flex;
-            flex-direction : column;
+            display : flex;            
             justify-content : center;
-            align-items : center;                                    
-            img {
-                width : 36px;
-                height : 36px;
-                margin-bottom : 4px;
-            }
-            .empty-feed {                        
-                font-size : 15px;
-                font-weight : 700;
-                color : #303030;
+            align-items : center;                                                
+            .empty-feed {
+                display : flex;
+                justify-content : center;
+                text-align : center;                        
+                font-size : 15px;                
+                color : #ffffff;
                 text-align : center;
+                align-items : center;
+                width : 160px;
+                height : 160px;
+                background: linear-gradient(180deg, rgba(131, 131, 131, 0.4) 0%, rgba(34, 186, 168, 0.25) 100%);
+                border-radius: 6px;
+                margin-left : 16px;
             }
         }
     }
