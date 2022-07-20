@@ -156,7 +156,7 @@ const CampaignProgressDetail = ({ uid, name, height, profile,simpleaddr, stroke,
                         :
                             <div className="empty-feed-wrapper">
                                 <img src="/images/campaign-empty.png" alt="no-campaign"/> 
-                                <span className="empty-feed">등록된 피드가 없습니다 : (</span>
+                                <span className="empty-feed">등록된 피드가 없습니다.</span>
                             </div>
                         }
                     </div>                                        
