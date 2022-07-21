@@ -90,7 +90,6 @@ const SideBar = () => {
 }
 
 const SideBarContainerCSS = styled.div`
-
     position : abosolute;
     z-index : 9999;
     background : #ffffff;
@@ -99,7 +98,7 @@ const SideBarContainerCSS = styled.div`
     display : flex;
     flex-direction : column;
     align-items : center;
-
+    box-shadow: 2px 2px 10px rgb(0 0 0 / 25%);
     .campaign-logo {
         padding-top : 20px;
         img {

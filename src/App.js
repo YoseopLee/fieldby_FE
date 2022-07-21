@@ -34,7 +34,7 @@ const App = () => {
           <Route path="/sign-up" element={
             <LoggedInRoute>
               <SignUp/>
-            </LoggedInRoute>            
+            </LoggedInRoute>
           }/>
           <Route path="/find-pw" element={
             <LoggedInRoute>
@@ -42,12 +42,12 @@ const App = () => {
             </LoggedInRoute>
           }/>
           <Route path="/policy" element={<Policy />} />
-          <Route path='/privacy' element={<Privacy />}/>
+          <Route path='/privacy' element={<Privacy />} />
           <Route exact path='/campaign' element={
             <PrivateRoute>
               <Campaign/>
             </PrivateRoute>
-          } />
+          }/>
           <Route path='/campaign/:id' element={
             <PrivateRoute>
               <CampaignDetail />

@@ -78,9 +78,9 @@ const CampaignProgressDetail = ({ uid, name, height, profile,simpleaddr, stroke,
     return(
         <CampaignProgressDetailCSS>            
                 <div className="campaign-register-user">
-                    <div className="selected-box">
+                    <label className="selected-box">
                         <input className="selected-checkbox" type='checkbox' checked={bChecked} onChange={(e) => checkHandler(e)}/>
-                    </div>
+                    </label>
 
                     <div className="campaign-user-container">
                         
@@ -175,9 +175,35 @@ const CampaignProgressDetailCSS = styled.div`
 
     .selected-box {
         .selected-checkbox {
-            border : 2px solid #747474;
-            background-color : #22BAA8;
-            padding : 12px;
+            appearance : none;
+            
+            margin : 0;
+            font : inherit;
+            color : #22Baa8;
+            width : 1.15em;
+            height : 1.15em;
+            border : 0.15em solid #22Baa8;
+            border-radius : 0.15em;
+            transform : translateY(-0.075em);
+            display : grid;
+            place-content : center;
+        }
+        .selected-checkbox::before {
+            content : '';
+            
+            clip-path : polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+            transform : scale(0);
+            transform-origin : bottom left;
+            transition : 120ms transform ease-in-out;
+            box-shadow : inset 1em 1em #22Baa8;
+            background-color : #22Baa8;
+        }
+        .selected-checkbox:checked {
+            &::after {
+                content: '✔';
+                padding: 0;
+                margin: 0;
+            }
         }
     }
     
