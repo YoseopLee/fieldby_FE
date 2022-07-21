@@ -65,38 +65,39 @@ const CampaignResult = () => {
                             <Spinner />
                         </div>
                     ) : (
-                        <>                                        
-                        <div className="campaign-progress-table">
-                            <div className="campaign-progress-titles">
-                                <span>번호</span>
-                            </div>
-                            <div className="campaign-progress-titles">
-                                <span>이름</span>
-                            </div>
-                            <div className="campaign-progress-titles">
-                                <span>전화번호</span>
-                            </div>
-                            <div className="campaign-progress-titles">
-                                <span>주소</span>
-                            </div>
-                            <div className="campaign-progress-titles">
-                                <span>송장번호</span>
-                            </div>
-                        </div>
-                        <hr/>
-                            
-                        {userDatas.map((userData, idx) => 
-                            <CampaignResultDetail 
-                                key={idx}
-                                id={idx + 1}
-                                name={userData.name}
-                                profile={userData.igInfo?.profileUrl}
-                                phoneNumber={userData.phoneNumber}
-                                zipno={userData.address.zipNo}
-                                detailaddress={userData.address.roadAddr}
-                            />
-                        )}                      
-                        </>
+                        <table className="campaign-result-table"> 
+                            <tbody>
+                                <tr className="campaign-progress-table">
+                                    <td className="campaign-progress-titles">
+                                        <span>번호</span>
+                                    </td>
+                                    <td className="campaign-progress-titles">
+                                        <span>이름</span>
+                                    </td>
+                                    <td className="campaign-progress-titles">
+                                        <span>전화번호</span>
+                                    </td>
+                                    <td className="campaign-progress-titles">
+                                        <span>주소</span>
+                                    </td>
+                                    <td className="campaign-progress-titles">
+                                        <span>송장번호</span>
+                                    </td>
+                                </tr>
+                                <hr/>                                
+                                {userDatas.map((userData, idx) => 
+                                    <CampaignResultDetail 
+                                        key={idx}
+                                        id={idx + 1}
+                                        name={userData.name}
+                                        profile={userData.igInfo?.profileUrl}
+                                        phoneNumber={userData.phoneNumber}
+                                        zipno={userData.address.zipNo}
+                                        detailaddress={userData.address.roadAddr}
+                                    />
+                                )}                                
+                            </tbody>                      
+                        </table>
                     )}
                 </>
             ) : (
@@ -123,20 +124,26 @@ const CampaignResultCSS = styled.div`
         margin-right : auto;
         margin-left : auto;
     }
-    .campaign-progress-table {
-        display : flex;
-        width : 100%;
-        justify-content : space-around;
-        align-items : center;
-        .campaign-progress-titles {
-            width : auto;
-            span {
-                text-align : center;
-                font-weight : 400;
-                font-size : 13px;
+    .campaign-result-table {
+        margin: 8px 18px 18px 8px;
+        border-collapse: collapse;
+        border-spacing: 0;
+        .campaign-progress-table {
+            display : flex;
+            width : 100%;
+            justify-content : space-around;
+            align-items : center;
+            .campaign-progress-titles {
+                width : auto;
+                span {
+                    text-align : center;
+                    font-weight : 400;
+                    font-size : 13px;
+                }
             }
         }
     }
+    
     hr {
         border : 1px solid #303030;
         width : 90%;

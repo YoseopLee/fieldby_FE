@@ -1,6 +1,6 @@
 import { child, get, getDatabase, ref } from "firebase/database";
 import React, { useEffect, useState } from "react";
-import { Link, Outlet, useParams } from "react-router-dom";
+import { Link, Outlet, useLocation, useParams } from "react-router-dom";
 import styled from "styled-components";
 import SideBar from "../../Components/SideBar/SideBar";
 import { useAuth } from "../../Context/authProvider";
@@ -13,6 +13,10 @@ const CampaignDetail = () => {
     const [recruitingNumber, setRecruitingNumber] = useState(0);
     const [recruitingDate, setRecruitingDate] = useState('');
     const [dueDate, setDueDate] = useState('');
+    const [progressBtn, setProgressBtn] = useState(false);
+    const [resultBtn, setResultBtn] = useState(false);
+    const [completeBtn, setCompleteBtn] = useState(false);
+    const [reportBtn, setReportBtn] = useState(false);
     let {id} = useParams();
 
     useEffect(() => {
@@ -37,6 +41,37 @@ const CampaignDetail = () => {
         }
         getBrandCampaignData();
     }, []);
+
+    const location = useLocation();        
+    useEffect(() => {        
+        console.log(location);        
+        const progressPath = location.pathname === `/campaign/${id}/progress`;        
+        const resultPath = location.pathname === `/campaign/${id}/result`;
+        const completePath = location.pathname === `/campaign/${id}/complete`;
+        const reportPath = location.pathname === `/campaign/${id}/report`;
+
+        if (progressPath) {
+            setProgressBtn(true);
+            setResultBtn(false);
+            setCompleteBtn(false);
+            setReportBtn(false);
+        } else if (resultPath) {
+            setProgressBtn(false);
+            setResultBtn(true);
+            setCompleteBtn(false);
+            setReportBtn(false);
+        } else if (completePath) {
+            setProgressBtn(false);
+            setResultBtn(false);
+            setCompleteBtn(true);
+            setReportBtn(false);
+        } else if (reportPath) {
+            setProgressBtn(false);
+            setResultBtn(false);
+            setCompleteBtn(false);
+            setReportBtn(true);
+        }
+    })
     
     return (
         <>
@@ -89,11 +124,11 @@ const CampaignDetail = () => {
                                     <span className="campaign-status-date">{dueDate.slice(0, 10).replace(/-/gi, '.')} - {dueDate.slice(0, 10).replace(/-/gi, '.')}</span>
                                 </div>
                                 <div className="campaign-timeline-status">                                    
-                                    <span>콘텐츠 등록 기간</span>
+                                    <span className="campaign-status-info">콘텐츠 등록 기간</span>
                                     <span className="campaign-status-date"></span>
                                 </div>
                                 <div className="campaign-timeline-status">                                    
-                                    <span>보고서 확인</span>
+                                    <span className="campaign-status-info">보고서 확인</span>
                                     <span className="campaign-status-date"></span>
                                 </div>
                             </div>
@@ -107,10 +142,11 @@ const CampaignDetail = () => {
                 </div>    
                 <div id="campaign-detail-cm" className="campaign-detail-square-hc campaign-detail-square-vc">
                     <div className="campaign-progress-result-wrapper">
-                        <Link className="campaign-register-progress" to='progress'>신청 현황</Link>
-                        <Link className="campaign-register-result" to='result'>선정 결과</Link>
-                        <Link className="campaign-complete-posts" to='complete'>완료 포스팅</Link>
-                        <Link className="campaign-report" to='report'>캠페인 보고서</Link>
+                        
+                        <Link className={`campaign-register-progress ${progressBtn ? 'active' : 'no'}`} id="progress" to='progress'>신청 현황</Link>
+                        <Link className={`campaign-register-result ${resultBtn ? 'active' : 'no'}`} to='result'>선정 결과</Link>
+                        <Link className={`campaign-complete-posts ${completeBtn ? 'active' : 'no'}`} to='complete'>완료 포스팅</Link>
+                        <Link className={`campaign-report ${reportBtn ? 'active' : 'no'}`} to='report'>캠페인 보고서</Link>
                     </div>
 
                     <Outlet />
@@ -259,6 +295,9 @@ const CampaignDetailCSS = styled.div`
                             font-size : 12px;
                             
                         }
+                        .campaign-status-info {
+                            margin-top : 12px;
+                        }
                         .campaign-status-date {
                             font-size : 10px;
                         }
@@ -319,7 +358,7 @@ const CampaignDetailCSS = styled.div`
         padding : 16px;
         .campaign-register-progress {
             border-radius : 5px;
-            background : #303030;
+            
             height : 40px;
             width : 200px;
             display : flex;
@@ -329,12 +368,24 @@ const CampaignDetailCSS = styled.div`
             font-size : 14px;
             color : #ffffff;
             text-decoration : none;
+            
+            &.active {
+                background : #22Baa8;
+            }     
+            &.no {
+                background : #303030;
+            }
         }
+        .campaign-register-progress:hover {
+            background : #22Baa8;
+            transition : all 0.3s;
+        }
+        
 
         .campaign-register-result {
             margin-left : 20px;
             border-radius : 5px;
-            background : #303030;
+            
             height : 40px;
             width : 200px;
             display : flex;
@@ -343,7 +394,18 @@ const CampaignDetailCSS = styled.div`
             font-weight : 700;
             font-size : 14px;
             color : #ffffff;
-            text-decoration : none;           
+            text-decoration : none;      
+            
+            &.active {
+                background : #22Baa8;
+            }     
+            &.no {
+                background : #303030;
+            }
+        }
+        .campaign-register-result:hover {
+            background : #22Baa8;
+            transition : all 0.3s;
         }
 
         .campaign-complete-posts {
@@ -359,6 +421,16 @@ const CampaignDetailCSS = styled.div`
             font-size : 14px;
             color : #ffffff;
             text-decoration : none;
+            &.active {
+                background : #22Baa8;
+            }     
+            &.no {
+                background : #303030;
+            }
+        }
+        .campaign-complete-posts:hover {
+            background : #22Baa8;
+            transition : all 0.3s;
         }
 
         .campaign-report {
@@ -374,6 +446,16 @@ const CampaignDetailCSS = styled.div`
             font-size : 14px;
             color : #ffffff;
             text-decoration : none;
+            &.active {
+                background : #22Baa8;
+            }     
+            &.no {
+                background : #303030;
+            }
+        }
+        .campaign-report:hover{
+            background : #22BAA8;
+            transition : all 0.3s;
         }
     }
 `
