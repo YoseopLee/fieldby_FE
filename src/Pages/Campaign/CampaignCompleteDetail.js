@@ -36,7 +36,7 @@ const CampaignCompleteDetail = ({igname, followers, token, postImageUrl}) => {
             }
         }
         getPostDatas();
-    },[])
+    }, [])
 
     return (
         <CampaignCompleteDetailCSS>
