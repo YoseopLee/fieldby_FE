@@ -1,5 +1,5 @@
 import React from "react";
-const CampaignResultDetail = ({id, name, profile, phoneNumber, zipno,detailaddress }) => {
+const CampaignResultDetail = ({id, name, profile, phoneNumber, zipno,roadaddress, detailaddress }) => {
 
     return (        
             <tr className="campaign-progress-table">
@@ -21,6 +21,7 @@ const CampaignResultDetail = ({id, name, profile, phoneNumber, zipno,detailaddre
                     <div className="address-wrapper">
                         <div className="address-flex-box">
                             <div><span>우편번호</span> <span>{zipno}</span></div>
+                            <span>{roadaddress}</span>
                             <span>{detailaddress}</span>
                         </div>                        
                         <select name="shipment_name" className="shipment-names">
