@@ -59,7 +59,7 @@ const CampaignComplete = () => {
 
     return (
         <CampaignCompleteCSS>
-            {userDatas[0] ? (
+            {userDatas?.[0] ? (
                 <>
                 <span className="campaign-complete-title">완료 포스팅</span>                
                 <div className="campaign-complete-posts-wrapper">
@@ -69,7 +69,7 @@ const CampaignComplete = () => {
                             igname={userData.igInfo?.username}
                             followers={userData.igInfo?.followers}
                             token={userData.igInfo?.token}
-                            postImageUrl={userData.campaigns?.[id].images?.[0]}
+                            postImageUrl={userData.campaigns?.[id]?.images?.[0]}
                         />
                     )}
                 </div>
