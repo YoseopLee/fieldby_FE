@@ -32,6 +32,7 @@ const CampaignCompleteDetail = ({igname, followers, token, postImageUrl}) => {
                 setPostLikes(json3.data.like_count);
             } catch (error) {
                 console.log(error);
+                setLoading(false);
             }
         }
         getPostDatas();
