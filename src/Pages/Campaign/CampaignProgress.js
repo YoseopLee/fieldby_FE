@@ -131,7 +131,7 @@ const CampaignProgress = () => {
                         selectCompleted : true
                     });
                     // brands => user 필드 지우기
-                    remove(ref(realtimeDbService, `brands/${currentUser.uid}/campaigns/${id}/users/`));
+                    // remove(ref(realtimeDbService, `brands/${currentUser.uid}/campaigns/${id}/users/`));
                     set(ref(realtimeDbService, `campaigns/${id}/users/`), {
                         [v] : v
                     })                                                     
@@ -175,8 +175,7 @@ const CampaignProgress = () => {
                 setConfirmModalOpen(true);
             }
             getUserArray();
-            
-            
+                        
         } else {
             alert('크리에이터를 선정해주세요!');
         }
