@@ -68,23 +68,23 @@ const CampaignResult = () => {
                         <table className="campaign-result-table"> 
                             <tbody>
                                 <tr className="campaign-progress-table">
-                                    <td className="campaign-progress-titles">
-                                        <span>번호</span>
+                                    <td className="campaign-progress-titles-number">                                        
+                                        <span>번호</span>                                              
                                     </td>
-                                    <td className="campaign-progress-titles">
-                                        <span>이름</span>
+                                    <td className="campaign-progress-titles-name">                                        
+                                        <span>이름</span>                                        
                                     </td>
-                                    <td className="campaign-progress-titles">
-                                        <span>전화번호</span>
+                                    <td className="campaign-progress-titles-phone">                                        
+                                        <span>전화번호</span>                                           
                                     </td>
-                                    <td className="campaign-progress-titles">
-                                        <span>주소</span>
+                                    <td className="campaign-progress-titles-address">                                
+                                        <span>주소</span>                                            
                                     </td>
-                                    <td className="campaign-progress-titles">
-                                        <span>송장번호</span>
+                                    <td className="campaign-progress-titles-post">                                        
+                                        <span>송장번호</span>                                        
                                     </td>
                                 </tr>
-                                <hr/>                                
+                                <hr />        
                                 {userDatas.map((userData, idx) => 
                                     <CampaignResultDetail 
                                         key={idx}
@@ -124,21 +124,217 @@ const CampaignResultCSS = styled.div`
         margin-right : auto;
         margin-left : auto;
     }
-    .campaign-result-table {
-        margin: 8px 18px 18px 8px;
+    .campaign-result-table {        
+        margin-left : 40px;
         border-collapse: collapse;
         border-spacing: 0;
+        width : calc(100% - 80px);
         .campaign-progress-table {
-            display : flex;
-            width : 100%;
-            justify-content : space-around;
+            display : flex;                        
             align-items : center;
-            .campaign-progress-titles {
-                width : auto;
+            .campaign-progress-titles-number {
+                font-weight: 500;                
+                position: relative;
+                vertical-align: top;
+                width : 10%;
+                min-height: 32px;
+                display : flex;
+                align-items : center;
+                justify-content : center;
                 span {
                     text-align : center;
                     font-weight : 400;
                     font-size : 13px;
+                }
+            }
+            .campaign-progress-titles-name {
+                font-weight: 500;                
+                position: relative;
+                vertical-align: top;
+                width : 30%;
+                min-height: 32px;
+                display : flex;
+                align-items : center;
+                justify-content : center;
+                span {
+                    text-align : right;
+                    font-weight : 400;
+                    font-size : 13px;
+                }
+            }
+            .campaign-progress-titles-phone {
+                font-weight: 500;                
+                position: relative;
+                vertical-align: top;
+                width : 20%;
+                min-height: 32px;
+                display : flex;
+                align-items : center;
+                justify-content : flex-start;
+                span {
+                    text-align : center;
+                    font-weight : 400;
+                    font-size : 13px;
+                }
+            }
+            .campaign-progress-titles-address {
+                font-weight: 500;                
+                position: relative;
+                vertical-align: top;
+                width : 40%;
+                min-height: 32px;
+                display : flex;
+                align-items : center;
+                justify-content : flex-start;
+                span {
+                    text-align : center;
+                    font-weight : 400;
+                    font-size : 13px;
+                }
+            }
+            .campaign-progress-titles-post {
+                font-weight: 500;                
+                position: relative;
+                vertical-align: top;
+                width : 20%;
+                min-height: 32px;
+                display : flex;
+                align-items : center;
+                justify-content : flex-start;
+                span {
+                    text-align : center;
+                    font-weight : 400;
+                    font-size : 13px;
+                }
+            }
+
+            .selected-data-name {
+                color: inherit;
+                fill: inherit;                
+                position: relative;
+                vertical-align: top;                              
+                min-height: 32px;
+                width : 30%;
+                display : flex;
+                align-items : center;
+                justify-content : center;
+                    span {
+                        color : #303030;
+                        font-weight: 700;
+                        font-size: 15px;
+                        line-height: 18px;
+                        text-align : center;
+                    }
+
+                    .selected-data-profile {
+                        display : flex;
+                        align-items : center;
+                        
+                        .selected-user-profile {
+                            margin-left : 16px;
+                            margin-right : 16px;
+                            border-radius : 50%;
+                            width : 65px;
+                            height : 65px;
+                        }
+                        .selected-username {
+                            font-size : 15px;
+                            font-weight : 700;
+                        }
+                    }
+            }
+            .selected-data-number {
+                color: inherit;
+                fill: inherit;                
+                position: relative;
+                vertical-align: top;                              
+                min-height: 32px;
+                width : 10%;                
+                display : flex;
+                align-items : center;
+                justify-content : center;             
+                span {            
+                    color : #303030;        
+                    font-weight: 700;
+                    font-size: 18px;
+                    line-height: 18px;
+                    text-align : center;
+                }
+            }
+            .selected-data-phone {
+                color: inherit;
+                fill: inherit;                
+                position: relative;
+                vertical-align: top;                              
+                min-height: 32px;
+                width : 20%;
+                display : flex;
+                align-items : center;
+                justify-content : flex-start;
+                span {
+                    color : #766F6F;
+                    font-weight: 400;
+                    font-size: 15px;
+                    line-height: 18px;
+                    text-align : center;
+                }
+            }
+            .selected-data-address {
+                color: inherit;
+                fill: inherit;                
+                position: relative;
+                vertical-align: top;                              
+                min-height: 32px;
+                width : 40%;
+                display : flex;                
+                
+                
+                .address-wrapper {
+                    align-items : center;
+                    display : flex;
+                    justify-content : flex-start;
+                    .address-flex-box {
+                        display : flex;
+                        flex-direction : column;
+                    }                                        
+                    .shipment-names {
+                        margin-left : 12px;
+                        border: 1px solid #303030;
+                        border-radius: 13px;
+                        height : 48px;
+                        width : calc(50%);
+                    }
+                }
+                span {
+                    color : #766F6F;
+                    font-weight: 400;
+                    font-size: 15px;
+                    line-height: 18px;                    
+                }
+            }
+            .selected-data-post {
+                color: inherit;
+                fill: inherit;                
+                position: relative;
+                vertical-align: top;                              
+                min-height: 32px;
+                width : 20%;
+                display : flex;
+                align-items : center;
+                justify-content : flex-start;
+                .table-input {
+                    border : none;
+                    height : 48px;
+                    background: #F1F1F1;
+                    border-radius: 13px;
+                    padding-left : 12px;
+                }
+                span {
+                    color : #766F6F;
+                    font-weight: 400;
+                    font-size: 15px;
+                    line-height: 18px;
+                    text-align : center;
                 }
             }
         }
@@ -146,9 +342,9 @@ const CampaignResultCSS = styled.div`
     
     hr {
         border : 1px solid #303030;
-        width : 90%;
-        margin-top : 20px;
-        margin-bottom : 20px;
+        width : 100%;
+        margin-top : 10px;
+        margin-bottom : 20px;        
     }
     .campaign-result-empty {
         display : flex;

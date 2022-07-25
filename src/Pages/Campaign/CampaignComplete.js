@@ -77,7 +77,8 @@ const CampaignComplete = () => {
             ) : (
                 <div className="campaign-complete-empty">
                     <img src="/images/campaign-empty.png" alt="no-campaign"/> 
-                    <span>아직 선정된 크리에이터들이 없습니다.</span>
+                    <span className="campaign-not-yet">아직 캠페인이 완료되지 않았습니다.</span>
+                    <span className="campaign-not-yet-light">페이지 상단에서 진행현황을 확인할 수 있습니다.</span>
                 </div>
             )}            
                     
@@ -109,18 +110,23 @@ const CampaignCompleteCSS = styled.div`
         display : flex;
         flex-direction : column;
         align-items : center;
-        padding-top : 300px;
+        margin-top : 100px;        
         img {
             width : 65px;
             height : 65px;
         }
 
-        span {
+        .campaign-not-yet {
             margin-top : 16px;
             font-style: normal;
-            font-weight: 700;
-            font-size: 24px;
+            font-weight: 700;            
             line-height: 19px;
+            color : #303030;
+        }
+
+        .campaign-not-yet-light {
+            margin-top : 8px;
+            font-size : 13px;
             color : #303030;
         }
     }

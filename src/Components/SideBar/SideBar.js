@@ -23,6 +23,10 @@ const SideBar = () => {
             console.log(error)
         }
     }
+
+    const campaignHandle = () => {
+        navigate('/campaign');
+    }
     
     useEffect(() => {
         const dbRef = ref(getDatabase());
@@ -57,7 +61,8 @@ const SideBar = () => {
                         </button>
                     </div>
                     {showProfileInfo &&
-                        <div className="btn-menus">                        
+                        <div className="btn-menus">
+                            <span className="btn-menu" onClick={campaignHandle}>캠페인</span>                        
                             <span className="btn-menu" onClick={handleLogout}>로그아웃</span>
                         </div>
                     }

@@ -1,73 +1,31 @@
 import React from "react";
-import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 const CampaignList = ({id, mainImageUrl,campaignTitle, recruitingDate, dueDate,recruitingNumber}) => {
     return (
-        <CampaignListContainer>
-            <Link to = {`/campaign/${id}/progress`} className="campaign-list"> 
-            <div className="campaign-datas">
-                <div className="campaign-data">
-                    <span className="progress">진행중</span>
-                </div>
-                <div className="campaign-data">
+        <tr className="campaign-list-progress-table">
+            <Link to = {`/campaign/${id}/progress`} className="campaign-list">             
+                <td className="campaign-data-progress">
+                    <span>진행중</span>
+                </td>
+                <td className="campaign-data-profile">
                     <div className="campaign-data-wrapper">
                         <img className="campaign-mainImage" src={mainImageUrl} alt="mainImage" />
                         <span>{campaignTitle}</span>
-                    </div>
-                    
-                </div>
-                <div className="campaign-data">
-                    <span>{recruitingDate} - {dueDate}</span>
-                </div>
-                
-                <div className="campaign-data">
-                    <span>{recruitingNumber}</span>
-                </div>
-            </div>
-            <hr />
+                    </div>                    
+                </td>
+                <td className="campaign-data-date">
+                    <span>{recruitingDate.replace(/\-/g, '.')} - {dueDate.replace(/\-/g, '.')}</span>
+                </td>                
+                <td className="campaign-data-number">
+                    <span>{recruitingNumber}명</span>
+                </td>            
+            
             </Link>
-        </CampaignListContainer>
+            <hr />
+        </tr>
+        
     )
 }
-
-const CampaignListContainer = styled.div`
-    
-    .campaign-list {   
-        text-decoration : none;
-        color : #000000;
-        .campaign-datas {
-            display : flex;
-            justify-content : space-evenly;
-            align-items : center;
-            height : 60px;
-            .campaign-data {
-                .campaign-data-wrapper {
-                    display : flex;
-                    justify-content : center;
-                    align-items : center;
-                    .campaign-mainImage {
-                        width : 50px;
-                        height : 50px;
-                    }
-                }
-
-                .progress {
-                    color : #22BAA8;
-                    font-weight: 400;
-                    font-size: 15px;
-                    line-height: 18px;
-                }
-                span {
-                    font-weight: 400;
-                    font-size: 15px;
-                    line-height: 18px;
-                    text-align : center;
-                }
-            }
-        }
-        
-    }
-`
 
 export default CampaignList;
