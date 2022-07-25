@@ -93,7 +93,8 @@ const CampaignResult = () => {
                                         profile={userData.igInfo?.profileUrl}
                                         phoneNumber={userData.phoneNumber}
                                         zipno={userData.address.zipNo}
-                                        detailaddress={userData.address.roadAddr}
+                                        roadaddress={userData.address.roadAddr}
+                                        detailaddress = {userData.address.detail}
                                     />
                                 )}                                
                             </tbody>                      
@@ -196,7 +197,7 @@ const CampaignResultCSS = styled.div`
                 font-weight: 500;                
                 position: relative;
                 vertical-align: top;
-                width : 20%;
+                width : 15%;
                 min-height: 32px;
                 display : flex;
                 align-items : center;
@@ -318,7 +319,7 @@ const CampaignResultCSS = styled.div`
                 position: relative;
                 vertical-align: top;                              
                 min-height: 32px;
-                width : 20%;
+                width : 15%;
                 display : flex;
                 align-items : center;
                 justify-content : flex-start;
