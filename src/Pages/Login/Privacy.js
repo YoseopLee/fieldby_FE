@@ -476,7 +476,8 @@ const PrivacyContainerCSS = styled.div`
             border-spacing: 0;
             .table-row {
                 .table-td {
-                    background: rgb(247, 246, 243); font-weight: 500; border: 1px solid rgb(233, 233, 231); position: relative; vertical-align: top; min-width: 222px; max-width: 222px; min-height: 32px;
+                    background: rgb(247, 246, 243); font-weight: 500; 
+                    border: 1px solid rgb(233, 233, 231); position: relative; vertical-align: top; min-width: 222px; max-width: 222px; min-height: 32px;
                     .table-cell {
                         
                         .table-cell-text {

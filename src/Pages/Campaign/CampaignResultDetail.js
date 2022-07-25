@@ -1,77 +1,39 @@
 import React from "react";
-import styled from 'styled-components';
-
 const CampaignResultDetail = ({id, name, profile, phoneNumber, zipno,detailaddress }) => {
 
-    
-    return (
-        <CampaignResultDetailCSS>
-            <tr className="selected-datas">
-                <td className="selected-data">
-                    <span>{id}</span>
+    return (        
+            <tr className="campaign-progress-table">
+                <td className="selected-data-number">                    
+                    <span>{id}</span>                    
                 </td>
-                <td className="selected-data-profile">
-                    <img className="selected-user-profile" src={profile} alt="profile" />
-                    <span className="selected-username">{name}</span>
+                <td className="selected-data-name">    
+                    <div className="selected-data-profile">                
+                        <img className="selected-user-profile" src={profile} alt="profile" />
+                        <span className="selected-username">{name}</span>
+                    </div>                    
                 </td>
-                <td className="selected-data">
-                    <span>{phoneNumber}</span>
+                <td className="selected-data-phone">
+                    
+                    <span>{phoneNumber.replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, "$1-$2-$3").replace(/\-{1,2}$/g, "")}</span>
+                    
                 </td>
-                <td className="selected-data-address">
-                    <div>우편번호 <span>{zipno}</span></div>
-                    <span>{detailaddress}</span>
-                    <div>
-                    <select name="shipment_name" className="shipment-names">
-                        <option value="">택배사 선택</option>
-                        <option value="CJ대한통운">CJ대한통운</option>
-                    </select>
-                    </div>
+                <td className="selected-data-address">                    
+                    <div className="address-wrapper">
+                        <div className="address-flex-box">
+                            <div><span>우편번호</span> <span>{zipno}</span></div>
+                            <span>{detailaddress}</span>
+                        </div>                        
+                        <select name="shipment_name" className="shipment-names">
+                            <option value="">택배사 선택</option>
+                            <option value="CJ대한통운">CJ대한통운</option>
+                        </select>
+                    </div>                    
                 </td>
-                <td className="selected-data">
-                    <span>000000001</span>
+                <td className="selected-data-post">                    
+                    <input type='text' placeholder="배송장번호" className="table-input"/>                    
                 </td>
-            </tr>
-        </CampaignResultDetailCSS>
+            </tr>        
     )
 }
-
-const CampaignResultDetailCSS = styled.div`
-margin-bottom : 32px;
-.selected-datas {
-    display : flex;
-    justify-content : space-evenly;
-    align-items : center;
-    .selected-data {
-        span {
-            color : #766F6F;
-            font-weight: 400;
-            font-size: 15px;
-            line-height: 18px;
-            text-align : center;
-        }
-    }
-    .selected-data-profile {
-        display : flex;
-        align-items : center;
-        .selected-user-profile {
-            margin-left : 16px;
-            margin-right : 16px;
-            border-radius : 50%;
-            width : 65px;
-            height : 65px;
-        }
-        .selected-username {
-            font-size : 15px;
-            font-weight : 700;
-        }
-    }
-    .selected-data-address {
-        color : #766F6F;
-        font-size : 15px;
-        line-height :18px;
-        max-width : 200px;
-    }
-}
-`
 
 export default CampaignResultDetail;

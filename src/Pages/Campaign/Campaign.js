@@ -65,41 +65,39 @@ const Campaign = () => {
                 </div>                
             ) : (
                 <div id="campaign-cm" className="campaign-square-hc campaign-square-vc">                
+                    <div className="campaign-all">전체</div>
                     {userData.campaigns 
                         ?
-                            <div className="campaign-main">
-                                <span className="campaign-all">전체</span>
-                                <div className="campaign-progress-table">
-                                    <div className="campaign-progress-titles">
-                                        <span>완료여부</span>
-                                    </div>
-                                    <div className="campaign-progress-titles">
-                                        <span>캠페인</span>
-                                    </div>
-                                    <div className="campaign-progress-titles">
-                                        <span>캠페인 기간</span>
-                                    </div>
-                                    <div className="campaign-progress-titles">
-                                        <span>모집인원</span>
-                                    </div>
-                                </div>
-                                
-                             
-                                    <div className="campaign-data-container">
-                                        {brandCampaignDatas.map((brandCampaignData) =>
-                                            <CampaignList 
-                                                key={brandCampaignData.id}                                        
-                                                id={brandCampaignData.id}
-                                                mainImageUrl={brandCampaignData.mainImageUrl}
-                                                campaignTitle = {brandCampaignData.campaignTitle}
-                                                recruitingDate = {brandCampaignData.recruitingDate}
-                                                dueDate = {brandCampaignData.dueDate}
-                                                recruitingNumber = {brandCampaignData.recruitingNumber}                                                                                                                                                                                                                                                                               
-                                            />
-                                        )}                                        
-                                    </div>
-                                                                                                                                                                                 
-                            </div>    
+                            <table className="campaign-main">
+                                <tbody>                                    
+                                    <tr className="campaign-progress-table">
+                                        <td className="campaign-progress-titles-isComplete">
+                                            <span>완료여부</span>
+                                        </td>
+                                        <td className="campaign-progress-titles-name">
+                                            <span>캠페인</span>
+                                        </td>
+                                        <td className="campaign-progress-titles-date">
+                                            <span>캠페인 기간</span>
+                                        </td>
+                                        <td className="campaign-progress-titles-number">
+                                            <span>모집인원</span>
+                                        </td>
+                                    </tr>
+                                                                                                 
+                                    {brandCampaignDatas.map((brandCampaignData) =>
+                                        <CampaignList 
+                                            key={brandCampaignData.id}                                        
+                                            id={brandCampaignData.id}
+                                            mainImageUrl={brandCampaignData.mainImageUrl}
+                                            campaignTitle = {brandCampaignData.campaignTitle}
+                                            recruitingDate = {brandCampaignData.recruitingDate}
+                                            dueDate = {brandCampaignData.dueDate}
+                                            recruitingNumber = {brandCampaignData.recruitingNumber}                                                                                                                                                                                                                                                                               
+                                        />
+                                    )}                                                                               
+                                </tbody>                                                                                                                                                                              
+                            </table>    
                         :   
                             <div className="campaign-empty">
                                 <img src="images/campaign-empty.png" alt="no-campaign"/> 
@@ -128,10 +126,15 @@ const CampaignContainerCSS = styled.div`
         position : absolute;
         min-width : 900px;
         min-height : 700px;
+        .campaign-all {
+            padding : 20px;                        
+            text-align : left;
+            font-weight : 700;            
+        }
     }
     
     .campaign-square-hc {
-        width : 50%;
+        width : 60%;
         left : 0;
         right : 0;
         margin-left : 30%;
@@ -149,27 +152,121 @@ const CampaignContainerCSS = styled.div`
         margin-bottom : auto;
     }
 
-    .campaign-main {
-        padding : 20px;
-        .campaign-all {
-            text-align : left;
-            font-weight : 700;
-        }
-
+    .campaign-main {        
+        margin-left : 20px;
+        margin-top : 80px;
+        border-collapse: collapse;
+        border-spacing: 0;
+        width : calc(100% - 40px);                            
         .campaign-progress-table {
-            display : flex;
-            width : 100%;
-            height : 50px;
-            background : #f1f1f1;
-            margin-top : 80px;
-            justify-content : space-around;
+            display : flex;                        
+            background : #f1f1f1;                        
             align-items : center;
-            .campaign-progress-titles {
-                width : auto;
+            height : 50px;            
+            padding-left : 24px;
+            .campaign-progress-titles-isComplete {
+                width : 20%;
+                text-align : flex-start;
+                
+                span {
+                    
+                    font-weight : 400;
+                    font-size : 15px;
+                }
+            }
+            .campaign-progress-titles-name {
+                width : 40%;
+                text-align : flex-start;
                 span {
                     text-align : center;
                     font-weight : 400;
                     font-size : 15px;
+                }
+            }
+            .campaign-progress-titles-date {
+                width : 30%;
+                text-align : center;
+                span {
+                    text-align : center;
+                    font-weight : 400;
+                    font-size : 15px;
+                }
+            }
+            .campaign-progress-titles-number {
+                width : 10%;
+                text-align : center;
+                span {
+                    text-align : center;
+                    font-weight : 400;
+                    font-size : 15px;
+                }
+            }
+                        
+        }
+
+        .campaign-list-progress-table {      
+                  
+            .campaign-list {
+                padding-left : 24px;
+                padding-top : 10px;
+                padding-bottom : 10px;
+                text-decoration : none;
+                color : #000000;
+                display : flex;
+                align-items : center;
+                .campaign-data-progress {
+                    color : #22BAA8;
+                    font-weight: 400;
+                    font-size: 15px;
+                    line-height: 18px;
+                    width : 20%;
+                    text-align : flex-start;
+                    span {
+                        font-weight: 400;
+                        font-size: 15px;
+                        line-height: 18px;                     
+                    }
+                }
+
+                .campaign-data-profile {
+                    width : 40%;
+                    .campaign-data-wrapper {
+                        display : flex;
+                        justify-content : flex-start;
+                        align-items : center;
+                        .campaign-mainImage {
+                            width : 70px;
+                            height : 70px;
+                            margin-right : 20px;
+                        }
+                    }
+                    span {
+                        font-weight: 400;
+                        font-size: 15px;
+                        line-height: 18px;
+                        text-align : center;
+                    }
+                }
+
+                .campaign-data-date {
+                    width : 30%;
+                    text-align : center;
+                    span {
+                        font-weight: 400;
+                        font-size: 15px;
+                        line-height: 18px;                        
+                    }
+                }
+
+                .campaign-data-number {
+                    width : 10%;
+                    text-align : center;
+                    span {
+                        font-weight: 400;
+                        font-size: 15px;
+                        line-height: 18px;
+                        letter-spacing : 1.8px;
+                    }
                 }
             }
         }
