@@ -12,10 +12,8 @@ const CampaignResultDetail = ({id, name, profile, phoneNumber, zipno,roadaddress
                         <span className="selected-username">{name}</span>
                     </div>                    
                 </td>
-                <td className="selected-data-phone">
-                    
-                    <span>{phoneNumber.replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, "$1-$2-$3").replace(/\-{1,2}$/g, "")}</span>
-                    
+                <td className="selected-data-phone">                    
+                    <span>{phoneNumber.replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, "$1-$2-$3").replace(/\-{1,2}$/g, "")}</span>                    
                 </td>
                 <td className="selected-data-address">                    
                     <div className="address-wrapper">

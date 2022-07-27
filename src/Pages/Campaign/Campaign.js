@@ -107,7 +107,7 @@ const Campaign = () => {
                 </div>
             )}
             <div className="company-info-box">
-                <span className="company-info">(주)플로우업 | 대표이사 : 김형우 | 사업자등록번호 : 682-81-02584 | 통신판매업신고번호 제 2021-서울동작-1588호 | 주소 : 서울특별시 관악구 남현3길 61, 4층 404호(남현동) | 메일 : fieldby@gmail.com | 전화 : 070-7954-6410 | 팩스 : 0504-066-9938 ⓒ 2022 FIELDBY Corporation. All Rights Reserved. | 개인정보처리방침 | 이용약관</span>
+                <span className="company-info">(주)플로우업 | 대표이사 : 김형우 | 사업자등록번호 : 682-81-02584 | 통신판매업신고번호 제 2021-서울동작-1588호 | 주소 : 서울특별시 관악구 남현3길 61, 4층 404호(남현동) | 메일 : fieldby@gmail.com | 전화 : 070-7954-6410 | 팩스 : 0504-066-9938ⓒ 2022 FIELDBY Corporation. All Rights Reserved. | 개인정보처리방침 | 이용약관</span>
             </div>           
         </CampaignContainerCSS>
     )
@@ -290,8 +290,7 @@ const CampaignContainerCSS = styled.div`
             font-style: normal;
             font-weight: 700;
             font-size: 16px;
-            line-height: 19px;
-            
+            line-height: 19px;            
         }
     }
 

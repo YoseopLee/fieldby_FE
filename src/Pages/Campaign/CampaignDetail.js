@@ -13,6 +13,9 @@ const CampaignDetail = () => {
     const [recruitingNumber, setRecruitingNumber] = useState(0);
     const [recruitingDate, setRecruitingDate] = useState('');
     const [dueDate, setDueDate] = useState('');
+    const [selectionDate, setSelectionDate] = useState('');
+    const [uploadDate, setUploadDate] = useState('');
+    const [itemDate, setItemDate] = useState('');
     const [progressBtn, setProgressBtn] = useState(false);
     const [resultBtn, setResultBtn] = useState(false);
     const [completeBtn, setCompleteBtn] = useState(false);
@@ -31,7 +34,10 @@ const CampaignDetail = () => {
                     setCampaignTitle(data_obj.campaignTitle);
                     setRecruitingNumber(data_obj.recruitingNumber);
                     setRecruitingDate(data_obj.recruitingDate);
+                    setSelectionDate(data_obj.selectionDate);
+                    setUploadDate(data_obj.uploadDate);
                     setDueDate(data_obj.dueDate);
+                    setItemDate(data_obj.itemDate);
                 } else {
                     console.log("No data");
                 }
@@ -116,20 +122,20 @@ const CampaignDetail = () => {
                                 <div className="campaign-timeline-status">
                                     <img src="/images/Group 65.png" className="campaign-status-sign" alt="sign"/>
                                     <span>크리에이터 선정</span>
-                                    <span className="campaign-status-date">{dueDate.slice(0, 10).replace(/-/gi, '.')} - {dueDate.slice(0, 10).replace(/-/gi, '.')}</span>
+                                    <span className="campaign-status-date">{selectionDate.slice(0, 10).replace(/-/gi, '.')} - {selectionDate.slice(0, 10).replace(/-/gi, '.')}</span>
                                 </div>
                                 <div className="campaign-timeline-status">
                                     <img src="/images/Group 65.png" className="campaign-status-sign" alt="sign"/>
                                     <span>크리에이터 발표</span>
-                                    <span className="campaign-status-date">{dueDate.slice(0, 10).replace(/-/gi, '.')} - {dueDate.slice(0, 10).replace(/-/gi, '.')}</span>
+                                    <span className="campaign-status-date">{selectionDate.slice(0, 10).replace(/-/gi, '.')} - {selectionDate.slice(0, 10).replace(/-/gi, '.')}</span>
                                 </div>
                                 <div className="campaign-timeline-status">                                    
                                     <span className="campaign-status-info">콘텐츠 등록 기간</span>
-                                    <span className="campaign-status-date"></span>
+                                    <span className="campaign-status-date">{itemDate.slice(0,10).replace(/-/gi,'.')} - {uploadDate.slice(0,10).replace(/-/gi, '.')}</span>
                                 </div>
                                 <div className="campaign-timeline-status">                                    
                                     <span className="campaign-status-info">보고서 확인</span>
-                                    <span className="campaign-status-date"></span>
+                                    <span className="campaign-status-date">{uploadDate.slice(0,10).replace(/-/gi, '.')} ~</span>
                                 </div>
                             </div>
                         </div>
@@ -174,10 +180,8 @@ const CampaignDetailCSS = styled.div`
             margin-block-start : 0.41em;
         }
 
-        .campaign-detail-top-box {
-            
-           display : flex;
-
+        .campaign-detail-top-box {            
+           display : none;
             .campaign-detail-ask-btn {
                 border-radius : 5px;
                 background : #303030;
