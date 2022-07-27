@@ -6,7 +6,7 @@ import styled from "styled-components";
 import { useAuth } from "../../Context/authProvider";
 import { realtimeDbService } from "../../fBase";
 
-const CampaignProgressDetail = ({ uid, name, height, profile,simpleaddr, stroke, career, roundingFrequency, style1, style2, style3, igname, igfollower, igfollow, igmedia, bestImage1, bestImage2, bestImage3, token,checkedItemHandler, isSelected, isFollowed}) => {
+const CampaignProgressDetail = ({ uid, fcmToken ,name, height, profile,simpleaddr, stroke, career, roundingFrequency, style1, style2, style3, igname, igfollower, igfollow, igmedia, bestImage1, bestImage2, bestImage3, token,checkedItemHandler, isSelected, isFollowed, checkedFcmTokenHandler}) => {
     const [bChecked, setChecked] = useState(false);
     const [userBestImage1, setUserBestImage1] = useState('');
     const [userBestImage2, setUserBestImage2] = useState('');
@@ -44,6 +44,7 @@ const CampaignProgressDetail = ({ uid, name, height, profile,simpleaddr, stroke,
     const checkHandler = ({target}) => {
         setChecked(!bChecked);
         checkedItemHandler(uid, target.checked);
+        checkedFcmTokenHandler(fcmToken, target.checked);
         console.log(bChecked);
     }
 
