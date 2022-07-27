@@ -176,6 +176,7 @@ const CampaignResultCSS = styled.div`
         .campaign-progress-table {
             display : flex;                        
             align-items : center;
+            margin-bottom : 30px;
             .campaign-progress-titles-number {
                 font-weight: 500;                
                 position: relative;
