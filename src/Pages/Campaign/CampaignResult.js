@@ -1,3 +1,4 @@
+import axios from "axios";
 import { child, get, getDatabase, ref } from "firebase/database";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -10,6 +11,8 @@ const CampaignResult = () => {
     const {currentUser} = useAuth();    
     let {id} = useParams();
     const [userDatas, setUserDatas] = useState([]);
+    const [userFcmToken, setUserFcmToken] = useState([]);
+    const [campaignTitle, setCampaignTitle] = useState('');
     const [loading, setLoading] = useState(true);
     const [datas, setDatas] = useState('');
 
@@ -27,14 +30,18 @@ const CampaignResult = () => {
                     const data_ent_arr = data_ent.map((d) => Object.assign(d[1]));
                     console.log(data_ent_arr);
                     const newUsersArrays = [];
+                    const userFcmTokenArrays = [];
                     for (let i = 0; i < data_ent_arr.length; i++) {
                         get(child(dbRef, `users/${data_ent_arr[i]}`))
                         .then((snapshot) => {
                             if (snapshot.exists()) {
                                 const userDataObj = snapshot.val();
                                 newUsersArrays.push(userDataObj)
-                                console.log(newUsersArrays);                                
+                                userFcmTokenArrays.push(userDataObj.fcmToken);
+                                console.log(newUsersArrays);                  
+                                console.log(userFcmTokenArrays);              
                                 setUserDatas([...newUsersArrays]);
+                                setUserFcmToken([...userFcmTokenArrays]);
                                 setLoading(false);
                             } else {
                                 console.log("No Data");
@@ -53,9 +60,41 @@ const CampaignResult = () => {
         getCampaignSelectedUserData();
     }, [])
 
-    const sendShipMessage = () => {
-        
-    }
+    useEffect(() => {
+        const dbRef = ref(getDatabase());
+        const getCampaignData = async() => {
+            get(child(dbRef, `brands/${currentUser.uid}/campaigns/${id}`))
+            .then((snapshot) => {
+                if (snapshot.exists()) {
+                    const campaignData = snapshot.val();
+                    console.log(campaignData.campaignTitle);
+                    setCampaignTitle(campaignData.campaignTitle);
+                } else {
+                    console.log("No Data");
+                }
+            }).catch((error) => {
+                console.log(error);
+            })
+        }
+        getCampaignData();
+    },[])
+
+    const sendShipMessage = () => {        
+            console.log(campaignTitle);
+            for(let i = 0; i < userFcmToken.length; i++) {
+                axios.post("https://fcm.googleapis.com/fcm/send", {            
+                    "to" : userFcmToken[i],
+                    "data" : {"type" : "item"},
+                    "notification" : {"title" : `👍🏻'${campaignTitle}' 상품이 발송 완료! `, "body" : `'${campaignTitle}' 상품이 발송되었습니다! 운송장 번호를 확인해 주세요 :)`}            
+                }, {
+                    headers : {
+                        "Content-Type": "application/json",
+                        "Authorization": "key=AAAAd3VbcvA:APA91bEE-_bu4E6TERxIVo0_66CjRQbfjIDB7FwiQJakRRv5rWVMK95R58UFCDUAS1l79mXKJQ_SQVwxjDgdST49rB43QJG-zD0Mmv6Zn2r4xJRAlNf5R-ZpJvmel3VWUSVAJK9bxOJO"
+                    }
+                })
+            }
+            
+        }
 
     return (        
         <CampaignResultCSS>
@@ -101,7 +140,7 @@ const CampaignResult = () => {
                             </tbody>                           
                             <button className="ship-upload-btn">송장 일괄 업로드</button>                                
                             <button className="ship-download-btn">명단 다운로드</button>
-                            <button className="ship-btn">송장 적용하기</button>                                                                                            
+                            <button className="ship-btn" onClick={sendShipMessage}>송장 적용하기</button>                                                                                            
                         </table>                        
                     )}
                 </>
@@ -137,6 +176,7 @@ const CampaignResultCSS = styled.div`
         .campaign-progress-table {
             display : flex;                        
             align-items : center;
+            margin-bottom : 30px;
             .campaign-progress-titles-number {
                 font-weight: 500;                
                 position: relative;

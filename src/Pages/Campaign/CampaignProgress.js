@@ -1,3 +1,4 @@
+import axios from "axios";
 import { child, get, getDatabase, push, ref, remove, set, update } from "firebase/database";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -15,12 +16,14 @@ const CampaignProgress = () => {
     const [datas, setDatas] = useState([]);
     const [userDatas, setUserDatas] = useState([]);
     const [checkedItems, setCheckedItems] = useState(new Set());
+    const [checkedUserFcmToken, setCheckedUserFcmToken] = useState(new Set());
     const [checkedItemsCount, setCheckedItemsCount] = useState(0);
     const [isUserSelected, setIsUserSelected] = useState(false);
     const [loading, setLoading] = useState(true);
     const [recruitingNumber, setRecruitingNumber] = useState(0);
     const [modalOpen, setModalOpen] = useState(false);
     const [confirmModalOpen, setConfirmModalOpen] = useState(false);
+    const [campaignTitle, setCampaignTitle] = useState('');
     const navigate = useNavigate();    
 
     useEffect(() => {
@@ -75,6 +78,7 @@ const CampaignProgress = () => {
                     setIsUserSelected(isSelected);
                     const campaignRecruitingNumber = campaignDataObj.recruitingNumber;
                     setRecruitingNumber(campaignRecruitingNumber);
+                    setCampaignTitle(campaignDataObj.campaignTitle);
                 } else {
                     console.log("No Data");
                 }
@@ -101,6 +105,18 @@ const CampaignProgress = () => {
             setCheckedItems(checkedItems);            
             setCheckedItemsCount(checkedItemsCount - 1);
             console.log(checkedItems);
+        }
+    }
+
+    const checkedFcmTokenHandler = (fcmToken, isChecked) => {
+        if (isChecked) {
+            checkedUserFcmToken.add(fcmToken);
+            setCheckedUserFcmToken(checkedUserFcmToken);
+            console.log(checkedUserFcmToken);
+        } else if (!isChecked && checkedUserFcmToken.has(fcmToken)) {
+            checkedUserFcmToken.delete(fcmToken);
+            setCheckedUserFcmToken(checkedUserFcmToken);
+            console.log(checkedUserFcmToken);
         }
     }
 
@@ -174,6 +190,24 @@ const CampaignProgress = () => {
                 setConfirmModalOpen(true);
             }
             getUserArray();
+
+            const selectedUserFcmToken = [...checkedUserFcmToken];
+            for (let i = 0; i < selectedUserFcmToken.length; i++) {
+                axios.post("https://fcm.googleapis.com/fcm/send", {
+                    "to" : selectedUserFcmToken[i],
+                    "data" : {"type" : "select"},
+                    "notification" : {"title" : `👍🏻'${campaignTitle}' 캠페인에 선정 완료!`, "body" : `👍🏻'${campaignTitle}' 캠페인에 선정되었습니다! 가이드라인을 확인해주세요 :)`}
+                }, {
+                    headers : {
+                        "Content-Type": "application/json",
+                        "Authorization": "key=AAAAd3VbcvA:APA91bEE-_bu4E6TERxIVo0_66CjRQbfjIDB7FwiQJakRRv5rWVMK95R58UFCDUAS1l79mXKJQ_SQVwxjDgdST49rB43QJG-zD0Mmv6Zn2r4xJRAlNf5R-ZpJvmel3VWUSVAJK9bxOJO"
+                    }
+                }).then((res) => {
+                    console.log(res);
+                }).catch((error) => {
+                    console.log(error);
+                })
+            }
                         
         } else {
             alert('크리에이터를 선정해주세요!');
@@ -214,6 +248,7 @@ const CampaignProgress = () => {
                                     <CampaignProgressDetail 
                                         key={idx}
                                         uid={userData.uid}
+                                        fcmToken={userData.fcmToken}
                                         name={userData.name}
                                         height={userData.height}                    
                                         simpleaddr={userData.simpleAddress}
@@ -234,7 +269,8 @@ const CampaignProgress = () => {
                                         igmedia={userData.igInfo?.mediaCount}
                                         isSelected={userData.campaigns?.isSelected}
                                         isFollowed={userData.campaigns?.[id].isFollowed}                    
-                                        checkedItemHandler={checkedItemHandler}                            
+                                        checkedItemHandler={checkedItemHandler}
+                                        checkedFcmTokenHandler={checkedFcmTokenHandler}                            
                                     />                                                
                                 )}
                                 <button className="selected-btn" type="button" onClick={openModal}><span className="selected-user-count">{checkedItemsCount}/{recruitingNumber}</span><span className="selected-detail">선택한 크리에이터 선정하기</span></button>
