@@ -137,8 +137,7 @@ const CampaignProgress = () => {
                     })                                                     
                 } catch (error) {
                     console.log(error.message);
-                }
-                
+                }                
             })
             
             const dbRef = ref(getDatabase());

@@ -12,7 +12,6 @@ const CampaignResult = () => {
     const [userDatas, setUserDatas] = useState([]);
     const [loading, setLoading] = useState(true);
     const [datas, setDatas] = useState('');
-    
 
     useEffect(() => {
         const dbRef = ref(getDatabase());
@@ -21,16 +20,14 @@ const CampaignResult = () => {
             .then((snapshot) => {
                 if (snapshot.exists()) {
                     const dataObj = snapshot.val();
-                    console.log(dataObj);
-                    
+                    console.log(dataObj);                    
                     setDatas(dataObj);                    
                     const data_ent = Object.entries(dataObj);
                     console.log(data_ent);
                     const data_ent_arr = data_ent.map((d) => Object.assign(d[1]));
                     console.log(data_ent_arr);
                     const newUsersArrays = [];
-                    for (let i = 0; i < data_ent_arr.length; i++) {                        
-                        
+                    for (let i = 0; i < data_ent_arr.length; i++) {
                         get(child(dbRef, `users/${data_ent_arr[i]}`))
                         .then((snapshot) => {
                             if (snapshot.exists()) {
@@ -55,6 +52,10 @@ const CampaignResult = () => {
         }
         getCampaignSelectedUserData();
     }, [])
+
+    const sendShipMessage = () => {
+        
+    }
 
     return (        
         <CampaignResultCSS>
@@ -94,11 +95,14 @@ const CampaignResult = () => {
                                         phoneNumber={userData.phoneNumber}
                                         zipno={userData.address.zipNo}
                                         roadaddress={userData.address.roadAddr}
-                                        detailaddress = {userData.address.detail}
+                                        detailaddress={userData.address.detail}
                                     />
                                 )}                                
-                            </tbody>                      
-                        </table>
+                            </tbody>                           
+                            <button className="ship-upload-btn">송장 일괄 업로드</button>                                
+                            <button className="ship-download-btn">명단 다운로드</button>
+                            <button className="ship-btn">송장 적용하기</button>                                                                                            
+                        </table>                        
                     )}
                 </>
             ) : (
@@ -152,7 +156,7 @@ const CampaignResultCSS = styled.div`
                 font-weight: 500;                
                 position: relative;
                 vertical-align: top;
-                width : 30%;
+                width : 15%;
                 min-height: 32px;
                 display : flex;
                 align-items : center;
@@ -167,7 +171,7 @@ const CampaignResultCSS = styled.div`
                 font-weight: 500;                
                 position: relative;
                 vertical-align: top;
-                width : 20%;
+                width : 15%;
                 min-height: 32px;
                 display : flex;
                 align-items : center;
@@ -202,6 +206,7 @@ const CampaignResultCSS = styled.div`
                 display : flex;
                 align-items : center;
                 justify-content : flex-start;
+                margin-left : 36px;
                 span {
                     text-align : center;
                     font-weight : 400;
@@ -215,10 +220,10 @@ const CampaignResultCSS = styled.div`
                 position: relative;
                 vertical-align: top;                              
                 min-height: 32px;
-                width : 30%;
+                width : 15%;
                 display : flex;
                 align-items : center;
-                justify-content : center;
+                justify-content : flex-start;
                     span {
                         color : #303030;
                         font-weight: 700;
@@ -268,7 +273,7 @@ const CampaignResultCSS = styled.div`
                 position: relative;
                 vertical-align: top;                              
                 min-height: 32px;
-                width : 20%;
+                width : 15%;
                 display : flex;
                 align-items : center;
                 justify-content : flex-start;
@@ -297,19 +302,21 @@ const CampaignResultCSS = styled.div`
                     .address-flex-box {
                         display : flex;
                         flex-direction : column;
+                        width : 100%;
                     }                                        
                     .shipment-names {
-                        margin-left : 12px;
+                        margin-left : 20px;
                         border: 1px solid #303030;
                         border-radius: 13px;
                         height : 48px;
-                        width : calc(50%);
+                        width : calc(55%);
+                        padding : 8px;
                     }
                 }
                 span {
                     color : #766F6F;
                     font-weight: 400;
-                    font-size: 15px;
+                    font-size: 14px;
                     line-height: 18px;                    
                 }
             }
@@ -323,12 +330,14 @@ const CampaignResultCSS = styled.div`
                 display : flex;
                 align-items : center;
                 justify-content : flex-start;
+                margin-left : 36px;
                 .table-input {
                     border : none;
                     height : 48px;
                     background: #F1F1F1;
                     border-radius: 13px;
                     padding-left : 12px;
+                    color : #766F6F;                    
                 }
                 span {
                     color : #766F6F;
@@ -366,5 +375,93 @@ const CampaignResultCSS = styled.div`
             color : #303030;
         }
     }
+        
+    .ship-upload-btn {
+        background : transparent;
+        border : 1px solid #766F6F;
+        border-radius : 5px;
+        position : fixed;
+        width : 160px;
+        height: 48px;
+        left : -40%;
+        top : 85%;
+        right : 0;
+        bottom : 0;
+        margin-left : auto;
+        margin-right : auto;
+        margin-top : auto;
+        margin-bottom : auto;
+        display : flex;
+        align-items : center;
+        justify-content : center;
+        font-weight : 700;
+        &:active {
+            top : 85.1%;
+            left : -39.9%;
+        }
+        &:hover {
+            background : #22Baa8;
+            color : #ffffff;
+        }
+    }
+            
+    .ship-download-btn {
+        background : transparent;
+        border : 1px solid #766F6F;
+        border-radius : 5px;
+        position : fixed;
+        width : 160px;
+        height: 48px;
+        left : 60%;
+        top : 85%;
+        right : 0;
+        bottom : 0;
+        margin-left : auto;
+        margin-right : auto;
+        margin-top : auto;
+        margin-bottom : auto;
+        display : flex;
+        align-items : center;
+        justify-content : center;
+        font-weight : 700;
+        &:active {
+            top : 85.1%;
+            left : 60.1%;
+        }
+        &:hover {
+            background : #22Baa8;
+            color : #ffffff;
+        }
+    }
+
+    .ship-btn {
+        background : #303030;
+        border-radius : 5px;
+        box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.25);
+        border : 1px solid #e7e7e7;
+        position : fixed;
+        width : 160px;
+        height: 48px;
+        left : 80%;
+        top : 85%;
+        right : 0;
+        bottom : 0;
+        margin-left : auto;
+        margin-right : auto;
+        margin-top : auto;
+        margin-bottom : auto;
+        display : flex;
+        align-items : center;
+        justify-content : center;
+        font-weight : 700;
+        color : #ffffff;
+        &:active {        
+            top : 85.2%;
+            left : 80.2%;
+        }        
+        &:hover {
+            background : #22Baa8;                              
+        }   
+    }    
 `
 export default CampaignResult;

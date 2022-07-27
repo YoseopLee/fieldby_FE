@@ -11,9 +11,7 @@ const CampaignComplete = () => {
     const {currentUser} = useAuth();
     const {id} = useParams();
     const [userDatas, setUserDatas] = useState([]);
-    const [userPostDatas, setUserPostDatas] = useState([]);
-    
-    
+    const [userPostDatas, setUserPostDatas] = useState([]);    
 
     useEffect(() => {
         const dbRef = ref(getDatabase());
@@ -61,7 +59,7 @@ const CampaignComplete = () => {
         <CampaignCompleteCSS>
             {userDatas?.[0] ? (
                 <>
-                <span className="campaign-complete-title">완료 포스팅</span>                
+                <span className="campaign-complete-title">완료 포스팅</span>            
                 <div className="campaign-complete-posts-wrapper">
                     {userDatas.map((userData, idx) =>
                         <CampaignCompleteDetail 

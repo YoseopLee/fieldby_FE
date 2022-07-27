@@ -62,8 +62,8 @@ const SideBar = () => {
                     </div>
                     {showProfileInfo &&
                         <div className="btn-menus">
-                            <span className="btn-menu" onClick={campaignHandle}>캠페인</span>                        
-                            <span className="btn-menu" onClick={handleLogout}>로그아웃</span>
+                            <div className="btn-menu" onClick={campaignHandle}>캠페인</div>                        
+                            <div className="btn-menu" onClick={handleLogout}>로그아웃</div>
                         </div>
                     }
                                         
@@ -72,7 +72,7 @@ const SideBar = () => {
                 <div className="campaign-customer-center">
                     {showInfo &&  
                         <div className="btn-menus">                                                  
-                            <span className="btn-menu">공지사항</span>  
+                            <div className="btn-menu">공지사항</div>  
                                                                                                                                     
                         </div>
                     }      
@@ -134,6 +134,13 @@ const SideBarContainerCSS = styled.div`
                 font-weight : 700;
                 line-height : 19px;
                 font-size : 15px;
+                padding : 8px;
+            }
+            .btn-menu:hover {
+                background-color : #22Baa8;
+                transition : all .3s;
+                color : #fff;
+                border-radius : 6px;
             }
         }
         margin-top : 45px;        
@@ -259,7 +266,16 @@ const SideBarContainerCSS = styled.div`
                 font-weight : 700;
                 line-height : 19px;
                 font-size : 15px;
+                background-color : #ffffff;
+                padding : 8px;                                          
             }
+            .btn-menu:hover {
+                background-color : #22Baa8;
+                transition : all .3s;
+                color : #fff;
+                border-radius : 6px;
+            }
+            
         }
     }
     

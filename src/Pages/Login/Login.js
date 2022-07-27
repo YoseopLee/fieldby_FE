@@ -27,8 +27,15 @@ const Login = () => {
             navigate("/campaign");
         } catch (error) {
             console.log(error.message);
+            alert("비밀번호를 확인해주세요.");
         }
     };
+
+    const enterLogin = () =>{
+        if (window.event.keyCode === 13) {
+            signIn();
+        }
+    }
 
     return( 
         <LoginContainerCSS>
@@ -42,7 +49,7 @@ const Login = () => {
                         <input name="email" type="email" placeholder="이메일" className="login-email" value={email} onChange={(e) => {
                             setEmail(e.target.value);
                         }}/>
-                        <input name="password" type="password" placeholder="비밀번호" className="login-pw" value={password} onChange={(e) => {
+                        <input name="password" type="password" placeholder="비밀번호" className="login-pw" value={password} onKeyUp={enterLogin} onChange={(e) => {
                             setPassword(e.target.value);
                         }}/>
                     </div>

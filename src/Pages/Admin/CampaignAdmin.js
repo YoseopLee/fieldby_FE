@@ -92,8 +92,7 @@ const CampaignAdmin = () => {
     }
     
     const registerCampaign = () => {
-        try {
-            
+        try {            
             const campaignUid = push(ref(realtimeDbService, `campaigns/`), {
                 campaignTitle : campaignTitle,
                 brandInstagram : brandInstagram,
@@ -134,7 +133,10 @@ const CampaignAdmin = () => {
                 campaignTitle : campaignTitle,
                 recruitingDate : recruitingDate,
                 dueDate : dueDate.replace(/T/gi, '-').replace(/\:/, '-'),
-                recruitingNumber : recruitingNumber                                              
+                recruitingNumber : recruitingNumber,
+                selectionDate : selectionDate,
+                uploadDate : uploadDate,
+                itemDate : itemDate,                                              
         });
 
             alert('캠페인 등록이 완료되었습니다.');
