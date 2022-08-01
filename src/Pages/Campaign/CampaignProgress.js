@@ -147,7 +147,9 @@ const CampaignProgress = () => {
                         selectCompleted : true
                     });
                     // brands => user 필드 지우기
-                    // remove(ref(realtimeDbService, `brands/${currentUser.uid}/campaigns/${id}/users/`));
+                    remove(ref(realtimeDbService, `brands/${currentUser.uid}/campaigns/${id}/users/`), {
+                        [v] : v
+                    });
                     set(ref(realtimeDbService, `campaigns/${id}/users/`), {
                         [v] : v
                     })                                                     

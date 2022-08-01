@@ -1,10 +1,11 @@
 import axios from "axios";
-import { child, get, getDatabase, ref } from "firebase/database";
+import { child, get, getDatabase, ref, update } from "firebase/database";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import Spinner from "../../Components/Common/Spinner";
 import { useAuth } from "../../Context/authProvider";
+import { realtimeDbService } from "../../fBase";
 import CampaignResultDetail from "./CampaignResultDetail";
 
 const CampaignResult = () => {
@@ -12,6 +13,7 @@ const CampaignResult = () => {
     let {id} = useParams();
     const [userDatas, setUserDatas] = useState([]);
     const [userFcmToken, setUserFcmToken] = useState([]);
+    const [userUid, setUserUid] = useState([]);
     const [campaignTitle, setCampaignTitle] = useState('');
     const [loading, setLoading] = useState(true);
     const [datas, setDatas] = useState('');
@@ -31,6 +33,7 @@ const CampaignResult = () => {
                     console.log(data_ent_arr);
                     const newUsersArrays = [];
                     const userFcmTokenArrays = [];
+                    const userUidArray = [];
                     for (let i = 0; i < data_ent_arr.length; i++) {
                         get(child(dbRef, `users/${data_ent_arr[i]}`))
                         .then((snapshot) => {
@@ -38,9 +41,12 @@ const CampaignResult = () => {
                                 const userDataObj = snapshot.val();
                                 newUsersArrays.push(userDataObj)
                                 userFcmTokenArrays.push(userDataObj.fcmToken);
+                                userUidArray.push(userDataObj.uid);
                                 console.log(newUsersArrays);                  
-                                console.log(userFcmTokenArrays);              
+                                console.log(userFcmTokenArrays);
+                                console.log(userUidArray);              
                                 setUserDatas([...newUsersArrays]);
+                                setUserUid([...userUidArray]);
                                 setUserFcmToken([...userFcmTokenArrays]);
                                 setLoading(false);
                             } else {
@@ -79,21 +85,31 @@ const CampaignResult = () => {
         getCampaignData();
     },[])
 
-    const sendShipMessage = () => {        
-            console.log(campaignTitle);
-            for(let i = 0; i < userFcmToken.length; i++) {
-                axios.post("https://fcm.googleapis.com/fcm/send", {            
-                    "to" : userFcmToken[i],
-                    "data" : {"type" : "item"},
-                    "notification" : {"title" : `👍🏻'${campaignTitle}' 상품이 발송 완료! `, "body" : `'${campaignTitle}' 상품이 발송되었습니다! 운송장 번호를 확인해 주세요 :)`}            
-                }, {
-                    headers : {
-                        "Content-Type": "application/json",
-                        "Authorization": "key=AAAAd3VbcvA:APA91bEE-_bu4E6TERxIVo0_66CjRQbfjIDB7FwiQJakRRv5rWVMK95R58UFCDUAS1l79mXKJQ_SQVwxjDgdST49rB43QJG-zD0Mmv6Zn2r4xJRAlNf5R-ZpJvmel3VWUSVAJK9bxOJO"
-                    }
-                })
+    const sendShipMessage = (shipmentName, shipmentNumber) => {
+            try {
+                for (let i = 0; i < userDatas.length; i++) {
+                    update(ref(realtimeDbService, `users/${userUid[i]}/campaigns/${id}`), {
+                        shipment_name : shipmentName,
+                        shipment_number : shipmentNumber,
+                    })
+                }
+
+                for(let i = 0; i < userFcmToken.length; i++) {
+                    axios.post("https://fcm.googleapis.com/fcm/send", {            
+                        "to" : userFcmToken[i],
+                        "data" : {"type" : "item"},
+                        "notification" : {"title" : `👍🏻'${campaignTitle}' 상품이 발송 완료! `, "body" : `'${campaignTitle}' 상품이 발송되었습니다! 운송장 번호를 확인해 주세요 :)`}            
+                    }, {
+                        headers : {
+                            "Content-Type": "application/json",
+                            "Authorization": "key=AAAAd3VbcvA:APA91bEE-_bu4E6TERxIVo0_66CjRQbfjIDB7FwiQJakRRv5rWVMK95R58UFCDUAS1l79mXKJQ_SQVwxjDgdST49rB43QJG-zD0Mmv6Zn2r4xJRAlNf5R-ZpJvmel3VWUSVAJK9bxOJO"
+                        }
+                    })
+                }
+            } catch (error) {
+                console.log(error.message);
             }
-            
+                                                         
         }
 
     return (        
@@ -135,6 +151,7 @@ const CampaignResult = () => {
                                         zipno={userData.address.zipNo}
                                         roadaddress={userData.address.roadAddr}
                                         detailaddress={userData.address.detail}
+                                        sendShipMessage={sendShipMessage}
                                     />
                                 )}                                
                             </tbody>                           
