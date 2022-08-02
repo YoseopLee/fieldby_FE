@@ -277,7 +277,7 @@ const CampaignProgress = () => {
                                 )}
                                 <button className="selected-btn" type="button" onClick={openModal}><span className="selected-user-count">{checkedItemsCount}/{recruitingNumber}</span><span className="selected-detail">선택한 크리에이터 선정하기</span></button>
                                 <SelectUserModal open={modalOpen} close={closeModal} confirm={selectedUserHandler}>
-                                    <span className="main-info">크리에어터 선정 후에는 변경이 불가합니다.</span>
+                                    <span className="main-info">크리에이터 선정 후에는 변경이 불가합니다.</span>
                                     <span className="main-ask">선정을 확정하시겠습니까?</span>
                                 </SelectUserModal>
                                 <SelectCompleteModal open={confirmModalOpen} result={closeConfirmModal}>

@@ -4,6 +4,8 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import Spinner from "../../Components/Common/Spinner";
+import ShipConfirm from "../../Components/Modal/ShipComfirm";
+import ShipComplete from "../../Components/Modal/ShipComplete";
 import { useAuth } from "../../Context/authProvider";
 import { realtimeDbService } from "../../fBase";
 import CampaignResultDetail from "./CampaignResultDetail";
@@ -17,6 +19,10 @@ const CampaignResult = () => {
     const [campaignTitle, setCampaignTitle] = useState('');
     const [loading, setLoading] = useState(true);
     const [datas, setDatas] = useState('');
+    const [modalOpen, setModalOpen] = useState(false);
+    const [confirmModalOpen, setConfirmModalOpen] = useState(false);
+    const [shipName, setShipName] = useState('');
+    const [shipNumber, setShipNumber] = useState('');    
 
     useEffect(() => {
         const dbRef = ref(getDatabase());
@@ -33,7 +39,7 @@ const CampaignResult = () => {
                     console.log(data_ent_arr);
                     const newUsersArrays = [];
                     const userFcmTokenArrays = [];
-                    const userUidArray = [];
+                    const userUidArray = [];                    
                     for (let i = 0; i < data_ent_arr.length; i++) {
                         get(child(dbRef, `users/${data_ent_arr[i]}`))
                         .then((snapshot) => {
@@ -41,13 +47,13 @@ const CampaignResult = () => {
                                 const userDataObj = snapshot.val();
                                 newUsersArrays.push(userDataObj)
                                 userFcmTokenArrays.push(userDataObj.fcmToken);
-                                userUidArray.push(userDataObj.uid);
+                                userUidArray.push(userDataObj.uid);                                
                                 console.log(newUsersArrays);                  
                                 console.log(userFcmTokenArrays);
                                 console.log(userUidArray);              
                                 setUserDatas([...newUsersArrays]);
                                 setUserUid([...userUidArray]);
-                                setUserFcmToken([...userFcmTokenArrays]);
+                                setUserFcmToken([...userFcmTokenArrays]);                               
                                 setLoading(false);
                             } else {
                                 console.log("No Data");
@@ -85,12 +91,30 @@ const CampaignResult = () => {
         getCampaignData();
     },[])
 
-    const sendShipMessage = (shipmentName, shipmentNumber) => {
+    const openModal = () => {
+        setModalOpen(true);
+    }
+
+    const closeModal = () => {
+        setModalOpen(false);
+    }
+
+    const closeConfirmModal = () => {
+        setConfirmModalOpen(false);        
+    }
+
+    const getShipInfo = (shipmentName, shipmentNumber) => {
+        setShipName(shipmentName);
+        setShipNumber(shipmentNumber);
+    }
+
+    const sendShipMessage = () => {
+        getShipInfo();
             try {
                 for (let i = 0; i < userDatas.length; i++) {
                     update(ref(realtimeDbService, `users/${userUid[i]}/campaigns/${id}`), {
-                        shipment_name : shipmentName,
-                        shipment_number : shipmentNumber,
+                        shipment_name : shipName,
+                        shipment_number : shipNumber,
                     })
                 }
 
@@ -106,10 +130,12 @@ const CampaignResult = () => {
                         }
                     })
                 }
+                
             } catch (error) {
                 console.log(error.message);
             }
-                                                         
+            setModalOpen(false);
+            setConfirmModalOpen(true);                                                      
         }
 
     return (        
@@ -151,13 +177,21 @@ const CampaignResult = () => {
                                         zipno={userData.address.zipNo}
                                         roadaddress={userData.address.roadAddr}
                                         detailaddress={userData.address.detail}
-                                        sendShipMessage={sendShipMessage}
+                                        shipment_name={userData.campaigns?.[id].shipment_name}
+                                        shipment_number={userData.campaigns?.[id].shipment_number}
+                                        getShipInfo={getShipInfo}
                                     />
                                 )}                                
                             </tbody>                           
                             <button className="ship-upload-btn">송장 일괄 업로드</button>                                
                             <button className="ship-download-btn">명단 다운로드</button>
-                            <button className="ship-btn" onClick={sendShipMessage}>송장 적용하기</button>                                                                                            
+                            <button className="ship-btn" onClick={openModal}>송장 적용하기</button>
+                            <ShipConfirm open={modalOpen} close={closeModal} confirm={sendShipMessage}>
+                                <span className="main-info">배송 정보를 정확하게 입력해주세요</span>                                
+                            </ShipConfirm>
+                            <ShipComplete open={confirmModalOpen} result={closeConfirmModal}>
+                                <span className="complete-main-info">크리에이터에게 배송 정보를 전달했습니다.</span>
+                            </ShipComplete>                                                                                            
                         </table>                        
                     )}
                 </>
