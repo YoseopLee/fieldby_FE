@@ -8,6 +8,7 @@ const CampaignCompleteDetail = ({igname, followers, token, postImageUrl}) => {
     const [postImage, setPostImage] = useState('');
     const [postComments, setPostComments] = useState('');
     const [postLikes, setPostLikes] = useState('');
+    const [postType, setPostType] = useState('');
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -15,7 +16,7 @@ const CampaignCompleteDetail = ({igname, followers, token, postImageUrl}) => {
             try {
                 // post Data
                 const json1 = await axios.get(
-                    `https://graph.facebook.com/v14.0/${postImageUrl}?fields=media_url&access_token=${token}`
+                    `https://graph.facebook.com/v14.0/${postImageUrl}?fields=media_type,media_url&access_token=${token}`
                 );
 
                 const json2 = await axios.get(
@@ -28,6 +29,7 @@ const CampaignCompleteDetail = ({igname, followers, token, postImageUrl}) => {
                 console.log(json1.data);
                 setLoading(false);
                 setPostImage(json1.data.media_url);
+                setPostType(json1.data.media_type);
                 setPostComments(json2.data.comments_count);
                 setPostLikes(json3.data.like_count);
             } catch (error) {
@@ -47,7 +49,12 @@ const CampaignCompleteDetail = ({igname, followers, token, postImageUrl}) => {
             ) : (
                 <div className="campaign-complete-details">
                     <div className="camapaign-complete-detail-info-wrapper">
-                        <img src={postImage} alt="posted" className="campaign-complete-detail-img"/>
+                        {postType==='VIDEO' ? (
+                            <video src={postImage} alt="posted" className="campaign-complete-detail-img"/>
+                        ) : 
+                        ( 
+                            <img src={postImage} alt="posted" className="campaign-complete-detail-img"/>
+                        )}  
                     </div>
 
                     <div className="user-instagram-logo-name">

@@ -16,9 +16,11 @@ const CampaignReport = () => {
     const [campaignSaved, setCampaignSaved] = useState(0);
     const [campaignLikes, setCampaignLikes] = useState(0);
     const [campaignComments, setCampaignComments] = useState(0);
-    const [sumFollowers, setSumFollowers] = useState(0);
+    const [sumFollowers, setSumFollowers] = useState(0);    
     const followerArray = [];
     const userArray = [];
+    const userTokenArray = [];
+    const postIdArray = [];
 
     useEffect(() => {
         const dbRef = ref(getDatabase());
@@ -48,8 +50,13 @@ const CampaignReport = () => {
                                 setSumFollowers(sum_followers);                                                           
                                 const userSelectedData = userDataObj.campaigns?.[id].images?.[0];
                                 console.log(userSelectedData);
-                                const userSelectedToken = userDataObj.igInfo?.token;
-                                console.log(userSelectedToken);                                                              
+                                postIdArray.push(userSelectedData);                                
+                                console.log(postIdArray);
+                                
+                                const userSelectedToken = userDataObj.igInfo?.token;                                
+                                console.log(userSelectedToken);
+                                userTokenArray.push(userSelectedToken);    
+                                console.log(userTokenArray);                                                                                            
                                                               
                             } else {
                                 console.log("No data");
@@ -61,33 +68,39 @@ const CampaignReport = () => {
 
                     const getPostData= async() => {
                         try {
-                            const json1 = await axios.get(
-                                // token에 권한이 없어서 불러오지 못함.
-                                `https://graph.facebook.com/v14.0/17875403288663005/insights?metric=reach,impressions,engagement,saved&access_token=EAAIJMALXHyQBAMJZAigKrkZCZAfZBr9PTQjxfJqD7nnbtLw7dlZBMQUN86yptRzAKIPt8hVSBmhVy4DqyPcIvu2HMLrbbp6nUtq7NZBTB4uWtKhZCtYSsgowMKrs3muFmZBbPJB7exAZCJZBQvVn8u5G83ixkLBDPlRwIwkSgni1LfeIvejCRfURBCnjQCC2ZAQB9bumWyrDIBnmm6LPjG3fgD4fXjqcsCpp41EpQ4XCx1ub26jcFprAI9u`
-                            );
+                            for (let i = 0; i < userTokenArray.length; i++) {
+                                const json1 = await axios.get(
+                                    // token에 권한이 없어서 불러오지 못함.
+                                    `https://graph.facebook.com/v14.0/${postIdArray[i]}/insights?metric=reach,saved&access_token=${userTokenArray[i]}`
+                                );
+                                
+                                const json2 = await axios.get(
+                                    `https://graph.facebook.com/v14.0/${postIdArray[i]}?fields=media_type,comments_count,like_count&access_token=${userTokenArray[i]}`
+                                );
+                                                                                            
+                                console.log(json1.data);
+                                console.log(json2.data);                            
+                                                                    
+                                const reach = json1.data.data[0].values[0].value;
+                                console.log(reach);
+                                setCampaignReach(reach);
+                                const impressions = json1.data.data[1].values[0].value;
+                                console.log(impressions);
+                                setCampaignImpressions(impressions);
+                                // const engagement = json1.data.data[2].values[0].value;
+                                // console.log(engagement);
+                                // setCampaignEngagement(engagement);
+                                // const saved = json1.data.data[3].values[0].value;
+                                // console.log(saved);
+                                // setCampaignSaved(saved);    
+                                const likes = json2.data.like_count;
+                                console.log(json2.data.like_count);
+                                setCampaignLikes(likes);
+                                const comments = json2.data.comments_count;
+                                console.log(json2.data.comments_count);
+                                setCampaignComments(comments);
+                            }
                             
-                            const json2 = await axios.get(
-                                `https://graph.facebook.com/v14.0/17875403288663005?fields=comments_count,like_count&access_token=EAAIJMALXHyQBAMJZAigKrkZCZAfZBr9PTQjxfJqD7nnbtLw7dlZBMQUN86yptRzAKIPt8hVSBmhVy4DqyPcIvu2HMLrbbp6nUtq7NZBTB4uWtKhZCtYSsgowMKrs3muFmZBbPJB7exAZCJZBQvVn8u5G83ixkLBDPlRwIwkSgni1LfeIvejCRfURBCnjQCC2ZAQB9bumWyrDIBnmm6LPjG3fgD4fXjqcsCpp41EpQ4XCx1ub26jcFprAI9u`
-                            );
-
-                            const reach = json1.data.data[0].values[0].value;
-                            console.log(reach);
-                            setCampaignReach(reach);
-                            const impressions = json1.data.data[1].values[0].value;
-                            console.log(impressions);
-                            setCampaignImpressions(impressions);
-                            const engagement = json1.data.data[2].values[0].value;
-                            console.log(engagement);
-                            setCampaignEngagement(engagement);
-                            const saved = json1.data.data[3].values[0].value;
-                            console.log(saved);
-                            setCampaignSaved(saved);    
-                            const likes = json2.data.like_count;
-                            console.log(json2.data.like_count);
-                            setCampaignLikes(likes);
-                            const comments = json2.data.comments_count;
-                            console.log(json2.data.comments_count);
-                            setCampaignComments(comments);
                         } catch (error) {
                             console.log(error);
                         }                                    
@@ -132,7 +145,7 @@ const CampaignReport = () => {
                 </div>
                 <div className="report-text-wrapper">
                     <span className="report-interaction-text">공유됨</span>
-                    <span className="report-interaction-text">1</span>    
+                     
                 </div>
                 <div className="report-text-wrapper">
                     <span className="report-interaction-text">댓글</span>
