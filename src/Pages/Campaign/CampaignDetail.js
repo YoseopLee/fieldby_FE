@@ -1,7 +1,9 @@
 import { child, get, getDatabase, ref } from "firebase/database";
 import React, { useEffect, useState } from "react";
-import { Link, Outlet, useLocation, useParams } from "react-router-dom";
+import { Link, Outlet, useLocation, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
+import CompleteModal from "../../Components/Modal/CompleteModal";
+import ReportModal from "../../Components/Modal/ReportModal";
 import SideBar from "../../Components/SideBar/SideBar";
 import { useAuth } from "../../Context/authProvider";
 
@@ -20,6 +22,9 @@ const CampaignDetail = () => {
     const [resultBtn, setResultBtn] = useState(false);
     const [completeBtn, setCompleteBtn] = useState(false);
     const [reportBtn, setReportBtn] = useState(false);
+    const [completeModalOpen, setCompleteModalOpen] = useState(false);
+    const [reportModalOpen, setReportModalOpen] = useState(false);
+    const navigate = useNavigate();
     let {id} = useParams();
 
     useEffect(() => {
@@ -78,6 +83,24 @@ const CampaignDetail = () => {
             setReportBtn(true);
         }
     })
+
+    const openCompleteModal = () => {
+        setCompleteModalOpen(true);
+    }
+
+    const closeCompleteModal = () => {
+        setCompleteModalOpen(false);
+        navigate(-1);
+    }
+
+    const openReportModal = () => {
+        setReportModalOpen(true);
+    }
+
+    const closeReportModal = () => {
+        setReportModalOpen(false);
+        navigate(-1);
+    }
     
     return (
         <>
@@ -151,12 +174,18 @@ const CampaignDetail = () => {
                         
                         <Link className={`campaign-register-progress ${progressBtn ? 'active' : 'no'}`} id="progress" to='progress'>신청 현황</Link>
                         <Link className={`campaign-register-result ${resultBtn ? 'active' : 'no'}`} to='result'>선정 결과</Link>
-                        <Link className={`campaign-complete-posts ${completeBtn ? 'active' : 'no'}`} to='complete'>완료 포스팅</Link>
-                        <Link className={`campaign-report ${reportBtn ? 'active' : 'no'}`} to='report'>캠페인 보고서</Link>
+                        <Link className={`campaign-complete-posts ${completeBtn ? 'active' : 'no'}`} to='complete' onClick={openCompleteModal}>완료 포스팅</Link>
+                        <Link className={`campaign-report ${reportBtn ? 'active' : 'no'}`} to='report' onClick={openReportModal}>캠페인 보고서</Link>
                     </div>
 
                     <Outlet />
                 </div>
+                <CompleteModal open={completeModalOpen} result={closeCompleteModal}>
+                    <span className="main-info">아직 업로드 기간이 아닙니다.</span>
+                </CompleteModal>
+                <ReportModal open={reportModalOpen} result={closeReportModal}>
+                    <span className="main-info">아직 캠페인이 종료되지 않았습니다.</span>
+                </ReportModal>
             </CampaignDetailCSS>            
         </>
     )

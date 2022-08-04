@@ -29,8 +29,8 @@ const CampaignResultDetail = ({id, name, profile, phoneNumber, zipno,roadaddress
                             <span>{detailaddress}</span>
                         </div>                        
                         {shipment_name ? (
-                            <select name="shipment_name" value={shipment_name} className="shipment-names" onChange={(e) => {
-                                setShipName(e.target.value);
+                            <select name="shipment_name" value={shipment_name} className="shipment-names" onChange={() => {
+                                setShipName(shipment_name);
                             }}> 
                                 <option value="">택배사 선택</option>
                                 <option value="CJ대한통운">CJ대한통운</option>
@@ -59,13 +59,13 @@ const CampaignResultDetail = ({id, name, profile, phoneNumber, zipno,roadaddress
                 </td>
                 <td className="selected-data-post">
                     {shipment_number ? (
-                        <input type='text' className="table-input" onChange={(e) => {
-                            <span>{shipment_number}</span>
-                        }}/>
+                        <input type='text' className="table-input" value={shipment_number} onChange={(e) => {
+                            setShipNumber(shipment_number);
+                        }} />
                     ) : (
                         <input type='text' placeholder="배송장번호" className="table-input" onChange={(e) => {
                             setShipNumber(e.target.value);
-                        }}/> 
+                        }}/>
                     )}                   
                 </td>
             </tr>        

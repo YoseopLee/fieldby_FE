@@ -177,8 +177,8 @@ const CampaignResult = () => {
                                         zipno={userData.address.zipNo}
                                         roadaddress={userData.address.roadAddr}
                                         detailaddress={userData.address.detail}
-                                        shipment_name={userData.campaigns?.[id].shipment_name}
-                                        shipment_number={userData.campaigns?.[id].shipment_number}
+                                        shipment_name={userData.campaigns?.[id]?.shipment_name}
+                                        shipment_number={userData.campaigns?.[id]?.shipment_number}
                                         getShipInfo={getShipInfo}
                                     />
                                 )}                                
