@@ -64,7 +64,7 @@ const CampaignProgressDetail = ({ uid, fcmToken ,name, height, profile,simpleadd
     }
 
     const unfollowUserHandler = () => {
-        try {
+        try { 
             remove(ref(realtimeDbService, `brands/${currentUser.uid}/campaigns/${id}/followedUser/${uid}`));
             update(ref(realtimeDbService, `users/${uid}/campaigns/${id}/`), {
                 isFollowed : false

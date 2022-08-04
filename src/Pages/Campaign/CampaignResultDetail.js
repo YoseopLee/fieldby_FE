@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-const CampaignResultDetail = ({id, name, profile, phoneNumber, zipno,roadaddress, detailaddress, sendShipMessage }) => {
+const CampaignResultDetail = ({id, name, profile, phoneNumber, zipno,roadaddress, detailaddress, shipment_name, shipment_number, getShipInfo }) => {
     const [shipName, setShipName] = useState('');
     const [shipNumber, setShipNumber] = useState('');
 
-    sendShipMessage(shipName, shipNumber);
     
+    getShipInfo(shipName, shipNumber)
+    
+        
     return (        
             <tr className="campaign-progress-table">
                 <td className="selected-data-number">                    
@@ -26,24 +28,45 @@ const CampaignResultDetail = ({id, name, profile, phoneNumber, zipno,roadaddress
                             <span>{roadaddress}</span>
                             <span>{detailaddress}</span>
                         </div>                        
-                        <select name="shipment_name" className="shipment-names" onChange={(e) => {
-                            setShipName(e.target.value);
-                        }}>
-                            <option value="">택배사 선택</option>
-                            <option value="CJ대한통운">CJ대한통운</option>
-                            <option value="우체국">우체국</option>
-                            <option value="한진택배">한진택배</option>
-                            <option value="로젠택배">로젠택배</option>
-                            <option value="롯데택배">롯데택배</option>
-                            <option value="경동택배">경동택배</option>
-                            <option value="일양택배">일양택배</option>
-                        </select>
+                        {shipment_name ? (
+                            <select name="shipment_name" value={shipment_name} className="shipment-names" onChange={() => {
+                                setShipName(shipment_name);
+                            }}> 
+                                <option value="">택배사 선택</option>
+                                <option value="CJ대한통운">CJ대한통운</option>
+                                <option value="우체국">우체국</option>
+                                <option value="한진택배">한진택배</option>
+                                <option value="로젠택배">로젠택배</option>
+                                <option value="롯데택배">롯데택배</option>
+                                <option value="경동택배">경동택배</option>
+                                <option value="일양택배">일양택배</option>
+                            </select>
+                        ) : (
+                            <select name="shipment_name" className="shipment-names" onChange={(e) => {
+                                setShipName(e.target.value);
+                            }}>
+                                <option value="">택배사 선택</option>
+                                <option value="CJ대한통운">CJ대한통운</option>
+                                <option value="우체국">우체국</option>
+                                <option value="한진택배">한진택배</option>
+                                <option value="로젠택배">로젠택배</option>
+                                <option value="롯데택배">롯데택배</option>
+                                <option value="경동택배">경동택배</option>
+                                <option value="일양택배">일양택배</option>
+                            </select>
+                        )}                        
                     </div>                    
                 </td>
-                <td className="selected-data-post">                    
-                    <input type='text' placeholder="배송장번호" className="table-input" onChange={(e) => {
-                        setShipNumber(e.target.value);
-                    }}/>                    
+                <td className="selected-data-post">
+                    {shipment_number ? (
+                        <input type='text' className="table-input" value={shipment_number} onChange={(e) => {
+                            setShipNumber(shipment_number);
+                        }} />
+                    ) : (
+                        <input type='text' placeholder="배송장번호" className="table-input" onChange={(e) => {
+                            setShipNumber(e.target.value);
+                        }}/>
+                    )}                   
                 </td>
             </tr>        
     )
