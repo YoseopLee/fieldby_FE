@@ -6,11 +6,17 @@ import styled from "styled-components";
 import { useAuth } from "../../Context/authProvider";
 import { realtimeDbService } from "../../fBase";
 
-const CampaignProgressDetail = ({ uid, fcmToken ,name, height, profile,simpleaddr, stroke, career, roundingFrequency, style1, style2, style3, igname, igfollower, igfollow, igmedia, bestImage1, bestImage2, bestImage3, token,checkedItemHandler, isSelected, isFollowed, checkedFcmTokenHandler}) => {
+const CampaignProgressDetail = ({ uid, fcmToken ,name, height, profile,simpleaddr, stroke, career, roundingFrequency, style1, style2, style3, igname, igfollower, igfollow, igmedia, bestImage1, bestImage2, bestImage3, token,checkedItemHandler, isSelected, isFollowed, checkedFcmTokenHandler, size, color}) => {
     const [bChecked, setChecked] = useState(false);
     const [userBestImage1, setUserBestImage1] = useState('');
     const [userBestImage2, setUserBestImage2] = useState('');
     const [userBestImage3, setUserBestImage3] = useState('');
+    const [userMediaType1, setUserMediaType1] = useState('');
+    const [userMediaType2, setUserMediaType2] = useState('');
+    const [userMediaType3, setUserMediaType3] = useState('');
+    const [userBestThumbnail1, setUserBestThumbnail1] = useState('');
+    const [userBestThumbnail2, setUserBestThumbnail2] = useState('');
+    const [userBestThumbnail3, setUserBestThumbnail3] = useState('');
     const {currentUser} = useAuth();
     const [userIsFollowed, setIsUserFollowed] = useState(isFollowed);
     let {id} = useParams();
@@ -20,19 +26,27 @@ const CampaignProgressDetail = ({ uid, fcmToken ,name, height, profile,simpleadd
             try {   
                     // for 문 사용 가능         
                     const json1 = await axios.get(
-                        `https://graph.facebook.com/v14.0/${bestImage1}?fields=media_url&access_token=${token}`                        
+                        `https://graph.facebook.com/v14.0/${bestImage1}?fields=media_url,media_type,thumbnail_url&access_token=${token}`                        
                     );
 
                     const json2 = await axios.get(
-                        `https://graph.facebook.com/v14.0/${bestImage2}?fields=media_url&access_token=${token}`
+                        `https://graph.facebook.com/v14.0/${bestImage2}?fields=media_url,media_type,thumbnail_url&access_token=${token}`
                     )
 
                     const json3 = await axios.get(
-                        `https://graph.facebook.com/v14.0/${bestImage3}?fields=media_url&access_token=${token}`
+                        `https://graph.facebook.com/v14.0/${bestImage3}?fields=media_url,media_type,thumbnail_url&access_token=${token}`
                     )                    
-                    setUserBestImage1(json1.data.media_url);
+                    setUserBestImage1(json1.data.media_url);                    
+                    setUserMediaType1(json1.data.media_type);
+                    setUserBestThumbnail1(json1.data.thumbnail_url);
+
                     setUserBestImage2(json2.data.media_url);
-                    setUserBestImage3(json3.data.media_url);                
+                    setUserMediaType2(json2.data.media_type);
+                    setUserBestThumbnail2(json2.data.thumbnail_url);
+
+                    setUserBestImage3(json3.data.media_url);
+                    setUserMediaType3(json3.data.media_type);
+                    setUserBestThumbnail3(json3.data.thumbnail_url);                                
             } catch (error) {
                 console.log(error);
             }
@@ -106,8 +120,8 @@ const CampaignProgressDetail = ({ uid, fcmToken ,name, height, profile,simpleadd
                                     <span>{height}cm</span>
                                     <span>{simpleaddr}</span>
                                 </div>
-
-                                <div className="user-golf-infos">
+                                {size === 'free' && color === 'free' ? (
+                                    <div className="user-golf-infos">
                                     <div className="golf-info-wrapper">
                                         <div className="user-golf-info">평균 타수 <span>{stroke}</span></div>
                                         <div className="user-golf-info">구력 <span>{career}차</span></div>
@@ -115,9 +129,24 @@ const CampaignProgressDetail = ({ uid, fcmToken ,name, height, profile,simpleadd
                                     <div className="golf-info-wrapper">
                                         <div className="user-golf-info">월 라운딩 <span>{roundingFrequency}</span></div>    
                                         <div className="user-golf-info">스타일 <span> #{style1} #{style2} #{style3}</span></div>
-                                    </div>
-                                                                
+                                    </div>                                                                                                 
                                 </div>
+                                ) : (
+                                    <div className="user-golf-infos">
+                                        <div className="golf-info-wrapper">
+                                            <div className="user-golf-info">평균 타수 <span>{stroke}</span></div>
+                                            <div className="user-golf-info">구력 <span>{career}차</span></div>
+                                        </div>
+                                        <div className="golf-info-wrapper">
+                                            <div className="user-golf-info">월 라운딩 <span>{roundingFrequency}</span></div>    
+                                            <div className="user-golf-info">스타일 <span> #{style1} #{style2} #{style3}</span></div>
+                                        </div>  
+                                        <div className="golf-info-wrapper">
+                                            <div className="user-golf-info">size <span>{size}</span></div>    
+                                            <div className="user-golf-info">color <span>{color}</span></div>
+                                        </div>                                                                                               
+                                    </div>
+                                )}                                
                             </div>
 
                             <div className="user-instagram-infos-container">
@@ -142,15 +171,33 @@ const CampaignProgressDetail = ({ uid, fcmToken ,name, height, profile,simpleadd
                             <div className="user-image">
                                 
                                     <div className="user-images-wrapper">
-                                        <a href={userBestImage1}>
-                                            <img src={userBestImage1} alt="1" />                                                                                                            
-                                        </a>
-                                        <a href={userBestImage2}>
-                                            <img src={userBestImage2} alt="2" />
-                                        </a>
-                                        <a href={userBestImage3}>
-                                            <img src={userBestImage3} alt="3" />
-                                        </a>                                        
+                                        {userMediaType1 === 'VIDEO' ? (
+                                            <a href={userBestImage1} target="_blank">
+                                                <img src={userBestThumbnail1} alt="1" />                                                                                                            
+                                            </a>
+                                        ) : ( 
+                                            <a href={userBestImage1} target="_blank">
+                                                <img src={userBestImage1} alt = "1" />
+                                            </a>
+                                        )}
+                                        {userMediaType2 === 'VIDEO' ? (
+                                            <a href={userBestImage2} target="_blank">
+                                                <img src={userBestThumbnail2} alt="2" />                                                                                                            
+                                            </a>
+                                        ) : (
+                                            <a href={userBestImage2} target="_blank">
+                                                <img src={userBestImage2} alt = "2" />
+                                            </a>
+                                        )}
+                                        {userMediaType3 === 'VIDEO' ? (
+                                            <a href={userBestImage3} target="_blank">
+                                                <img src={userBestThumbnail3} alt="3" />                                                                                                            
+                                            </a>
+                                        ) : (
+                                            <a href={userBestImage3} target="_blank">
+                                                <img src={userBestImage3} alt = "3" />
+                                            </a>
+                                        )}                                                                           
                                     </div>                                                                                                                                            
                             </div>
                         </div>
