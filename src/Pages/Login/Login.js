@@ -31,7 +31,7 @@ const Login = () => {
         }
     };
 
-    const enterLogin = () =>{
+    const enterLogin = () => {
         if (window.event.keyCode === 13) {
             signIn();
         }

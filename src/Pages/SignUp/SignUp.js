@@ -124,14 +124,14 @@ const SignUp = () => {
                     <h2 className="sign-up-logo-name">Business Suite</h2>
                 </div>
                 <div className="sign-up-title">회원가입</div>
-                <div className="sign-up-box">
+                {/*<div className="sign-up-box">
                     <span className="sign-up-name">휴대폰 번호</span>
                     <div className="sign-up-phone-wrapper">
                         <input className="sign-up-phone" placeholder="핸드폰('-' 없이 입력해주세요.)" value={phoneNumber} onChange={onChangePhone}/>
                         <button className="sign-up-phone-btn" disabled={!isPhone}>인증번호 발송</button>
                     </div>
                     {phoneNumber.length > 0 && <span className={`message ${isPhone ? 'success' : 'error'}`}>{phoneMessage}</span>}
-                </div>
+                </div>*/}
                 <div className="sign-up-box">
                     <span className="sign-up-name">이메일</span>
                     <input className="sign-up-input" type="email" placeholder="이메일" onChange={onChangeEmail} />

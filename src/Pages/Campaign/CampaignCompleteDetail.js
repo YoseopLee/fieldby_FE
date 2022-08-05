@@ -49,8 +49,11 @@ const CampaignCompleteDetail = ({igname, followers, token, postImageUrl}) => {
             ) : (
                 <div className="campaign-complete-details">
                     <div className="camapaign-complete-detail-info-wrapper">
-                        {postType==='VIDEO' ? (
-                            <video src={postImage} alt="posted" className="campaign-complete-detail-img"/>
+                        {postType === 'VIDEO' ? (
+                            <a href={postImage} target="_blank">
+                                <video src={postImage} alt="posted" className="campaign-complete-detail-img"/>
+                            </a>
+                            
                         ) : 
                         ( 
                             <img src={postImage} alt="posted" className="campaign-complete-detail-img"/>
