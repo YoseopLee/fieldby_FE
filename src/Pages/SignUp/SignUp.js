@@ -56,12 +56,12 @@ const SignUp = () => {
     }, [])
 
     const onChangePassword = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-        const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/
+        const passwordRegex = /^(.*[a-zA-Z]).{8,25}$/
         const passwordCurrent = e.target.value;
         setRegisterPassword(passwordCurrent);
 
         if (!passwordRegex.test(passwordCurrent)) {
-            setPasswordMessage('숫자+영문자+특수문자 조합으로 8자리 이상 입력해주세요!');
+            setPasswordMessage('비밀번호를 8자리 이상 입력해주세요!');
             setIsPassword(false);
         } else {
             setPasswordMessage('안전한 비밀번호에요 : )');

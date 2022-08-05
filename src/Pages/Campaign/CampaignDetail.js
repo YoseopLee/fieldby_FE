@@ -174,8 +174,8 @@ const CampaignDetail = () => {
                         
                         <Link className={`campaign-register-progress ${progressBtn ? 'active' : 'no'}`} id="progress" to='progress'>신청 현황</Link>
                         <Link className={`campaign-register-result ${resultBtn ? 'active' : 'no'}`} to='result'>선정 결과</Link>
-                        <Link className={`campaign-complete-posts ${completeBtn ? 'active' : 'no'}`} to='complete'>완료 포스팅</Link>
-                        <Link className={`campaign-report ${reportBtn ? 'active' : 'no'}`} to='report'>캠페인 보고서</Link>
+                        <Link className={`campaign-complete-posts ${completeBtn ? 'active' : 'no'}`} to='complete' onClick={openCompleteModal}>완료 포스팅</Link>
+                        <Link className={`campaign-report ${reportBtn ? 'active' : 'no'}`} to='report' onClick={openReportModal}>캠페인 보고서</Link>
                     </div>
 
                     <Outlet />
