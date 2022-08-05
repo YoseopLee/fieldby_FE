@@ -277,7 +277,7 @@ const CampaignProgress = () => {
                                         igfollow={userData.igInfo?.follows}
                                         igmedia={userData.igInfo?.mediaCount}
                                         isSelected={userData.campaigns?.isSelected}
-                                        isFollowed={userData.campaigns?.[id].isFollowed}                    
+                                        isFollowed={userData.campaigns?.[id]?.isFollowed}                    
                                         checkedItemHandler={checkedItemHandler}
                                         checkedFcmTokenHandler={checkedFcmTokenHandler}                            
                                     />                                                

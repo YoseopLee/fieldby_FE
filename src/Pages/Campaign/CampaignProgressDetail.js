@@ -11,6 +11,12 @@ const CampaignProgressDetail = ({ uid, fcmToken ,name, height, profile,simpleadd
     const [userBestImage1, setUserBestImage1] = useState('');
     const [userBestImage2, setUserBestImage2] = useState('');
     const [userBestImage3, setUserBestImage3] = useState('');
+    const [userMediaType1, setUserMediaType1] = useState('');
+    const [userMediaType2, setUserMediaType2] = useState('');
+    const [userMediaType3, setUserMediaType3] = useState('');
+    const [userBestThumbnail1, setUserBestThumbnail1] = useState('');
+    const [userBestThumbnail2, setUserBestThumbnail2] = useState('');
+    const [userBestThumbnail3, setUserBestThumbnail3] = useState('');
     const {currentUser} = useAuth();
     const [userIsFollowed, setIsUserFollowed] = useState(isFollowed);
     let {id} = useParams();
@@ -20,19 +26,30 @@ const CampaignProgressDetail = ({ uid, fcmToken ,name, height, profile,simpleadd
             try {   
                     // for 문 사용 가능         
                     const json1 = await axios.get(
-                        `https://graph.facebook.com/v14.0/${bestImage1}?fields=media_url&access_token=${token}`                        
+                        `https://graph.facebook.com/v14.0/${bestImage1}?fields=media_url,media_type,thumbnail_url&access_token=${token}`                        
                     );
 
                     const json2 = await axios.get(
-                        `https://graph.facebook.com/v14.0/${bestImage2}?fields=media_url&access_token=${token}`
+                        `https://graph.facebook.com/v14.0/${bestImage2}?fields=media_url,media_type,thumbnail_url&access_token=${token}`
                     )
 
                     const json3 = await axios.get(
-                        `https://graph.facebook.com/v14.0/${bestImage3}?fields=media_url&access_token=${token}`
+                        `https://graph.facebook.com/v14.0/${bestImage3}?fields=media_url,media_type,thumbnail_url&access_token=${token}`
                     )                    
-                    setUserBestImage1(json1.data.media_url);
+                    setUserBestImage1(json1.data.media_url);                    
+                    setUserMediaType1(json1.data.media_type);
+                    setUserBestThumbnail1(json1.data.thumbnail_url);
+
                     setUserBestImage2(json2.data.media_url);
-                    setUserBestImage3(json3.data.media_url);                
+                    setUserMediaType2(json2.data.media_type);
+                    setUserBestThumbnail2(json2.data.thumbnail_url);
+
+                    setUserBestImage3(json3.data.media_url);
+                    setUserMediaType3(json3.data.media_type);
+                    setUserBestThumbnail3(json3.data.thumbnail_url);
+                    console.log(json1.data);
+                    console.log(json2.data);
+                    console.log(json3.data);               
             } catch (error) {
                 console.log(error);
             }
@@ -142,15 +159,33 @@ const CampaignProgressDetail = ({ uid, fcmToken ,name, height, profile,simpleadd
                             <div className="user-image">
                                 
                                     <div className="user-images-wrapper">
-                                        <a href={userBestImage1}>
-                                            <img src={userBestImage1} alt="1" />                                                                                                            
-                                        </a>
-                                        <a href={userBestImage2}>
-                                            <img src={userBestImage2} alt="2" />
-                                        </a>
-                                        <a href={userBestImage3}>
-                                            <img src={userBestImage3} alt="3" />
-                                        </a>                                        
+                                        {userMediaType1 === 'VIDEO' ? (
+                                            <a href={userBestThumbnail1}>
+                                                <img src={userBestThumbnail1} alt="1" />                                                                                                            
+                                            </a>
+                                        ) : (
+                                            <a href={userBestImage1}>
+                                                <img src={userBestImage1} alt = "1" />
+                                            </a>
+                                        )}
+                                        {userMediaType2 === 'VIDEO' ? (
+                                            <a href={userBestThumbnail2}>
+                                                <img src={userBestThumbnail2} alt="2" />                                                                                                            
+                                            </a>
+                                        ) : (
+                                            <a href={userBestImage2}>
+                                                <img src={userBestImage2} alt = "2" />
+                                            </a>
+                                        )}
+                                        {userMediaType3 === 'VIDEO' ? (
+                                            <a href={userBestThumbnail3}>
+                                                <img src={userBestThumbnail3} alt="3" />                                                                                                            
+                                            </a>
+                                        ) : (
+                                            <a href={userBestImage3}>
+                                                <img src={userBestImage3} alt = "3" />
+                                            </a>
+                                        )}                                                                           
                                     </div>                                                                                                                                            
                             </div>
                         </div>
