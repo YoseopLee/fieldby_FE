@@ -9,6 +9,8 @@ import ShipComplete from "../../Components/Modal/ShipComplete";
 import { useAuth } from "../../Context/authProvider";
 import { realtimeDbService } from "../../fBase";
 import CampaignResultDetail from "./CampaignResultDetail";
+import * as FileSaver from 'file-saver';
+import * as XLSX from 'xlsx';
 
 const CampaignResult = () => {
     const {currentUser} = useAuth();    
