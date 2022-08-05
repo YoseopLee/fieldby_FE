@@ -13,7 +13,7 @@ import CampaignProgressDetail from "./CampaignProgressDetail";
 const CampaignProgress = () => {
     const {currentUser} = useAuth();
     let {id} = useParams();
-    const [datas, setDatas] = useState([]);
+    const [datas, setDatas] = useState("");
     const [userDatas, setUserDatas] = useState([]);
     const [checkedItems, setCheckedItems] = useState(new Set());
     const [checkedUserFcmToken, setCheckedUserFcmToken] = useState(new Set());
@@ -59,9 +59,11 @@ const CampaignProgress = () => {
                 } else {
                     console.log("No data");
                 }
+                
             }).catch ((error) => {
                 console.log(error);
             });
+            
         }
         getCampaignUserData();
     }, [])
@@ -78,7 +80,7 @@ const CampaignProgress = () => {
                     setIsUserSelected(isSelected);
                     const campaignRecruitingNumber = campaignDataObj.recruitingNumber;
                     setRecruitingNumber(campaignRecruitingNumber);
-                    setCampaignTitle(campaignDataObj.campaignTitle);
+                    setCampaignTitle(campaignDataObj.campaignTitle);                    
                 } else {
                     console.log("No Data");
                 }
@@ -218,7 +220,12 @@ const CampaignProgress = () => {
 
     return (
         <CampaignProgressCSS>
-            {datas ? (
+            {!datas ? (
+                <div className="campaign-empty">
+                    <img src="/images/campaign-empty.png" alt="no-campaign"/> 
+                    <span>아직 캠페인에 신청한 인플루언서가 없어요.</span>
+                </div> 
+            ) : (
                 <>
                 {isUserSelected ? (
                     <>
@@ -289,16 +296,9 @@ const CampaignProgress = () => {
                     </>
                 )}
                 </>
-            ) : (
-                <div className="campaign-empty">
-                    <img src="/images/campaign-empty.png" alt="no-campaign"/> 
-                    <span>아직 캠페인에 신청한 인플루언서가 없어요.</span>
-                </div>
             )}
-            
-
-            
-            
+                
+                                                
         </CampaignProgressCSS>
     )
 }

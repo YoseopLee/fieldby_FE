@@ -55,8 +55,11 @@ const CampaignCompleteDetail = ({igname, followers, token, postImageUrl}) => {
                             </a>
                             
                         ) : 
-                        ( 
-                            <img src={postImage} alt="posted" className="campaign-complete-detail-img"/>
+                        (   
+                            <a href={postImage} target="_blank">
+                                <img src={postImage} alt="posted" className="campaign-complete-detail-img"/>
+                            </a>
+                            
                         )}  
                     </div>
 
